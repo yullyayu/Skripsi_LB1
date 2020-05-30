@@ -86,6 +86,27 @@ class Dinkes extends CI_Controller{
       $this->load->view('dinkes/detail_laporandinkes', $data);
       $this->load->view('footer/d_footer');
     }
+    public function detailPenyBulan($id)
+    {
+      $data['peny_bln'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/d_header');
+      $this->load->view('dinkes/detail_PenyBulan', $data);
+      // $this->load->view('footer/d_footer');
+    }
+    public function detailPenyTri($id)
+    {
+      $data['peny_tri'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/d_header');
+      $this->load->view('dinkes/detail_PenyTri', $data);
+      $this->load->view('footer/d_footer');
+    }
+    public function detailPenyThn($id)
+    {
+      $data['peny_thn'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/d_header');
+      $this->load->view('dinkes/detail_PenyThn', $data);
+      $this->load->view('footer/d_footer');
+    }
     public function accLB1($id)
     {
       if (isset($_POST['acc'])) {

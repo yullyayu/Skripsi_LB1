@@ -40,10 +40,16 @@
                   <td><?php echo $st->tanggal?></td>
                   <?php if ($st->status == 0 ) { ?>
                     <td style="text-align: center;">-</td>
-                  <?php }elseif ($st->status == 1) { ?>
+                  <?php }elseif ($st->status == 1 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailLB/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 1 && $st->id_jp == 4) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPBln/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 1 && $st->id_jp == 5) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 1 && $st->id_jp == 6) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 2 || $st->status == 3) { ?>
-                      <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
                   <?php } ?>
                   
                   <td>

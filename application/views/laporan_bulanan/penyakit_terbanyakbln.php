@@ -74,9 +74,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $no =0; foreach ($data as $dt ): $no++; 
-                 print_r($dt->nama_penyakit); ?>
-               
+                <?php $no =0; foreach ($data as $dt ): $no++; ?>
                   <tr class="odd gradeX">
                      <th scope="row"><?= $no ?></th>
                      <th scope="row"><?= $dt->nama_penyakit?></th>
@@ -92,8 +90,7 @@
                          <td><?= $pas->Laki?> </td>
                          <td><?= $pas->Perempuan?> </td>
                        <?php }
-                        } print_r($total)?>
-
+                        } ?>
                         <td><?= $total?></td>
                   </tr>
                   <?php endforeach; ?>

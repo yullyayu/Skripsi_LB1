@@ -16,12 +16,12 @@ class DataLB1_model extends CI_Model{
   function getJumlahLB(){
     $bulan = getdate();
     $dataPenyakit = $this->db->get('data_penyakit');
-    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, laporan_lb1.tanggal, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
     ->where('month(laporan_lb1.tanggal)', $bulan['mon'])
     ->get();
-    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')

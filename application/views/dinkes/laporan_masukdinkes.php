@@ -26,16 +26,12 @@
               <table class="table table-bordered">
                 <thead>
                 <tr>
-                  <th scoop="col" rowspan="2">No</th>
-                  <th scoop="col" rowspan="2">Tanggal</th>
-                  <th scoop="col" rowspan="2">Nama Puskesmas</th>
-                  <th scoop="col" colspan="3">Jenis Laporan</th>
-                  <th scoop="col" rowspan="2">Status</th>
-                </tr>
-                <tr>
-                  <th scope="col">Bulanan</th>
-                  <th scope="col">Tribulan</th>
-                  <th scope="col">Tahunan</th>
+                  <th >No</th>
+                  <th >Tanggal</th>
+                  <th >Nama Puskesmas</th>
+                  <th >Jenis Laporan</th>
+                  <th style="width: 140px" >Action</th>
+                  <th >Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,27 +40,18 @@
                   <td><?php echo $no?></td>
                   <td><?php echo $st->tanggal?></td>
                   <td><?php echo $st->nama_puskesmas?></td>
-                  <td><?php if ($st->jenis_laporan == 'Bulanan' && $st->status == 2) {  ?>
-                    <a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a>
-                  <?php  } elseif ($st->jenis_laporan == 'Bulanan' && $st->status == 0 || $st->status == 1){ ?>
-                    <a>-</a>
-                  <?php }elseif ($st->jenis_laporan == 'Bulanan' && $st->status == 3) { ?>
-                    <a class="fa fa-fw fa-check"></a>
-                  <?php } ?></td> 
-                  <td><?php if ($st->jenis_laporan == 'Tribulan' && $st->status == 2) {  ?>
-                    <a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan); ?>"><span class="menu-icon icon-edit"></span></a>
-                  <?php  } elseif ($st->jenis_laporan == 'Tribulan' && $st->status == 0 || $st->status == 1){ ?>
-                    <a>-</a>
-                  <?php } elseif ($st->jenis_laporan == 'Tribulan' && $st->status == 3) { ?>
-                    <a class="fa fa-fw fa-check"></a>
-                  <?php } ?> </td> 
-                  <td><?php if ($st->jenis_laporan == 'Tahunan' && $st->status == 2) {  ?>
-                    <a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan); ?>"><span class="menu-icon icon-edit"></span></a>
-                  <?php  } elseif ($st->jenis_laporan == 'Tahunan' && $st->status == 0 || $st->status == 1){ ?>
-                    <a>-</a>
-                  <?php } elseif ($st->jenis_laporan == 'Tahunan' && $st->status == 3) { ?>
-                    <a class="fa fa-fw fa-check"></a>
-                  <?php } ?> </td> 
+                  <td><?php echo $st->jenis_laporan?> 
+                  <?php if ($st->status == 2 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 2 && $st->id_jp == 4 ) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyBulan/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 2 && $st->id_jp == 5) { ?>
+                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 2 && $st->id_jp == 6) { ?>
+                  <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 3 ) { ?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
+                  <?php } ?>
                   <td>
                     <?php if ($st->status == 2) {
                             echo "Perlu persetujuan dinkes";

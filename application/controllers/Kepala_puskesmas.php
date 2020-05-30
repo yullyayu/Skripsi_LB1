@@ -31,6 +31,13 @@ class Kepala_puskesmas extends CI_Controller{
       $this->load->view('kepala_puskesmas/detail_penyakitBln', $data);
       // $this->load->view('footer/kp_footer');
     }
+    public function detailPenyTri($id)
+    {
+      $data['status'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/kp_header');
+      $this->load->view('kepala_puskesmas/detail_penyakitTribln', $data);
+      $this->load->view('footer/kp_footer');
+    }
     public function detailPenyThn($id)
     {
       $data['status'] = $this->DataLB1_model->getDataLB1($id);

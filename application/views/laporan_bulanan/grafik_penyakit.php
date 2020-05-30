@@ -22,10 +22,6 @@
             <?php foreach ($data as $dp ){
                 $tot = 0;
                 $peny[] = $dp->nama_penyakit;
-                // print_r($peny);
-                // if (count($dp->pasien) == 0) {
-                //   $total[] = 0 ;
-                // } else {
                 foreach ($dp->pasien as $pas) {
                   $bln = $pas->bulan = $pas->bulan1;
                   $bulan = date('M', strtotime($bln));
@@ -33,8 +29,6 @@
                   $tot = $pas->Laki + $pas->Perempuan;
                 }
                 array_push($total, $tot);
-                // var_dump($total);
-                // print_r($peny);
             } 
             $tahun = date('Y', strtotime($bln)) ;
             $judul = 'GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN '.$tahun ;
@@ -54,7 +48,7 @@
                         <span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title">Kirim Laporan 15 Besar Penyakit</h4>
                     </div>
-                    <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/sendKP'); ?>" method="post">
+                    <form class="form-horizontal" action="<?php echo site_url('data_penyakit/sendKP'); ?>" method="post">
                     <div class="modal-body">
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="tanggal">Tanggal Laporan</label>
@@ -67,7 +61,12 @@
                       <div class="form-group">
                       <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
                       <div class="col-sm-10">
-                        <input list="jenis_laporan" type="text" class="form-control" name="jen_laporan" placeholder="Jenis Laporan" value="Laporan 15 Penyakit Terbanyak Tribulan">
+                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" placeholder="Jenis Laporan" required>
+                          <datalist id="jenis_laporan"> 
+                          <option value="Laporan 15 Penyakit Terbanyak Bulanan"></option>
+                          <option value="Laporan 15 Penyakit Terbanyak Tribulan"></option>
+                          <option value="Laporan 15 Penyakit Terbanyak Tahunan"></option>
+                          </datalist>
                       </div>
                     </div>
                     <div class="form-group">

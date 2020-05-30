@@ -200,11 +200,9 @@ class Data_penyakit extends CI_Controller{
                     }          
                 }
             }
-            
             $pen[$key]->kode_dx = $peny->kode_dx;
             $pen[$key]->kode_icdx = $peny->kode_icdx;
             $pen[$key]->nama_penyakit = $peny->nama_penyakit;
-
         }
         foreach ($penyakit as $key => $peny) {
             foreach ($rekamMedis as $ki => $rm) {
@@ -264,8 +262,9 @@ class Data_penyakit extends CI_Controller{
     }
     public function getGrafikLB1Kepala()
     {
+        $data['grafik_kpl'] = $this->M_Kepala_puskesmas->getPenyTri();
         $this->load->view('header/kp_header');
-        $this->load->view('kepala_puskesmas/grafik_penyakitKP');
+        $this->load->view('kepala_puskesmas/grafik_penyakitKP', $data);
         $this->load->view('footer/kp_footer');
     }
     public function sendKP()
@@ -292,6 +291,10 @@ class Data_penyakit extends CI_Controller{
         'datalb1' => $datalb1,
       );
       $this->DataLB1_model->sendKP($data, 'detail_laporan');
-      redirect('data_penyakit/getJum_Penyakit');
+      if ($id_jp == 5) {
+        redirect('data_penyakit/getGrafikLB1');
+      }else {
+        redirect('data_penyakit/getJum_Penyakit');
+      }
     }
 }

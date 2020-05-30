@@ -43,11 +43,11 @@
                   <?php }elseif ($st->status == 0 && $st->id_jp == 4 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyBln/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 0 && $st->id_jp == 5) { ?>
-                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 0 && $st->id_jp == 6) { ?>
                   <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 1 || $st->status == 2 || $st->status == 3) { ?>
-                    <td style="text-align: center;">-</td>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
                   <?php } ?>
                   
                   <td>

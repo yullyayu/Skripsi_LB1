@@ -88,6 +88,43 @@
                   </div>
               </div><br><br>
               <!-- end-kirim -->
+              <!-- MODAL CETAK LAPORAN -->
+              <div class="modal fade" id="cetak">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Cetak 15 Besar Penyakit</h4>
+                  </div>
+                  <form class="form-horizontal" action="<?php echo site_url('export_excel/cetakPenyThn'); ?>" method="post">
+                  <div class="box-body">
+                <div class="form-group">
+                <label class="col-sm-2 control-label">Tahun</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="tahun" id="tahun">
+                    <?php for($i=2019 ; $i<=2029;$i++){
+                    if($i == $tahun){?>
+                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
+                    <?php   } else{?>
+                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
+                    <?php   }} ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <div class="col-sm-12" align="right">
+              <button type="submit" id="btn-filter" class="btn btn-primary" name="cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
+              </div>
+            </div>
+            </form>
+            </div>
+            </div>
+            </div>
+            </div>
+            <!-- end modal -->
             </div>
             </div>
             <!-- /.box-body -->

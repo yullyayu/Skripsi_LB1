@@ -23,7 +23,16 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Bulan)</h3>
+              <?php  foreach ($data as $dp ){
+                foreach ($dp->pasien as $pas) {
+                  $bln = $pas->bulan = $pas->bulan1;
+                  $bulan = date('M', strtotime($bln));
+                  $tahun = date('Y', strtotime($bln));
+                  $judul = 'Laporan Data Kesakitan Bulan';
+                  // var_dump($bulan);
+                }
+            } ?>
+              <h3 class="box-title" text="<?php $judul ?>">Laporan Data Kesakitan Bulan <?php $bulan ?></h3>
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
               <div class="box-body">
@@ -172,6 +181,10 @@
                       $lm_lk = $pas->Lama->Laki;
                       $kkl_pr = $pas->KKL->Perempuan;
                       $kkl_lk = $pas->KKL->Laki;
+                      $bln = $pas->bulan = $pas->bulan1;
+                      $bulan = date('M', strtotime($bln));
+                      $tahun = date('Y', strtotime($bln));
+                      // var_dump($bulan);
                       ?>
                       <td><?= $br_pr ?></td>
                       <td><?= $br_lk?></td>
