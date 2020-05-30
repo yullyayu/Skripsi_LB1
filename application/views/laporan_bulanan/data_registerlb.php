@@ -32,8 +32,8 @@
                   <th scoop="col" rowspan="2">Alamat</th>
                   <th scoop="col" rowspan="2">Kode Penyakit</th>
                   <th scoop="col" colspan="2">Umur</th>
-                  <th scoop="col" colspan="2">Dalam Wilayah</th>
-                  <th scoop="col" colspan="2">Luar Wilayah</th>
+                  <th scoop="col" colspan="3">Dalam Wilayah</th>
+                  <th scoop="col" colspan="3">Luar Wilayah</th>
                   <!-- <th colspan="2">Action</th> -->
                 </tr>
                 <tr>
@@ -41,8 +41,10 @@
                     <th scope="col">L</th>
                     <th scope="col">Baru</th>
                     <th scope="col">Lama</th>
+                    <th scope="col">KKL</th>
                     <th scope="col">Baru</th>
                     <th scope="col">Lama</th>
+                    <th scope="col">KKL</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -65,15 +67,27 @@
                     <?php if ($dw == 'Baru') { ?>
                       <td><?php echo $key->dalam_wilayah ?></td>
                       <td>-</td>
-                    <?php }else{ ?>
+                      <td>-</td>
+                    <?php }elseif($dw == 'Lama'){ ?>
+                      <td>-</td>
+                      <td><?php echo $key->dalam_wilayah?></td>
+                      <td>-</td>
+                    <?php }else { ?>
+                      <td>-</td>
                       <td>-</td>
                       <td><?php echo $key->dalam_wilayah?></td>
                     <?php }  ?>              
                     <?php $lw = $key->luar_wilayah?>
-                    <?php if ($dw == 'Baru') { ?>
+                    <?php if ($lw == 'Baru') { ?>
                       <td><?php echo $key->luar_wilayah ?></td>
                       <td>-</td>
-                    <?php }else{ ?>
+                      <td>-</td>
+                    <?php }elseif($lw == 'Baru'){ ?>
+                      <td>-</td>
+                      <td><?php echo $key->luar_wilayah?></td>
+                      <td>-</td>
+                    <?php }else { ?>
+                      <td>-</td>
                       <td>-</td>
                       <td><?php echo $key->luar_wilayah?></td>
                     <?php }  ?> 

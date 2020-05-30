@@ -32,8 +32,8 @@
                   <th scoop="col" rowspan="2">Alamat</th>
                   <th scoop="col" rowspan="2">Kode Penyakit</th>
                   <th scoop="col" colspan="2">Umur</th>
-                  <th scoop="col" colspan="2">Dalam Wilayah</th>
-                  <th scoop="col" colspan="2">Luar Wilayah</th>
+                  <th scoop="col" colspan="3">Dalam Wilayah</th>
+                  <th scoop="col" colspan="3">Luar Wilayah</th>
                   <th scoop="col" colspan="2">Action</th>
                 </tr>
                 <tr>
@@ -41,8 +41,10 @@
                     <th scope="col">L</th>
                     <th scope="col">Baru</th>
                     <th scope="col">Lama</th>
+                    <th scope="col">KKL</th>
                     <th scope="col">Baru</th>
                     <th scope="col">Lama</th>
+                    <th scope="col">KKL</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Hapus</th>
                   </tr>
@@ -67,7 +69,13 @@
                     <?php if ($dw == 'Baru') { ?>
                       <td><?php echo $key->dalam_wilayah ?></td>
                       <td>-</td>
-                    <?php }else{ ?>
+                      <td>-</td>
+                    <?php }elseif($dw == 'Lama'){ ?>
+                      <td>-</td>
+                      <td><?php echo $key->dalam_wilayah?></td>
+                      <td>-</td>
+                    <?php }else { ?>
+                      <td>-</td>
                       <td>-</td>
                       <td><?php echo $key->dalam_wilayah?></td>
                     <?php }  ?>              
@@ -75,10 +83,16 @@
                     <?php if ($lw == 'Baru') { ?>
                       <td><?php echo $key->luar_wilayah ?></td>
                       <td>-</td>
-                    <?php }else{ ?>
+                      <td>-</td>
+                      <?php }elseif($lw == 'Lama'){ ?>
                       <td>-</td>
                       <td><?php echo $key->luar_wilayah?></td>
-                    <?php }  ?> 
+                      <td>-</td>
+                    <?php }else { ?>
+                      <td>-</td>
+                      <td>-</td>
+                      <td><?php echo $key->luar_wilayah?></td>
+                    <?php }  ?>
                     <td><a class='btn btn-info btn-xs' href="<?php echo site_url('rekam_medis/editRM/'. $key->no_register);?>"><span class="fa fa-pencil" ></span></a></td>
                     <td><a class='btn btn-danger btn-xs' href="<?php echo site_url('rekam_medis/hapusRegister/'. $key->no_register);?>"><span class="fa fa-trash-o"></span></a></td>
                   </tr>

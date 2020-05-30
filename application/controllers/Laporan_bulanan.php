@@ -63,12 +63,18 @@ class Laporan_bulanan extends CI_Controller{
                 if (sizeof($pen[$key]->pasien) != 0) {
                   if ($peny->kode_icdx == $rek->kode_penyakit) {
                       if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                          if ($rek->jenis_kelamin == 'Laki-laki') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
-                          }
-                      } else {
+                        if ($rek->jenis_kelamin == 'Laki-laki') {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
+                        } else {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
+                        }
+                      }elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                        if ($rek->jenis_kelamin == 'Laki-laki') {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                        } else {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                        }
+                      }else {
                           if ($rek->jenis_kelamin == 'Perempuan') {
                               $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
                           } else {
@@ -145,27 +151,33 @@ class Laporan_bulanan extends CI_Controller{
             $pen[$key]->nama_penyakit = $peny->nama_penyakit;
         }
         foreach ($penyakit as $key => $peny) {
-            foreach ($rekamMedis as $ki => $rek) {
-                if (sizeof($pen[$key]->pasien) != 0) {
-                  if ($peny->kode_icdx == $rek->kode_penyakit) {
-                      if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                          if ($rek->jenis_kelamin == 'Laki-laki') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
-                          }
+          foreach ($rekamMedis as $ki => $rek) {
+              if (sizeof($pen[$key]->pasien) != 0) {
+                if ($peny->kode_icdx == $rek->kode_penyakit) {
+                    if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
                       } else {
-                          if ($rek->jenis_kelamin == 'Perempuan') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
-                          }
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
                       }
-                    unset($rekamMedis[$ki]);
-                  }
+                    }elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                      } else {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                      }
+                    }else {
+                        if ($rek->jenis_kelamin == 'Perempuan') {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
+                        } else {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
+                        }
+                    }
+                  unset($rekamMedis[$ki]);
                 }
-            }
-        }foreach ($penyakit as $key => $peny) {
+              }
+          }
+      }foreach ($penyakit as $key => $peny) {
           foreach ($laporanlb1 as $lab => $lb) {
             if (sizeof($pen[$key]->pasien) != 0) {
               if ($peny->kode_icdx == $lb->kode_icdx) {
@@ -176,11 +188,11 @@ class Laporan_bulanan extends CI_Controller{
                       $pen[$key]->pasien[$lb->id_umr - 1]->Baru->Perempuan += 1;
                   }
                 } elseif ($lb->kasus == 'KKL') {
-                  if ($lb->jenis_kelamin == 'Perempuan') {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Perempuan += 1;
-                  } else {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Laki += 1;
-                  } 
+                  if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                      } else {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                      } 
                 } else {
                   if ($lb->jenis_kelamin == 'Perempuan') {
                     $pen[$key]->pasien[$lb->id_umr - 1]->Lama->Perempuan += 1;
@@ -233,27 +245,33 @@ class Laporan_bulanan extends CI_Controller{
             $pen[$key]->nama_penyakit = $peny->nama_penyakit;
         }
         foreach ($penyakit as $key => $peny) {
-            foreach ($rekamMedis as $ki => $rek) {
-                if (sizeof($pen[$key]->pasien) != 0) {
-                  if ($peny->kode_icdx == $rek->kode_penyakit) {
-                      if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                          if ($rek->jenis_kelamin == 'Laki-laki') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
-                          }
+          foreach ($rekamMedis as $ki => $rek) {
+              if (sizeof($pen[$key]->pasien) != 0) {
+                if ($peny->kode_icdx == $rek->kode_penyakit) {
+                    if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
                       } else {
-                          if ($rek->jenis_kelamin == 'Perempuan') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
-                          }
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
                       }
-                    unset($rekamMedis[$ki]);
-                  }
+                    }elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                      } else {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                      }
+                    }else {
+                        if ($rek->jenis_kelamin == 'Perempuan') {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
+                        } else {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
+                        }
+                    }
+                  unset($rekamMedis[$ki]);
                 }
-            }
-        }foreach ($penyakit as $key => $peny) {
+              }
+          }
+      }foreach ($penyakit as $key => $peny) {
           foreach ($laporanlb1 as $lab => $lb) {
             if (sizeof($pen[$key]->pasien) != 0) {
               if ($peny->kode_icdx == $lb->kode_icdx) {
@@ -323,27 +341,33 @@ class Laporan_bulanan extends CI_Controller{
             $pen[$key]->nama_penyakit = $peny->nama_penyakit; 
         }
         foreach ($penyakit as $key => $peny) {
-            foreach ($rekamMedis as $ki => $rek) {
-                if (sizeof($pen[$key]->pasien) != 0) {
-                  if ($peny->kode_icdx == $rek->kode_penyakit) {
-                      if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                          if ($rek->jenis_kelamin == 'Laki-laki') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
-                          }
+          foreach ($rekamMedis as $ki => $rek) {
+              if (sizeof($pen[$key]->pasien) != 0) {
+                if ($peny->kode_icdx == $rek->kode_penyakit) {
+                    if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') { 
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
                       } else {
-                          if ($rek->jenis_kelamin == 'Perempuan') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
-                          }
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
                       }
-                    unset($rekamMedis[$ki]);
-                  }
+                    } elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                      } else {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                      }
+                    }else {
+                        if ($rek->jenis_kelamin == 'Perempuan') {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
+                        } else {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
+                        }
+                    }
+                  unset($rekamMedis[$ki]);
                 }
-            }
-        }foreach ($penyakit as $key => $peny) {
+              }
+          }
+      }foreach ($penyakit as $key => $peny) {
           foreach ($laporanlb1 as $lab => $lb) {
             if (sizeof($pen[$key]->pasien) != 0) {
               if ($peny->kode_icdx == $lb->kode_icdx) {
@@ -415,26 +439,32 @@ class Laporan_bulanan extends CI_Controller{
       }
       foreach ($penyakit as $key => $peny) {
         foreach ($rekamMedis as $ki => $rek) {
-          if (sizeof($pen[$key]->pasien) != 0) {
-            if ($peny->kode_icdx == $rek->kode_penyakit) {
-              if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                if ($rek->jenis_kelamin == 'Laki-laki') {
-                  $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                  } else {
-                  $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
+            if (sizeof($pen[$key]->pasien) != 0) {
+              if ($peny->kode_icdx == $rek->kode_penyakit) {
+                  if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
+                    if ($rek->jenis_kelamin == 'Laki-laki') {
+                      $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
+                    } else {
+                      $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
+                    }
+                  }elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                    if ($rek->jenis_kelamin == 'Laki-laki') {
+                      $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                    } else {
+                      $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                    }
+                  }else {
+                      if ($rek->jenis_kelamin == 'Perempuan') {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
+                      } else {
+                          $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
+                      }
                   }
-                } else {
-                if ($rek->jenis_kelamin == 'Perempuan') {
-                  $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
-                  } else {
-                  $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
-                  }
-                }
-                  unset($rekamMedis[$ki]);
-              }
+                unset($rekamMedis[$ki]);
               }
             }
-        }foreach ($penyakit as $key => $peny) {
+        }
+    }foreach ($penyakit as $key => $peny) {
           foreach ($laporanlb1 as $lab => $lb) {
             if (sizeof($pen[$key]->pasien) != 0) {
               if ($peny->kode_icdx == $lb->kode_icdx) {
@@ -502,54 +532,60 @@ class Laporan_bulanan extends CI_Controller{
             $pen[$key]->nama_penyakit = $peny->nama_penyakit;
         }
         foreach ($penyakit as $key => $peny) {
-            foreach ($rekamMedis as $ki => $rek) {
-                if (sizeof($pen[$key]->pasien) != 0) {
-                  if ($peny->kode_icdx == $rek->kode_penyakit) {
-                      if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
-                          if ($rek->jenis_kelamin == 'Laki-laki') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
-                          }
+          foreach ($rekamMedis as $ki => $rek) {
+              if (sizeof($pen[$key]->pasien) != 0) {
+                if ($peny->kode_icdx == $rek->kode_penyakit) {
+                    if ($rek->dalam_wilayah == 'Lama' || $rek->luar_wilayah == 'Lama') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Laki += 1;
                       } else {
-                          if ($rek->jenis_kelamin == 'Perempuan') {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
-                          } else {
-                              $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
-                          }
+                        $pen[$key]->pasien[$rek->id_umr - 1]->Lama->Perempuan += 1;
                       }
-                    unset($rekamMedis[$ki]);
-                  }
+                    }elseif ($rek->dalam_wilayah == 'KKL' || $rek->luar_wilayah == 'KKL') {
+                      if ($rek->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Laki += 1;
+                      } else {
+                        $pen[$key]->pasien[$rek->id_umr - 1]->KKL->Perempuan += 1;
+                      }
+                    }else {
+                        if ($rek->jenis_kelamin == 'Perempuan') {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Perempuan += 1;
+                        } else {
+                            $pen[$key]->pasien[$rek->id_umr - 1]->Baru->Laki += 1;
+                        }
+                    }
+                  unset($rekamMedis[$ki]);
                 }
-            }
-        }foreach ($penyakit as $key => $peny) {
-          foreach ($laporanlb1 as $lab => $lb) {
-            if (sizeof($pen[$key]->pasien) != 0) {
-              if ($peny->kode_icdx == $lb->kode_icdx) {
-                if ($lb->kasus == 'Baru') {
-                  if ($lb->jenis_kelamin == 'Laki-laki') {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->Baru->Laki += 1;
+              }
+          }
+          }foreach ($penyakit as $key => $peny) {
+            foreach ($laporanlb1 as $lab => $lb) {
+              if (sizeof($pen[$key]->pasien) != 0) {
+                if ($peny->kode_icdx == $lb->kode_icdx) {
+                  if ($lb->kasus == 'Baru') {
+                    if ($lb->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$lb->id_umr - 1]->Baru->Laki += 1;
+                    } else {
+                        $pen[$key]->pasien[$lb->id_umr - 1]->Baru->Perempuan += 1;
+                    }
+                  } elseif ($lb->kasus == 'KKL') {
+                    if ($lb->jenis_kelamin == 'Perempuan') {
+                        $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Perempuan += 1;
+                    } else {
+                        $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Laki += 1;
+                    } 
                   } else {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->Baru->Perempuan += 1;
+                    if ($lb->jenis_kelamin == 'Perempuan') {
+                      $pen[$key]->pasien[$lb->id_umr - 1]->Lama->Perempuan += 1;
+                    } else {
+                      $pen[$key]->pasien[$lb->id_umr - 1]->Lama->Laki += 1;
+                    }
                   }
-                } elseif ($lb->kasus == 'KKL') {
-                  if ($lb->jenis_kelamin == 'Perempuan') {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Perempuan += 1;
-                  } else {
-                      $pen[$key]->pasien[$lb->id_umr - 1]->KKL->Laki += 1;
-                  } 
-                } else {
-                  if ($lb->jenis_kelamin == 'Perempuan') {
-                    $pen[$key]->pasien[$lb->id_umr - 1]->Lama->Perempuan += 1;
-                  } else {
-                    $pen[$key]->pasien[$lb->id_umr - 1]->Lama->Laki += 1;
-                  }
+                  unset($laporanlb1[$lab]);
                 }
-                unset($laporanlb1[$lab]);
               }
             }
           }
-        }
         // echo json_encode($data);
         // print_r($pen);
         $this->load->view('header/lb_header');

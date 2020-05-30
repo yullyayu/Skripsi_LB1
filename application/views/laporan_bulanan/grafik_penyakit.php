@@ -29,12 +29,15 @@
                 foreach ($dp->pasien as $pas) {
                   $bln = $pas->bulan = $pas->bulan1;
                   $bulan = date('M', strtotime($bln));
+                  $tahun = date('Y', strtotime($bln));
                   $tot = $pas->Laki + $pas->Perempuan;
                 }
                 array_push($total, $tot);
                 // var_dump($total);
                 // print_r($peny);
             } 
+            $tahun = date('Y', strtotime($bln)) ;
+            $judul = 'GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN '.$tahun ;
             ?>
             <div class="form-group"><br>
               <div class="col-sm-12" align="right">
@@ -107,7 +110,7 @@
   Highcharts.chart('container', {
 
   title: {
-      text: 'GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN 2020'
+      text: <?php echo json_encode($judul)?>
   },
 
   subtitle: {

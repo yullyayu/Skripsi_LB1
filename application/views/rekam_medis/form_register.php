@@ -111,6 +111,7 @@
                     <datalist id="dalamWilayah" >
                     <option value="Baru">Baru</option>
                     <option value="Lama">Lama</option>
+                    <option value="KKL">KKL</option>
                     </datalist>
                   </div>
                 </div>
@@ -121,6 +122,7 @@
                     <datalist type="lb" id="luarWilayah">
                     <option value="Baru">Baru</option>
                     <option value="Lama">Lama</option>
+                    <option value="KKL">KKL</option>
                     </datalist>
                   </div>
                 </div>
@@ -131,6 +133,8 @@
                     if (txt.value == 'Baru' ){
                       bt.disabled = true;
                     }else if (txt.value == 'Lama') {
+                      bt.disabled = true;
+                    }else if(txt.value == 'KKL'){
                       bt.disabled = true;
                     }else{
                       bt.disabled = false ;
@@ -145,6 +149,8 @@
                       dw.disabled = true;
                     }else if (btSubmit.value == 'Lama') {
                       dw.disabled = true;
+                    }else if(btSubmit.value == 'KKL'){
+                      dw.disable = true;
                     }else{
                       dw.disabled = false ;
                     }

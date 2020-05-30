@@ -110,6 +110,8 @@ class Rekam_medis extends CI_Controller{
         $dalam_wilayah = $this->input->post('dalam_wilayah');
       }elseif ($this->input->post('dalam_wilayah') == 'Lama') {
         $dalam_wilayah = $this->input->post('dalam_wilayah');
+      }elseif ($this->input->post('dalam_wilayah') == 'KKL') {
+        $dalam_wilayah = $this->input->post('dalam_wilayah');
       }else {
         $dalam_wilayah = "-";
       }
@@ -117,6 +119,8 @@ class Rekam_medis extends CI_Controller{
       if ($this->input->post('luar_wilayah') == 'Baru'){
         $luar_wilayah = $this->input->post('luar_wilayah');
       }elseif ($this->input->post('luar_wilayah') == 'Lama') {
+        $luar_wilayah = $this->input->post('luar_wilayah');
+      }elseif($this->input->post('luar_wilayah') == 'KKL'){
         $luar_wilayah = $this->input->post('luar_wilayah');
       }else {
         $luar_wilayah = "-";
