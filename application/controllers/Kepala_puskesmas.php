@@ -24,6 +24,20 @@ class Kepala_puskesmas extends CI_Controller{
       $this->load->view('kepala_puskesmas/detail_laporanKP', $data);
       $this->load->view('footer/kp_footer');
     }
+    public function detailPenyBln($id)
+    {
+      $data['status'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/kp_header');
+      $this->load->view('kepala_puskesmas/detail_penyakitBln', $data);
+      // $this->load->view('footer/kp_footer');
+    }
+    public function detailPenyThn($id)
+    {
+      $data['status'] = $this->DataLB1_model->getDataLB1($id);
+      $this->load->view('header/kp_header');
+      $this->load->view('kepala_puskesmas/detail_penyakitThn', $data);
+      $this->load->view('footer/kp_footer');
+    }
 
     public function accLB1($id)
     {
@@ -60,9 +74,9 @@ class Kepala_puskesmas extends CI_Controller{
       $data['daftarBulan'] = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November", "Desember");
       $bulan = $this->input->post('bulan');
       $tahun = $this->input->post('tahun');
-      $data = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
+      $data['lbbulan'] = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
       $this->load->view('header/kp_header');
-      $this->load->view('kepala_puskesmas/laporan_bulananKP');
+      $this->load->view('kepala_puskesmas/laporan_bulananKP',$data);
       $this->load->view('footer/kp_footer');
     }
     public function filterTribulan()

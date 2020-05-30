@@ -20,7 +20,7 @@
               <h3 class="box-title">Laporan Data Kesakitan(Bulan)</h3>
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
+              <form class="form-horizontal" action="<?php echo site_url('kepala_puskesmas/filterBulan'); ?>" method="post">
                 <div class="box-body">
                   <div class="form-group">
                     <label class="col-sm-2 control-label">Bulan</label>

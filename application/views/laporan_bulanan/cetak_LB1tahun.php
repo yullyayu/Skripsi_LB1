@@ -36,7 +36,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <div class="col-sm-12" align="right">
-                <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="fa fa-print"></span>  Cetak Excel</button>
+                <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="fa fa-print"></span>  Cetak Excel</button>
                 </div>
               </div>
               <!-- /.box-footer -->

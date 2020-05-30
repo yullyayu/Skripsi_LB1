@@ -6,8 +6,8 @@
         <li class="active">Data tables</li>
       </ol>
       <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo site_url('data_penyakit/getJum_Penyakit') ?>">Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('data_penyakit/getRekap_Penyakit') ?>">Kumulatif</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPeny_kpl') ?>">Bulan</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPenyThn_kpl') ?>">Kumulatif</a></li>
      </ul>
     </section>
 
@@ -22,6 +22,7 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
+              <form class="form-horizontal" action="<?php echo site_url('data_penyakit/filterPeny_kpl'); ?>" method="post">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Bulan</label>
                   <div class="col-sm-10">
@@ -37,8 +38,8 @@
                   <?php } } ?>
                     </select>
                   </div>
-                </div><br>
-                <div class="form-group"><br>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">Tahun</label>
                   <div class="col-sm-10">
                     <select class="form-control" name="tahun" id="tahun">
@@ -48,15 +49,16 @@
                     <?php   } else{?>
                     <option value="<?php echo $i?>" ><?php echo $i?></option>
                     <?php   }} ?>
-                    </select><br>
+                    </select>
                   </div>
                 </div>
-                <div class="form-group"><br>
+                <div class="form-group">
                 <div class="col-sm-12" align="right">
                   <button type="submit" id="btn-filter" class="btn btn-success" ><span class="glyphicon glyphicon-filter"></span>  Filter</button>
                 </div>
-                </div><br><br>
-                <table id="example1" class="table table-bordered table-striped"><br><br>
+                </div>
+                </form>
+                <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th scoop="col" rowspan="2">No</th>
@@ -71,16 +73,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                  
+                <?php  
+                $datalaporan = json_decode($peny_bulan[0]->datalb1);
+                $no =0; foreach ($datalaporan as $dt ): $no++; ?>
+                  <tr class="odd gradeX">
+                     <th scope="row"><?= $no ?></th>
+                     <th scope="row"><?= $dt->nama_penyakit?></th>
+                     <th scope="row"><?= $dt->kode_icdx?></th>
+                     <?php $total = 0; ?>
+                     <?php if (count($dt->pasien) == 0){ ?>
+                       <td>0</td>
+                       <td>0</td>
+                     <?php }else {
+                       foreach ($dt->pasien as $pas){ 
+                         $total = $pas->Laki + $pas->Perempuan?>
+                         <td><?= $pas->Laki?> </td>
+                         <td><?= $pas->Perempuan?> </td>
+                       <?php }
+                        } ?>
+                        <td><?= $total?></td>
+                  </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
-               <!-- kirim -->
-               <div class="form-group"><br>
+              <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
-                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Kirim Laporan </button>
+                  <button type="submit" id="btn-filter" class="btn btn-primary" data-toggle="modal" data-target="#cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
                   </div>
-                </div><br><br>
-              <!-- end-kirim -->
+              </div><br><br>
             </div>
             </div>
             <!-- /.box-body -->

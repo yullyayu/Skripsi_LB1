@@ -227,7 +227,7 @@ class Laporan_bulanan extends CI_Controller{
                 }
               }
             }
-            $pen[$key]->kategori_penyakit = $peny->kategori_penyakit;
+            // $pen[$key]->kategori_penyakit = $peny->kategori_penyakit;
             $pen[$key]->kode_dx = $peny->kode_dx;
             $pen[$key]->kode_icdx = $peny->kode_icdx;
             $pen[$key]->nama_penyakit = $peny->nama_penyakit;
@@ -626,16 +626,10 @@ class Laporan_bulanan extends CI_Controller{
       $jenis_laporan = $this->input->post('jenis_laporan');
       if ($jenis_laporan == 'Laporan Bulanan') {
         $id_jp = 1;
-      }elseif ($jenis_laporan = 'Laporan Tribulan') {
+      }else if($jenis_laporan == 'Laporan Tribulan') {
         $id_jp = 2;
-      }elseif ($jenis_laporan = 'Laporan Tahunan') {
+      }else if($jenis_laporan == 'Laporan Tahunan') {
         $id_jp = 3;
-      }elseif ($jenis_laporan = 'Laporan 15 Penyakit Terbanyak Bulanan') {
-        $id_jp = 4;
-      }elseif ($jenis_laporan = 'Laporan 15 Penyakit Terbanyak Tribulan') {
-        $id_jp = 5;
-      }elseif ($jenis_laporan = 'Laporan 15 Penyakit Terbanyak Tahunan') {
-        $id_jp = 6;
       }
       $nama_puskesmas = $this->input->post('nama_puskesmas');
       $datalb1 = $this->input->post('datalb1');

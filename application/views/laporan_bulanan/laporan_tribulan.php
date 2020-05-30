@@ -202,26 +202,19 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="form-group">
+                      <div class="form-group">
                       <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
                       <div class="col-sm-10">
                         <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" placeholder="Jenis Laporan" required>
-                          <datalist id="jenis_laporan">
-                          <option value="Laporan Tribulan 1"></option>
-                          <option value="Laporan Tribulan 2"></option>
-                          <option value="Laporan Tribulan 3"></option>
-                          <option value="Laporan Tribulan 4"></option>
+                          <datalist id="jenis_laporan"> 
+                          <option value="Laporan Bulanan"></option>
+                          <option value="Laporan Tribulan"></option>
+                          <option value="Laporan Tahunan"></option>
                           </datalist>
                       </div>
-                    </div> -->
-                    <div class="form-group">
-                        <label for="je" class="col-sm-2 control-label">Puskesmas</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" required>
-                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                        <label for="je" class="col-sm-2 control-label">Puskesmas</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" required>
                         </div>

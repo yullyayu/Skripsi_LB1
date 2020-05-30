@@ -5,10 +5,6 @@
         <li><a href="#">Tables</a></li>
         <li class="active">Data tables</li>
       </ol>
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo site_url('data_penyakit/getJum_Penyakit') ?>">Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('data_penyakit/getRekap_Penyakit') ?>">Kumulatif</a></li>
-     </ul>
     </section>
 
     <!-- Main content -->
@@ -21,44 +17,6 @@
             </div>
             <!-- /.box-header -->
             <div class="table-responsive">
-            <form class="form-horizontal" action="<?php echo site_url('data_penyakit/filterBulan'); ?>" method="post">
-            <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Bulan</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="bulan" id="bulan">
-                    <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                    foreach ($daftarBulan as $key) { 
-                    if($key == $bulan){?>
-                    <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?> selected=""><?php echo $key['bulan']?></option>
-                    <?php }
-                    else{?>
-                    <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?>><?php echo $key?></option>
-                    <?php } } ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Tahun</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="tahun" id="tahun">
-                    <?php for($i=2019 ; $i<=2029;$i++){
-                    if($i == $tahun){?>
-                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
-                    <?php   } else{?>
-                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
-                    <?php   }} ?>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <div class="col-sm-12" align="right">
-                <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
-              </div>
-              </div>
-                </form>
                 <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -74,9 +32,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $no =0; foreach ($data as $dt ): $no++; 
-                 print_r($dt->nama_penyakit); ?>
-               
+                <?php 
+                $datalaporan = json_decode($status[0]->datalb1);
+                $no =0; foreach ($datalaporan as $dt ): $no++; ?>
                   <tr class="odd gradeX">
                      <th scope="row"><?= $no ?></th>
                      <th scope="row"><?= $dt->nama_penyakit?></th>
@@ -87,68 +45,57 @@
                        <td>0</td>
                      <?php }else {
                        foreach ($dt->pasien as $pas){ 
-                         $total = $pas->Laki + $pas->Perempuan;
-                         ?>
+                         $total = $pas->Laki + $pas->Perempuan?>
                          <td><?= $pas->Laki?> </td>
                          <td><?= $pas->Perempuan?> </td>
                        <?php }
-                        } print_r($total)?>
-
+                        } ?>
                         <td><?= $total?></td>
                   </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
                <!-- kirim -->
-              <div class="form-group"><br>
+               <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-primary" data-toggle="modal" data-target="#cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
-                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Kirim Laporan </button>
+                  <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Setuju </button>
+                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#catatan"> Catatan </button>
                   </div>
-              </div><br><br>
+                </div><br><br>
               <!-- end-kirim -->
 
-                <!-- MODAL KIRIM LAPORAN -->
-                <div class="modal fade" id="kirim">
+            <!-- MODAL KIRIM LAPORAN -->
+              <div class="modal fade" id="kirim">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Kirim Laporan 15 Besar Penyakit</h4>
+                      <h4 class="modal-title">Kirim Laporan</h4>
                     </div>
-                    <form class="form-horizontal" action="<?php echo site_url('data_penyakit/sendKP'); ?>" method="post">
+                    <form class="form-horizontal" action="<?php echo site_url('kepala_puskesmas/accLB1/'. $status[0]->id_laporan); ?>" method="post">
                     <div class="modal-body">
                       <div class="form-group">
                         <label class="col-sm-2 control-label" for="tanggal">Tanggal Laporan</label>
                         <div class="col-sm-10">
-                          <div class="input-prepend">
-                            <input type="date" placeholder="" name="tanggal" class="button" required><button for="tanggal" class="fa fa-calendar"></button>
-                          </div>
+                            <input type="text" placeholder="" name="tanggal" class="form-control" value="<?php echo $status[0]->tanggal?>">
                         </div>
                       </div>
                       <div class="form-group">
                       <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
                       <div class="col-sm-10">
-                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" placeholder="Jenis Laporan" required>
-                          <datalist id="jenis_laporan"> 
-                          <option value="Laporan 15 Penyakit Terbanyak Bulanan"></option>
-                          <option value="Laporan 15 Penyakit Terbanyak Tribulan"></option>
-                          <option value="Laporan 15 Penyakit Terbanyak Tahunan"></option>
-                          </datalist>
+                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" value="<?php echo $status[0]->jenis_laporan?>">
                       </div>
                     </div>
                     <div class="form-group">
                         <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" value="Dinoyo">
+                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" value="<?php echo $status[0]->nama_puskesmas?>">
                         </div>
                     </div>
-                    <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
-                    
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-success" name="kirim">Send Kepala Puskesmas</button>                      
+                      <button type="submit" class="btn btn-success" name="acc">Setuju</button>                     
                     </div>
                     </form>
                     </div>

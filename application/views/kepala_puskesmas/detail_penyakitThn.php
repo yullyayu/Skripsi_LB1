@@ -5,10 +5,6 @@
         <li><a href="#">Tables</a></li>
         <li class="active">Data tables</li>
       </ol>
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPeny_kpl') ?>">Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPenyThn_kpl') ?>">Kumulatif</a></li>
-      </ul>
     </section>
 
     <!-- Main content -->
@@ -52,7 +48,7 @@
                 </thead>
                 <tbody>
                 <?php 
-                $datalaporan = json_decode($peny_tahun[0]->datalb1);
+                $datalaporan = json_decode($status[0]->datalb1);
                 $no =0; foreach ($datalaporan as $dp ): $no++; ?>
                   <tr class="odd gradeX">
                      <th scope="row"><?= $no ?></th>
@@ -81,13 +77,54 @@
                   <?php endforeach; ?>
                 </tbody>
               </table>
-               <!-- kirim -->
-               <div class="form-group"><br>
+                <!-- kirim -->
+                <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-primary" data-toggle="modal" data-target="#cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
+                  <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Setuju </button>
+                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#catatan"> Catatan </button>
                   </div>
-              </div><br><br>
+                </div><br><br>
               <!-- end-kirim -->
+
+              <!-- MODAL KIRIM LAPORAN -->
+              <div class="modal fade" id="kirim">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Kirim Laporan</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('kepala_puskesmas/accLB1/'. $status[0]->id_laporan); ?>" method="post">
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="tanggal">Tanggal Laporan</label>
+                        <div class="col-sm-10">
+                            <input type="text" placeholder="" name="tanggal" class="form-control" value="<?php echo $status[0]->tanggal?>">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                      <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
+                      <div class="col-sm-10">
+                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" value="<?php echo $status[0]->jenis_laporan?>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" value="<?php echo $status[0]->nama_puskesmas?>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="acc">Setuju</button>                     
+                    </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
             </div>
             </div>
             <!-- /.box-body -->
@@ -101,3 +138,4 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  

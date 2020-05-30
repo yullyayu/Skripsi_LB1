@@ -38,8 +38,14 @@
                   <td><?php echo $no?></td>
                   <td><?php echo $st->jenis_laporan?></td>
                   <td><?php echo $st->tanggal?></td>
-                  <?php if ($st->status == 0) { ?>
+                  <?php if ($st->status == 0 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/persetujuanLB/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 0 && $st->id_jp == 4 ) { ?>
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyBln/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 0 && $st->id_jp == 5) { ?>
+                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }elseif ($st->status == 0 && $st->id_jp == 6) { ?>
+                  <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 1 || $st->status == 2 || $st->status == 3) { ?>
                     <td style="text-align: center;">-</td>
                   <?php } ?>

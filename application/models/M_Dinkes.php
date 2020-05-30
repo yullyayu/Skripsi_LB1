@@ -46,10 +46,12 @@ class M_Dinkes extends CI_Model{
     }
     public function monitoringLB()
     {
+        $bulan = getdate();
         $this->db->select('*');
         $this->db->from('jenis_laporan as jp');
         $this->db->join('detail_laporan as lb', 'lb.id_jp = jp.id_jp', 'left');
-        $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = jp.kd_puskesmas', 'left');
+        $this->db->join('data_puskesmas as dp', 'dp.nama_puskesmas = lb.nama_puskesmas', 'left');
+        // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
         $query = $this->db->get();
         return $query->result();
         // $this->db->select('*');

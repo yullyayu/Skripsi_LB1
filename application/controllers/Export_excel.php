@@ -15,6 +15,7 @@ class Export_excel extends CI_Controller{
       $this->load->model('DataLB1_model');
       $this->load->model('M_Kepala_puskesmas');
       $this->load->model('M_Dinkes');
+      $this->load->model('M_Penyakit_banyak');
       $this->load->helper(array('form', 'url'));
     }
 
@@ -24,7 +25,7 @@ class Export_excel extends CI_Controller{
       $bulan = $this->input->post('bulan');
       $tahun = $this->input->post('tahun');
       $data = $this->DataLB1_model->getCetakLB1($bulan, $tahun);
-      // Create new Spreadsheet object
+
       $spreadsheet = new Spreadsheet();
       $spreadsheet->getProperties()->setCreator('Export - Excel')
       ->setLastModifiedBy('Export - Excel')
@@ -34,7 +35,6 @@ class Export_excel extends CI_Controller{
       ->setKeywords('office 2007 openxml php')
       ->setCategory('Test result file');
 
-      // Add some data
       $spreadsheet->setActiveSheetIndex(0)
       ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
       ->setCellValue('A2', 'Kode Puskesmas')
@@ -410,9 +410,7 @@ class Export_excel extends CI_Controller{
       ];
       $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
       
-      // Miscellaneous glyphs, UTF-8
       $datalaporan = json_decode($data[0]->datalb1);
-      // var_dump($datalaporan);
       $i = 10;
       foreach($datalaporan as $d){
       $totBaruP = 0;
@@ -477,20 +475,12 @@ class Export_excel extends CI_Controller{
       ->setCellValue('DC'.$i, $totJKKP);
       $i++; 
     }
-      // Rename worksheet
       $spreadsheet->getActiveSheet()->setTitle('Bulan '.date('d-m-Y H'));
-
-      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $spreadsheet->setActiveSheetIndex(0);
-
-      // // Redirect output to a client’s web browser (Xlsx)
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       header('Content-Disposition: attachment;filename="Laporan Bulanan.xlsx"');
       header('Cache-Control: max-age=0');
-      // If you're serving to IE 9, then the following may be needed
       header('Cache-Control: max-age=1');
-
-      // If you're serving to IE over SSL, then the following may be needed
       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
       header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -516,7 +506,6 @@ class Export_excel extends CI_Controller{
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
 
-        // Add some data
         $spreadsheet->setActiveSheetIndex(0)
         ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
         ->setCellValue('A2', 'Kode Puskesmas')
@@ -892,7 +881,6 @@ class Export_excel extends CI_Controller{
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
         
-        // Miscellaneous glyphs, UTF-8
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -958,20 +946,12 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('Tribulan '.date('d-m-Y H'));
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-
-        // // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Tribulan.xlsx"');
         header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -995,7 +975,6 @@ class Export_excel extends CI_Controller{
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
 
-        // Add some data
         $spreadsheet->setActiveSheetIndex(0)
         ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
         ->setCellValue('A2', 'Kode Puskesmas')
@@ -1370,8 +1349,6 @@ class Export_excel extends CI_Controller{
             ],
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
-        
-        // Miscellaneous glyphs, UTF-8
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -1437,20 +1414,12 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('TAHUN '.date('d-m-Y H'));
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-
-        // // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
         header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -1850,8 +1819,6 @@ class Export_excel extends CI_Controller{
             ],
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
-        
-        // Miscellaneous glyphs, UTF-8
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -1917,20 +1884,12 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('Bulan '.date('d-m-Y H'));
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-
-        // // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Bulanan.xlsx"');
         header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -1955,7 +1914,6 @@ class Export_excel extends CI_Controller{
       ->setKeywords('office 2007 openxml php')
       ->setCategory('Test result file');
 
-      // Add some data
       $spreadsheet->setActiveSheetIndex(0)
       ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
       ->setCellValue('A2', 'Kode Puskesmas')
@@ -2330,8 +2288,7 @@ class Export_excel extends CI_Controller{
           ],
       ];
       $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
-      
-      // Miscellaneous glyphs, UTF-8
+
       $datalaporan = json_decode($data[0]->datalb1);
       $i = 10;
       foreach($datalaporan as $d){
@@ -2397,20 +2354,12 @@ class Export_excel extends CI_Controller{
       ->setCellValue('DC'.$i, $totJKKP);
       $i++; 
       }
-      // Rename worksheet
       $spreadsheet->getActiveSheet()->setTitle('Tribulan '.date('d-m-Y H'));
-
-      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $spreadsheet->setActiveSheetIndex(0);
-
-      // // Redirect output to a client’s web browser (Xlsx)
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       header('Content-Disposition: attachment;filename="Laporan Tribulan.xlsx"');
       header('Cache-Control: max-age=0');
-      // If you're serving to IE 9, then the following may be needed
       header('Cache-Control: max-age=1');
-
-      // If you're serving to IE over SSL, then the following may be needed
       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
       header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -2433,7 +2382,6 @@ class Export_excel extends CI_Controller{
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
 
-        // Add some data
         $spreadsheet->setActiveSheetIndex(0)
         ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
         ->setCellValue('A2', 'Kode Puskesmas')
@@ -2808,8 +2756,7 @@ class Export_excel extends CI_Controller{
             ],
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
-        
-        // Miscellaneous glyphs, UTF-8
+
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -2875,20 +2822,12 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('TAHUN '.date('d-m-Y H'));
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-
-        // // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
         header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -2913,7 +2852,6 @@ class Export_excel extends CI_Controller{
       ->setKeywords('office 2007 openxml php')
       ->setCategory('Test result file');
 
-      // Add some data
       $spreadsheet->setActiveSheetIndex(0)
       ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
       ->setCellValue('A2', 'Kode Puskesmas')
@@ -3289,9 +3227,7 @@ class Export_excel extends CI_Controller{
       ];
       $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
       
-      // Miscellaneous glyphs, UTF-8
       $datalaporan = json_decode($data[0]->datalb1);
-      // var_dump($datalaporan);
       $i = 10;
       foreach($datalaporan as $d){
       $totBaruP = 0;
@@ -3356,20 +3292,12 @@ class Export_excel extends CI_Controller{
       ->setCellValue('DC'.$i, $totJKKP);
       $i++; 
     }
-      // Rename worksheet
       $spreadsheet->getActiveSheet()->setTitle('Bulan '.date('d-m-Y H'));
-
-      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $spreadsheet->setActiveSheetIndex(0);
-
-      // // Redirect output to a client’s web browser (Xlsx)
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       header('Content-Disposition: attachment;filename="Laporan Bulanan.xlsx"');
       header('Cache-Control: max-age=0');
-      // If you're serving to IE 9, then the following may be needed
       header('Cache-Control: max-age=1');
-
-      // If you're serving to IE over SSL, then the following may be needed
       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
       header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
       header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -3394,7 +3322,6 @@ class Export_excel extends CI_Controller{
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
 
-        // Add some data
         $spreadsheet->setActiveSheetIndex(0)
         ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
         ->setCellValue('A2', 'Kode Puskesmas')
@@ -3770,7 +3697,6 @@ class Export_excel extends CI_Controller{
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
         
-        // Miscellaneous glyphs, UTF-8
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -3836,20 +3762,12 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('Tribulan '.date('d-m-Y H'));
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-
-        // // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Tribulan.xlsx"');
         header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -3872,7 +3790,6 @@ class Export_excel extends CI_Controller{
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
 
-        // Add some data
         $spreadsheet->setActiveSheetIndex(0)
         ->setCellValue('A1', 'LAPORAN DATA KESAKITAN TAHUN 2020')
         ->setCellValue('A2', 'Kode Puskesmas')
@@ -4248,7 +4165,6 @@ class Export_excel extends CI_Controller{
         ];
         $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
         
-        // Miscellaneous glyphs, UTF-8
         $datalaporan = json_decode($data[0]->datalb1);
         $i = 10;
         foreach($datalaporan as $d){
@@ -4314,8 +4230,298 @@ class Export_excel extends CI_Controller{
         ->setCellValue('DC'.$i, $totJKKP);
         $i++; 
         }
-        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('TAHUN '.date('d-m-Y H'));
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
+    }
+    public function cetakPenyBln()
+    {
+        $bulan = $this->input->post('bulan');
+        $tahun = $this->input->post('tahun');
+        $data = $this->M_Penyakit_banyak->getCetakPeny($bulan,$tahun);
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()->setCreator('Export - Excel')
+        ->setLastModifiedBy('Export - Excel')
+        ->setTitle('Office 2007 XLSX Test Document')
+        ->setSubject('Office 2007 XLSX Test Document')
+        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+        ->setKeywords('office 2007 openxml php')
+        ->setCategory('Test result file');
+
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A1', '15 BESAR PENYAKIT')
+        ->mergeCells('A1:F1')
+        ->setCellValue('A2', 'PUSKESMAS DINOYO')
+        ->mergeCells('A2:F2')
+        ->setCellValue('A3', 'TAHUN 2020')
+        ->mergeCells('A3:F3')
+        ->setCellValue('A5', 'Bulan')
+        ->setCellValue('A6', 'NO')
+        ->mergeCells('A6:A7')
+        ->setCellValue('B6', 'PENYAKIT')
+        ->mergeCells('B6:B7')
+        ->setCellValue('C6', 'KODE ICDX')
+        ->mergeCells('C6:C7')
+        ->setCellValue('D6', 'JUMLAH')
+        ->mergeCells('D6:E6')
+        ->setCellValue('F6', 'TOTAL')
+        ->mergeCells('F6:F7')
+        ->setCellValue('D7', 'LAKI-LAKI')
+        ->setCellValue('E7', 'PEREMPUAN')
+        ;
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A6:F22')->applyFromArray($styleArray);
+        $styleAlg = [
+            'alignment' => [
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A1:F7')->applyFromArray($styleAlg);
+        
+        $datalaporan = json_decode($data[0]->datalb1);
+        $i = 8;
+        foreach($datalaporan as $d){
+        $total = 0;
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A'.$i, '1')
+        ->setCellValue('B'.$i, $d->nama_penyakit)
+        ->setCellValue('C'.$i, $d->kode_icdx);
+        if (count($d->pasien) == 0) {
+            $k = 4;
+            $dt =0;
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('D'.$i, $dt)
+            ->setCellValue('E'.$i, $dt);
+        }else {
+            $k = 4;
+            foreach ($d->pasien as $pas) {
+            $total = $pas->Laki + $pas->Perempuan ;
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('D'.$i, $pas->Laki)
+            ->setCellValue('E'.$i, $pas->Perempuan);
+            }
+        }
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('F'.$i, $total);
+        $i++; 
+        }
+        $spreadsheet->getActiveSheet()->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
+        $spreadsheet->setActiveSheetIndex(0);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
+    }
+    public function cetakPenyThn()
+    {
+        $tahun = $this->input->post('tahun');
+        $data = $this->M_Penyakit_banyak->CetakPenyTahun($tahun);
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()->setCreator('Export - Excel')
+        ->setLastModifiedBy('Export - Excel')
+        ->setTitle('Office 2007 XLSX Test Document')
+        ->setSubject('Office 2007 XLSX Test Document')
+        ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+        ->setKeywords('office 2007 openxml php')
+        ->setCategory('Test result file');
+
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A1', '15 BESAR PENYAKIT')
+        ->mergeCells('A1:AN1')
+        ->setCellValue('A2', 'PUSKESMAS DINOYO')
+        ->mergeCells('A2:AN2')
+        ->setCellValue('A3', 'TAHUN 2020')
+        ->mergeCells('A3:AN3')
+        ->setCellValue('A5', 'Bulan')
+        ->setCellValue('A6', 'NO')
+        ->mergeCells('A6:A7')
+        ->setCellValue('B6', 'DIAGNOSA')
+        ->mergeCells('B6:B7')
+        ->setCellValue('C6', 'KODE ICDX')
+        ->mergeCells('C6:C7')
+        ->setCellValue('D6', 'JANUARI')
+        ->mergeCells('D6:F6')
+        ->setCellValue('G6', 'FEBRUARI')
+        ->mergeCells('G6:I6')
+        ->setCellValue('J6', 'MARET')
+        ->mergeCells('J6:L6')
+        ->setCellValue('M6', 'APRIL')
+        ->mergeCells('M6:O6')
+        ->setCellValue('P6', 'MEI')
+        ->mergeCells('P6:R6')
+        ->setCellValue('S6', 'JUNI')
+        ->mergeCells('S6:U6')
+        ->setCellValue('V6', 'JULI')
+        ->mergeCells('V6:X6')
+        ->setCellValue('Y6', 'AGUSTUS')
+        ->mergeCells('Y6:AA6')
+        ->setCellValue('AB6', 'SEPTEMBER')
+        ->mergeCells('AB6:AD6')
+        ->setCellValue('AE6', 'OKTOBER')
+        ->mergeCells('AE6:AG6')
+        ->setCellValue('AH6', 'NOVEMBER')
+        ->mergeCells('AH6:AJ6')
+        ->setCellValue('AK6', 'DESEMBER')
+        ->mergeCells('AK6:AM6')
+        ->setCellValue('AN6', 'JUMLAH')
+        ->mergeCells('AN6:AN7')
+        
+        ->setCellValue('D7', 'L')
+        ->setCellValue('E7', 'P')
+        ->setCellValue('F7', 'TOTAL')
+        ->setCellValue('G7', 'L')
+        ->setCellValue('H7', 'P')
+        ->setCellValue('I7', 'TOTAL')
+        ->setCellValue('J7', 'L')
+        ->setCellValue('K7', 'P')
+        ->setCellValue('L7', 'TOTAL')
+        ->setCellValue('M7', 'L')
+        ->setCellValue('N7', 'P')
+        ->setCellValue('O7', 'TOTAL')
+        ->setCellValue('P7', 'L')
+        ->setCellValue('Q7', 'P')
+        ->setCellValue('R7', 'TOTAL')
+        ->setCellValue('S7', 'L')
+        ->setCellValue('T7', 'P')
+        ->setCellValue('U7', 'TOTAL')
+        ->setCellValue('V7', 'L')
+        ->setCellValue('W7', 'P')
+        ->setCellValue('X7', 'TOTAL')
+        ->setCellValue('Y7', 'L')
+        ->setCellValue('Z7', 'P')
+        ->setCellValue('AA7', 'TOTAL')
+        ->setCellValue('AB7', 'L')
+        ->setCellValue('AC7', 'P')
+        ->setCellValue('AD7', 'TOTAL')
+        ->setCellValue('AE7', 'L')
+        ->setCellValue('AF7', 'P')
+        ->setCellValue('AG7', 'TOTAL')
+        ->setCellValue('AH7', 'L')
+        ->setCellValue('AI7', 'P')
+        ->setCellValue('AJ7', 'TOTAL')
+        ->setCellValue('AK7', 'L')
+        ->setCellValue('AL7', 'P')
+        ->setCellValue('AM7', 'TOTAL')
+        ;
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('U')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('V')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('W')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('X')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Y')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Z')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AA')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AB')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AC')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AD')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AE')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AF')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AG')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AH')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AI')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AJ')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AK')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AL')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AM')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('AN')->setAutoSize(true);
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+
+                ],
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A6:AN22')->applyFromArray($styleArray);
+        $styleAlg = [
+            'alignment' => [
+            'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ];
+        $spreadsheet->getActiveSheet()->getStyle('A1:F7')->applyFromArray($styleAlg);
+        
+        $datalaporan = json_decode($data[0]->datalb1);
+        $i = 8;
+        foreach($datalaporan as $d){
+        $total = 0;
+        $jumlah = 0; 
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A'.$i, '1')
+        ->setCellValue('B'.$i, $d->nama_penyakit)
+        ->setCellValue('C'.$i, $d->kode_icdx);
+        if (count($d->pasien) == 0) {
+            $k = 4;
+            for ($x=0;$x<12;$x++) { 
+            $dt =0;
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValueByColumnAndRow($k++, $i, $dt)
+            ->setCellValueByColumnAndRow($k++, $i, $dt)
+            ->setCellValueByColumnAndRow($k++, $i, $dt);
+            }
+        }else {
+            $k = 4;
+            foreach ($d->pasien as $pas) {
+            $total = $pas->Laki + $pas->Perempuan;
+            $jumlah += $total;
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValueByColumnAndRow($k++, $i, $pas->Laki)
+            ->setCellValueByColumnAndRow($k++, $i, $pas->Perempuan)
+            ->setCellValueByColumnAndRow($k++, $i, $total);
+            }
+        }
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('AN'.$i, $jumlah);
+        $i++; 
+        }
+        $spreadsheet->getActiveSheet()->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
         $spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');

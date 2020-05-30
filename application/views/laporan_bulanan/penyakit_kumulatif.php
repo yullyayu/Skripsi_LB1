@@ -51,38 +51,134 @@
                 </tr>
                 </thead>
                 <tbody>
-               
+                <?php $no =0; foreach ($data as $dp ): $no++; ?>
                   <tr class="odd gradeX">
                      <th scope="row"><?= $no ?></th>
                      <th scope="row"><?= $dp->nama_penyakit?></th>
                      <th scope="row"><?= $dp->kode_icdx?></th>
                      <?php 
-                    //  $total = 0;
-                    //  if(count($dp->pasien) == 0) {
+                     $total = 0 ;
+                     $jumlah = 0;
+                     $a = array([2, 2, 5]);
+                     print_r(rsort($a));
+                     if(count($dp->pasien) == 0) {
                        for ($x=0; $x<12 ; $x++) {  ?>
                         <td>0</td>
                         <td>0</td>
                         <td>0</td>
                      <?php  }
-                    //  } else {
-                      //  foreach ($dp->pasien as $pas) { 
-                        //  $total = $pas->Laki + $pas->Perempuan?>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                     <?php 
-                      ?>
+                     } else {
+                       foreach ($dp->pasien as $pas) { 
+                         $total = $pas->Laki + $pas->Perempuan ;
+                         $jumlah += $total ;
+                          
+                         ?>
+                        <td><?= $pas->Laki ?></td>
+                        <td><?= $pas->Perempuan?></td>
+                        <td><?= $total ?></td>
+                        
+                     <?php  }
+                     } ?>
+                     
+                     <td><?= $jumlah ?></td>
                   </tr>
-                
+                  <?php endforeach; ?>
                 </tbody>
               </table>
                <!-- kirim -->
                <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
+                  <button type="submit" id="btn-filter" class="btn btn-primary" data-toggle="modal" data-target="#cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
                   <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Kirim Laporan </button>
                   </div>
                 </div><br><br>
               <!-- end-kirim -->
+
+              <!-- MODAL KIRIM LAPORAN -->
+              <div class="modal fade" id="kirim">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Kirim Laporan 15 Besar Penyakit</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('data_penyakit/sendKP'); ?>" method="post">
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="tanggal">Tanggal Laporan</label>
+                        <div class="col-sm-10">
+                          <div class="input-prepend">
+                            <input type="date" placeholder="" name="tanggal" class="button" required><button for="tanggal" class="fa fa-calendar"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                      <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
+                      <div class="col-sm-10">
+                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" placeholder="Jenis Laporan" required>
+                          <datalist id="jenis_laporan"> 
+                          <option value="Laporan 15 Penyakit Terbanyak Bulanan"></option>
+                          <option value="Laporan 15 Penyakit Terbanyak Tribulan"></option>
+                          <option value="Laporan 15 Penyakit Terbanyak Tahunan"></option>
+                          </datalist>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" value="Dinoyo">
+                        </div>
+                    </div>
+                    <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="kirim">Send Kepala Puskesmas</button>                      
+                    </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
+              <!-- MODAL CETAK LAPORAN -->
+              <div class="modal fade" id="cetak">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Cetak 15 Besar Penyakit</h4>
+                  </div>
+                  <form class="form-horizontal" action="<?php echo site_url('export_excel/cetakPenyThn'); ?>" method="post">
+                  <div class="box-body">
+                <div class="form-group">
+                <label class="col-sm-2 control-label">Tahun</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="tahun" id="tahun">
+                    <?php for($i=2019 ; $i<=2029;$i++){
+                    if($i == $tahun){?>
+                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
+                    <?php   } else{?>
+                    <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
+                    <?php   }} ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <div class="col-sm-12" align="right">
+              <button type="submit" id="btn-filter" class="btn btn-primary" name="cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
+              </div>
+            </div>
+            </form>
+            </div>
+            </div>
+            </div>
+            </div>
+            <!-- end modal -->
             </div>
             </div>
             <!-- /.box-body -->

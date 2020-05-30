@@ -160,6 +160,62 @@
                     <?php ;}?>
                 </tbody>
               </table>
+              <!-- kirim -->
+              <div class="form-group"><br>
+                  <div class="col-sm-12" align="right">
+                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Kirim Laporan </button>
+                  </div>
+                </div><br><br>
+              <!-- end-kirim -->
+                    
+              <!-- MODAL KIRIM LAPORAN -->
+              <div class="modal fade" id="kirim">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Kirim Laporan Tahunan</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/sendKP'); ?>" method="post">
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="tanggal">Tanggal Laporan</label>
+                        <div class="col-sm-10">
+                          <div class="input-prepend">
+                            <input type="date" placeholder="" name="tanggal" class="button" required><button for="tanggal" class="fa fa-calendar"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                      <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
+                      <div class="col-sm-10">
+                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" placeholder="Jenis Laporan" required>
+                          <datalist id="jenis_laporan"> 
+                          <option value="Laporan Bulanan"></option>
+                          <option value="Laporan Tribulan"></option>
+                          <option value="Laporan Tahunan"></option>
+                          </datalist>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" required>
+                        </div>
+                    </div>
+                    <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="kirim">Send Kepala Puskesmas</button>                      
+                    </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
             </div>
             </div>
             <!-- /.box-body -->

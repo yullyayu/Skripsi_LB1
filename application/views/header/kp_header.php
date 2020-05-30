@@ -174,7 +174,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=site_url('data_penyakit/getJum_PenyakitKepala')?>">
+            <li><a href="<?=site_url('data_penyakit/dataPeny_kpl')?>">
             <i class="fa fa-fw fa-table"></i> Tabel</a></li>
             <li><a href="<?=site_url('data_penyakit/getGrafikLB1Kepala')?>"><i class="fa fa-fw fa-bar-chart"></i> Grafik</a></li>
           </ul>
