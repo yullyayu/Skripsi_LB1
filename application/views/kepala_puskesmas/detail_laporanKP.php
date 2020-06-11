@@ -150,11 +150,10 @@
                 <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
                   <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Setuju </button>
-                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Catatan </button>
+                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#catat"> Catatan </button>
                   </div>
                 </div><br><br>
               <!-- end-kirim -->
-                    
               <!-- MODAL KIRIM LAPORAN -->
               <div class="modal fade" id="kirim">
                 <div class="modal-dialog">
@@ -173,23 +172,47 @@
                         </div>
                       </div>
                       <div class="form-group">
-                      <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
-                      <div class="col-sm-10">
-                        <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" value="<?php echo $status[0]->jenis_laporan?>">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                        <label for="jenis_laporan" class="col-sm-2 control-label">Jenis Laporan</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" value="<?php echo $status[0]->nama_puskesmas?>">
+                          <input list="jenis_laporan" type="text" class="form-control" name="jenis_laporan" value="<?php echo $status[0]->jenis_laporan?>">
                         </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
+                          <div class="col-sm-10">
+                          <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" value="<?php echo $status[0]->nama_puskesmas?>">
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" name="acc">Setuju</button>                     
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
+
+              <!-- CATATAN LAPORAN -->
+              <div class="modal fade" id="catat">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Catatan Laporan</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('kepala_puskesmas/catatan/'. $status[0]->id_laporan); ?>" method="post">
+                    <div class="modal-body">
+                    <label class="control-label" for="basicinput">Catatan: </label>
+                      <textarea id="ket" name="ket" rows="10" cols="90"></textarea>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-success" name="acc">Setuju</button>                     
+                      <button type="submit" class="btn btn-primary" name="acc">Kirim</button>
                     </div>
                     </form>
-                    </div>
                   </div>
                 </div>
               </div>

@@ -8,6 +8,22 @@
         <li><a href="#">Tables</a></li>
         <li class="active">Data tables</li>
       </ol>
+     <form method="POST" action="<?php echo site_url('Data_penyakit/getGrafikLB1') ?>">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Tahun</label>
+    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Tahun" name="year" required>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Triwulan</label>
+    <select class="form-control" id="exampleFormControlSelect1" name="triwulan" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Filter</button>
+</form>
     </section>
 
     <!-- Main content -->
@@ -18,20 +34,31 @@
             <div class="box-header">
             </div>
             <div id="container"></div>
-            <?php $total = []; ?>
-            <?php foreach ($data as $dp ){
-                $tot = 0;
-                $peny[] = $dp->nama_penyakit;
-                foreach ($dp->pasien as $pas) {
-                  $bln = $pas->bulan = $pas->bulan1;
-                  $bulan = date('M', strtotime($bln));
-                  $tahun = date('Y', strtotime($bln));
-                  $tot = $pas->Laki + $pas->Perempuan;
-                }
-                array_push($total, $tot);
-            } 
-            $tahun = date('Y', strtotime($bln)) ;
-            $judul = 'GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN '.$tahun ;
+            <?php $total = [];
+                  $total2 = [];
+                  $total3 = [];
+                ?>
+            <?php 
+              
+              foreach ($data_peny as $dp) {         
+                $array = 0;   
+                $array2 = 0;    
+                $array3 = 0;  
+                $peny[] = $dp['nama_penyakit'];
+                $tot = $dp['total'];
+                $tot2 = $dp['total2'];
+                $tot3 = $dp['total3'];
+                $array = json_decode($tot, true);
+                $array2 = json_decode($tot2, true);
+                $array3 = json_decode($tot3, true);
+                // var_dump($array2);
+                array_push($total, $array);
+                array_push($total2, $array2);
+                array_push($total3, $array3);
+                var_dump(json_encode($total));
+                // var_dump($tot2);
+                // var_dump($tot3);
+              }
             ?>
             <div class="form-group"><br>
               <div class="col-sm-12" align="right">
@@ -75,7 +102,7 @@
                         <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" value="Dinoyo">
                         </div>
                     </div>
-                    <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
+                    <textarea name="datalb1" style="display:none"><?php echo json_encode($data_peny)?></textarea>
                     
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -109,7 +136,7 @@
   Highcharts.chart('container', {
 
   title: {
-      text: <?php echo json_encode($judul)?>
+      text: "GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN " + <?php echo json_encode($nama_tahun)?>
   },
 
   subtitle: {
@@ -118,41 +145,22 @@
 
   yAxis: {
       title: {
-          text: 'Number of Employees'
+          text: ''
       }
   },
 
   xAxis: {
       categories: <?php echo json_encode($peny) ?>
-      // accessibility: {
-      //     rangeDescription: 'Range: 2011 to 2020'
-      // }
   },
-
-  // legend: {
-  //     layout: 'vertical',
-  //     align: 'right',
-  //     verticalAlign: 'middle'
-  // },
-
-  // plotOptions: {
-  //     series: {
-  //         label: {
-  //             connectorAllowed: false
-  //         },
-  //         pointStart: 2011
-  //     }
-  // },
-
   series: [{
-      name: <?php echo json_encode($bulan)?>,
-      data: <?php echo json_encode($total) ?>
-  // }, {
-  //     name: 'Februari',
-  //     data: [null, null, 1, 0, 0, 0, 1, 1, 2, 0, 1, 0, 4, 2, 3]
-  // }, {
-  //     name: 'Maret',
-  //     data: [1, 2, 0, 1, 0, 2, 1, 2, 4, 1, 2, 1, 1, 0, 5]
+      name: <?php echo json_encode($nama_bulan[0]) ?>,
+      data: <?php echo json_encode($total) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[1]) ?>,
+      data: <?php echo json_encode($total2) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[2]) ?>,
+      data: <?php echo json_encode($total3) ?>
   }],
 
   responsive: {

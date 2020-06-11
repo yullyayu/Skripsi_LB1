@@ -42,7 +42,7 @@
                   <label class="col-sm-2 control-label">Tahun</label>
                   <div class="col-sm-10">
                     <select class="form-control" name="tahun" id="tahun">
-                    <?php for($i=2019 ; $i<=2029;$i++){
+                    <?php for($i=2020 ; $i<=2029;$i++){
                     if($i == $tahun){?>
                     <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
                     <?php   } else{?>
@@ -74,26 +74,41 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $no =0; foreach ($data as $dt ): $no++; ?>
+                <?php 
+                $jumlah = [];
+                $no =0; foreach ($data as $dt ): $no++; ?>
                   <tr class="odd gradeX">
                      <th scope="row"><?= $no ?></th>
                      <th scope="row"><?= $dt->nama_penyakit?></th>
                      <th scope="row"><?= $dt->kode_icdx?></th>
-                     <?php $total = 0; ?>
+                     <?php 
+                    //  $jm = 0;
+                     $total = 0; ?>
                      <?php if (count($dt->pasien) == 0){ ?>
                        <td>0</td>
                        <td>0</td>
                      <?php }else {
                        foreach ($dt->pasien as $pas){ 
-                         $total = $pas->Laki + $pas->Perempuan;
+                        // $total = 0;
+                        $total = $pas->Laki + $pas->Perempuan;
+                        // $array = json_decode($total, true);
+                        // array_push($jumlah, $total);
+                        // rsort($total);
+                        // $jm = implode(',',$total);
+                        // array_chunk($total, 1);
+                        // $jm = implode(',',$total);
+                        // var_dump($jm);
                          ?>
                          <td><?= $pas->Laki?> </td>
                          <td><?= $pas->Perempuan?> </td>
                        <?php }
-                        } ?>
+                        } 
+                        
+                        ?>
                         <td><?= $total?></td>
                   </tr>
-                  <?php endforeach; ?>
+                  <?php endforeach; 
+                  ?>
                 </tbody>
               </table>
                <!-- kirim -->

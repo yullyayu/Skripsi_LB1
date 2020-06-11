@@ -30,6 +30,7 @@
                   <th >Tanggal</th>
                   <th style="width: 140px" >Action</th>
                   <th >Status</th>
+                  <th >Keterangan</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,18 +39,19 @@
                   <td><?php echo $no?></td>
                   <td><?php echo $st->jenis_laporan?></td>
                   <td><?php echo $st->tanggal?></td>
-                  <?php if ($st->status == 0 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
+                  <?php if ($st->status == 11 || $st->status == 4) { ?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-times"></span></td>
+                  <?php }elseif ($st->status == 1 || $st->status == 2 || $st->status == 3) { ?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
+                  <?php } elseif($st->status == 0 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3){ ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/persetujuanLB/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 0 && $st->id_jp == 4 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyBln/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 0 && $st->id_jp == 5) { ?>
-                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                    <td ><form action="<?php echo site_url('kepala_puskesmas/detailPenyTri/' . $st->id_laporan);?>" method="post"><textarea name="tanggal" style="display:none"><?php echo $st->tanggal?></textarea><button type="submit" class='fa fa-fw fa-edit'><span class="menu-icon icon-edit"></span></button></form></td>
                   <?php }elseif ($st->status == 0 && $st->id_jp == 6) { ?>
-                  <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
-                  <?php }elseif ($st->status == 1 || $st->status == 2 || $st->status == 3) { ?>
-                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
-                  <?php } ?>
-                  
+                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('kepala_puskesmas/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                  <?php }?>
                   <td>
                     <?php if ($st->status == 0) {
                             echo "Perlu persetujuan kepala puskesmas";
@@ -59,9 +61,14 @@
                             echo "Dikirim ke Dinkes";
                         } elseif ($st->status == 3) {
                           echo "Laporan telah diterima";
+                        } elseif ($st->status == 11) {
+                          echo "Tidak disetujui";
+                        } elseif ($st->status == 4) {
+                          echo "Tidak disetujui Dinkes";
                         }
                     ?>
                   </td>
+                  <td><?php echo $st->ket?></td>
                 </tr>
                 <?php endforeach;?>
                 </tbody>

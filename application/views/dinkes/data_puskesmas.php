@@ -19,6 +19,28 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Tabel Puskesmas</h3>
+              <?php if ($this->session->flashdata('flash')){ ?>
+                <div class="alert alert-danger" role="alert">
+                  <strong><?=$this->session->flashdata('flash');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } elseif ($this->session->flashdata('success')) { ?>
+                <div class="alert alert-success" role="alert">
+                  <strong><?=$this->session->flashdata('success');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php }elseif ($this->session->flashdata('update')) { ?>
+                <div class="alert alert-success" role="alert">
+                  <strong><?=$this->session->flashdata('update');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php }?>
             </div>
             <!-- /.box-header -->
             <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#tambah"> Tambah Data </button>
@@ -48,12 +70,36 @@
                       <th scope="row"><?php echo $p->kecamatan?></th>
                       <th scope="row"><?php echo $p->kota ?></th>
                       <td><a class='btn btn-info btn-xs' href="<?php echo site_url('dinkes/tampilEdit/'. $p->kd_puskesmas);?>"><span class="fa fa-pencil" ></span></a></td>
-                      <td><a class='btn btn-danger btn-xs' href="<?php echo site_url('dinkes/hapus_Puskesmas/'.$p->kd_puskesmas);?>"><span class="fa fa-trash-o"></span></a></td>
+                      <td><a class='btn btn-danger btn-xs' href="" data-toggle="modal" data-target="#hapus"><span class="fa fa-trash-o"></span></a></td>
                     </tr>
                   <?php endforeach;?>
                 </tbody>
               </table>
             </div>
+            <!-- MODAL Hapus Data -->
+            <div class="modal fade" id="hapus">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Hapus Data Puskesmas</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('dinkes/hapus_Puskesmas/'.$p->kd_puskesmas) ?>" method="post">
+                    <div class="modal-body">
+                      <p>Anda Yakin Hapus?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="kirim">Hapus</button>                      
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
+
+            <!-- modal tambah data -->
             <div id="tambah" class="modal fade" role="dialog">
               <div class="modal-dialog">
                 <div class="modal-content">

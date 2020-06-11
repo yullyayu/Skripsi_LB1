@@ -79,50 +79,201 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          
-          <!-- Notifications: style can be found in dropdown.less -->
+        <?php if (isset($pesan)) { ?>
+        <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-envelope-o"></i>
+              <span class="label label-success"><?= $pesan?></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have <?= $pesan ?> messages</li>
+              <?php foreach ($data_pesan as $dp) { ?>
+                <li>
+                <ul class="menu">
+                  <li><!-- start message -->
+                    <a href="#">
+                      <h4>
+                        Dinas Kesehatan
+                        <small><i class="fa fa-clock-o"></i> <?= $dp['tanggal'] ?></small>
+                      </h4>
+                      <p><?php if ($dp['pesan'] == 5) {
+                        if ($dp['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) belum dikirim
+                        <?php } elseif ($dp['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) belum dikirim
+                        <?php } elseif ($dp['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) belum dikirim
+                        <?php } elseif ($dp['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan belum dikirim
+                        <?php } elseif ($dp['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan belum dikirim
+                        <?php } elseif ($dp['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan belum dikirim
+                        <?php } 
+                      } ?>
+                      </p>
+                    </a>
+                  </li>
+                  <!-- end message -->
+                </ul>
+              </li>
+              <?php } ?>
+              <li class="footer"><a href="<?=site_url('laporan_bulanan/pesanLB')?>">See All Messages</a></li>
+            </ul>
+          </li>
+        <?php } ?>
+        <?php if (isset($notif)) { ?>
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning" ><?= $notif?></span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
+              <?php foreach ($data_notif as $dn) { ?>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
+                    <h5 style="margin-left: 10px;margin-right: 10px">
+                      <?php if ($dn['status'] == 1) {
+                        if ($dn['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) telah disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) telah disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) telah disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan telah disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan telah disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan telah disetujui Kepala Puskesmas
+                        <?php } 
+                      }elseif ($dn['status'] == 3) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) telah diterima Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) telah diterima Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) telah diterima Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan telah diterima Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan telah diterima Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan telah diterima Dinas Kesehatan
+                        <?php } 
+                       }elseif ($dn['status'] == 11) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) tidak disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) tidak disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) tidak disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan tidak disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan tidak disetujui Kepala Puskesmas
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan tidak disetujui Kepala Puskesmas
+                        <?php } 
+                       }elseif ($dn['status'] == 4) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) tidak disetujui Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) tidak disetujui Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) tidak disetujui Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan tidak disetujui Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan tidak disetujui Dinas Kesehatan
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan tidak disetujui Dinas Kesehatan
+                        <?php } 
+                       }elseif ($dn['status'] == 0 && $dn['pesan'] == 5) {
+                        if ($dn['id_jp'] == 1) {?>
+                          Laporan bulanan(LB1) belum dikirim
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          Laporan tribulan(LB1) belum dikirim
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          Laporan tahunan(LB1) belum dikirim
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          Laporan 15 Besar Penyakit Bulanan belum dikirim
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          Laporan 15 Besar Penyakit Tribulan belum dikirim
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          Laporan 15 Besar Penyakit Tahunan belum dikirim
+                        <?php } 
+                       } ?>
+                      </h5>
                   </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
-                      page and may cause design problems
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-red"></i> 5 new members joined
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-user text-red"></i> You changed your username
-                    </a>
+                  <li class="footer">
+                    <?php if ($dn['status'] == 1) {
+                        if ($dn['id_jp'] == 1) {?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } 
+                      }elseif ($dn['status'] == 3) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } 
+                       }elseif ($dn['status'] == 11) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } 
+                       }elseif ($dn['status'] == 4) { 
+                        if ($dn['id_jp'] == 1) {?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 2) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 3) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 4) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 5) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } elseif ($dn['id_jp'] == 6) { ?>
+                          <a href="<?=site_url('laporan_bulanan/statusLB')?>" class="btn btn-default" style="float: right;width: 50%">Detail</a>
+                        <?php } 
+                       } ?>
                   </li>
                 </ul>
               </li>
-              <li class="footer"><a href="#">View all</a></li>
+              <br>
+              <?php } ?>
             </ul>
           </li>
+        <?php } ?>
           <!-- Tasks: style can be found in dropdown.less -->
            <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
@@ -148,6 +299,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
+      <div class="user-panel">
+            <div class="pull-left image">
+                <img src="<?php echo base_url()."assets/"; ?>/image/image.png" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>Puskesmas</p>
+                <p>Dinoyo</p>
+            </div>
+      </div>
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
@@ -163,7 +323,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li >
-          <a href="#">
+          <a href="<?=site_url('laporan_bulanan/pesanLB')?>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             <span class="pull-right-container">
             </span>
@@ -186,7 +346,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="<?=site_url('laporan_bulanan/statusLB')?>"><i class="fa fa-fw fa-file-excel-o"></i> Status LB1</a></li>
+          <li><a href="<?=site_url('laporan_bulanan/statusLB')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Masuk</a></li>
             <li><a href="<?=site_url('laporan_bulanan/dataLB1')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Bulanan(LB1)</a></li>
           </ul>
         </li>

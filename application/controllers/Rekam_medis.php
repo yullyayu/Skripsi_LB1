@@ -11,9 +11,20 @@ class Rekam_medis extends CI_Controller{
         $this->load->view('rekam_medis/form_register');
         $this->load->view('footer/rm_footer');
     }
-    
+    public function dashboard()
+    {
+      $this->load->view('header/rm_header');
+      $this->load->view('rekam_medis/dashboard_rm');
+      $this->load->view('footer/rm_footer');
+    }
     public function formRegister()
     {
+      $no_register = $this->input->post('no_register');
+      $data = $this->RekamMedis_model->get($no_register);
+      if ($data->num_rows() > 0) {
+        $this->session->set_flashdata('flash', 'Data tersedia pada database');
+        redirect('rekam_medis/index');
+      } else {
       $no_register = $this->input->post('no_register');
       $tanggal = $this->input->post('tanggal');
       $nama = $this->input->post('nama');
@@ -21,84 +32,35 @@ class Rekam_medis extends CI_Controller{
       $umur = $this->input->post('umur');
       $jenis_umur = $this->input->post('jenis_umur');
       $id_umr='';
-
-      if ($umur >= 1 && $umur <=4 ) {
-        if ($jenis_umur == 'Hari') {
+      if ($jenis_umur == 'Hari') {
+        if ($umur >= 0 && $umur <=7) {
           $id_umr = 1;
-        }else if ($jenis_umur == 'Tahun') {
+        }elseif ($umur >= 8 && $umur <=28) {
+          $id_umr = 2 ; 
+        }elseif ($umur >= 29) {
+          $id_umr = 3 ; 
+        }
+      }elseif ($jenis_umur == 'Tahun') {
+        if ($umur >= 1 && $umur <=4) {
           $id_umr = 4;
-        }
-      }elseif ($umur >= 5 && $umur <=9) {
-        if ($umur >= 5 && $umur <= 7) {
-          if ($jenis_umur == 'Hari') {
-            $id_umr = 1 ;
-          }elseif ($jenis_umur == 'Tahun') {
-            $id_umr = 5 ;
-          }
-        }elseif ($umur >= 8 && $umur <= 9) {
-          if ($jenis_umur == 'Hari') {
-            $id_umr = 2 ;
-          }elseif ($jenis_umur == 'Tahun') {
-            $id_umr = 5 ;
-          }
-        } 
-      }elseif ($umur >= 10 && $umur <=14) {
-        if ($jenis_umur == 'Hari') {
-          $id_umr = 2 ; 
-        }elseif ($jenis_umur == 'Tahun') {
-          $id_umr = 6 ;
-        }
-      }elseif ($umur >= 15 && $umur <=19) {
-        if ($jenis_umur == 'Hari') {
-          $id_umr = 2 ; 
-        }elseif ($jenis_umur == 'Tahun') {
-          $id_umr = 7 ;
-        }
-      }elseif ($umur >= 20 && $umur <=44) {
-        if ($umur >= 20 && $umur <=28) {
-          if ($jenis_umur == 'Hari') {
-            $id_umr = 2 ;
-          }elseif ($jenis_umur == 'Tahun') {
-            $id_umr = 8 ;
-          }
-        }elseif ($umur >= 29 && $umur <=44) {
-          if ($jenis_umur == 'Hari') {
-            $id_umr = 3 ;
-          }elseif ($jenis_umur == 'Tahun') {
-            $id_umr = 8 ;
-          }
-        }
-      }elseif ($umur >= 45 && $umur <=54) {
-        if ($jenis_umur == 'Hari') {
-          $id_umr = 3 ;
-        }elseif ($jenis_umur == 'Tahun') {
-          $id_umr = 9 ;
-        }
-      }elseif ($umur >= 55 && $umur <=59) {
-        if ($jenis_umur == 'Hari') {
-          $id_umr = 3 ;
-        }elseif ($jenis_umur == 'Tahun') {
-          $id_umr = 10 ;
-        }
-      }elseif ($umur >= 60 && $umur <=69) {
-        if ($jenis_umur == 'Hari') {
-          $id_umr = 3 ;
-        }elseif ($jenis_umur == 'Tahun') {
-          $id_umr = 11 ;
+        }elseif ($umur >= 5 && $umur <=9) {
+          $id_umr = 5;
+        }elseif ($umur >= 10 && $umur <=14) {
+          $id_umr = 6;
+        }elseif ($umur >= 15 && $umur <=19) {
+          $id_umr = 7;
+        }elseif ($umur >= 20 && $umur <=44) {
+          $id_umr = 8;
+        }elseif ($umur >= 45 && $umur <=54) {
+          $id_umr = 9;
+        }elseif ($umur >= 55 && $umur <=59) {
+          $id_umr = 10;
+        }elseif ($umur >= 60 && $umur <=69) {
+          $id_umr = 11;
+        }elseif ($umur >= 70) {
+          $id_umr = 12;
         }
       }
-      elseif ($umur >= 70 ) {
-        if ($umur >= 70 && $umur <= 365) {
-          if ($jenis_umur == 'Hari') {
-            $id_umr = 3 ;
-          }elseif ($jenis_umur == 'Tahun') {
-            $id_umr = 12 ;
-          }
-        }elseif ($umur >= 365) {
-          $id_umr = 12 ;
-        } 
-      }
-     
       $jenis_kelamin = $this->input->post('jenis_kelamin');
       $jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
       $kode_penyakit = $this->input->post('kode_penyakit');
@@ -143,9 +105,10 @@ class Rekam_medis extends CI_Controller{
         'luar_wilayah' => $luar_wilayah,
       );
       $this->RekamMedis_model->insertData($data, 'rekam_medis');
+      $this->session->set_flashdata('success', 'Data berhasil tersimpan');
       redirect('rekam_medis/index');
     }
-
+  }
     public function dataRegister()
     {
       $data['rekam_medis'] = $this->RekamMedis_model->tampil_data()->result();
@@ -166,6 +129,7 @@ class Rekam_medis extends CI_Controller{
     {
       $where = array('no_register' => $no);
       $this->RekamMedis_model->hapus_register($where, 'rekam_medis');
+      $this->session->set_flashdata('success', 'Data berhasil dihapus');
       redirect('rekam_medis/dataRegister');
     }
 
@@ -198,6 +162,7 @@ class Rekam_medis extends CI_Controller{
       );
       $where = array('no_register'=>$no_register);
       $this->RekamMedis_model->updateRegister($where, $data, 'rekam_medis');
+      $this->session->set_flashdata('flash', 'Data berhasil diupdate');
       redirect('rekam_medis/dataRegister');
     }
 }

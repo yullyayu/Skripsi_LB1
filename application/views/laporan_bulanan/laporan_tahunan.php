@@ -41,7 +41,7 @@
                 </div>
               </form>  
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped">
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -136,7 +136,7 @@
                       $totKKLP += $pas->KKL->Perempuan;
                       $totKKLL += $pas->KKL->Laki;
                       $totJKKP += $jumJKKP;
-                      $totJKKL += $totJKKL; ?>
+                      $totJKKL += $jumJKKL; ?>
                       <td><?= $pas->Baru->Perempuan ?></td>
                       <td><?= $pas->Baru->Laki ?></td>
                       <td><?= $pas->Lama->Perempuan ?></td>
@@ -159,6 +159,14 @@
                     </tr>
                     <?php ;}?>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align:right">Jumlah</th>
+                    <?php for ($i=0; $i <104 ; $i++) { ?>
+                      <th></th>
+                    <?php } ?>
+                </tr>
+                </tfoot>
               </table>
               <!-- kirim -->
               <div class="form-group"><br>

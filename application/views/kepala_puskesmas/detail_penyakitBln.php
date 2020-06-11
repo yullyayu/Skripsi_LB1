@@ -59,7 +59,7 @@
                <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
                   <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Setuju </button>
-                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#catatan"> Catatan </button>
+                  <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#catat"> Catatan </button>
                   </div>
                 </div><br><br>
               <!-- end-kirim -->
@@ -103,60 +103,29 @@
                 </div>
               </div>
               <!-- end modal -->
-
-              <!-- MODAL CETAK LAPORAN -->
-              <div class="modal fade" id="cetak">
+              <!-- CATATAN LAPORAN -->
+              <div class="modal fade" id="catat">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Cetak 15 Besar Penyakit</h4>
+                      <h4 class="modal-title">Catatan Laporan</h4>
                     </div>
-                    <form class="form-horizontal" action="<?php echo site_url('export_excel/cetakPenyBln'); ?>" method="post">
-                      <div class="box-body">
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">Bulan</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name="bulan" id="bulan">
-                            <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                            foreach ($daftarBulan as $key) { 
-                            if($key == $bulan){?>
-                            <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?> selected=""><?php echo $key['bulan']?></option>
-                            <?php }
-                            else{?>
-                            <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?>><?php echo $key?></option>
-                            <?php } } ?>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">Tahun</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name="tahun" id="tahun">
-                            <?php for($i=2019 ; $i<=2029;$i++){
-                            if($i == $tahun){?>
-                            <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
-                            <?php   } else{?>
-                            <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
-                            <?php   }} ?>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- /.box-body -->
-                      <div class="box-footer">
-                        <div class="col-sm-12" align="right">
-                        <button type="submit" id="btn-filter" class="btn btn-primary" name="cetak"><span class="fa fa-print"></span>  Cetak Excel</button>
-                      </div>
-                      </div>
+                    <form class="form-horizontal" action="<?php echo site_url('kepala_puskesmas/catatan/'. $status[0]->id_laporan); ?>" method="post">
+                    <div class="modal-body">
+                    <label class="control-label" for="basicinput">Catatan: </label>
+                      <textarea id="ket" name="ket" rows="10" cols="90"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" name="acc">Kirim</button>
+                    </div>
                     </form>
-                    </div>
                   </div>
                 </div>
               </div>
               <!-- end modal -->
-
             </div>
             </div>
             <!-- /.box-body -->

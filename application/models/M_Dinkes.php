@@ -5,11 +5,15 @@ class M_Dinkes extends CI_Model{
     {
         $this->db->select('*');
         $this->db->from('detail_laporan');
-        $this->db->where("status BETWEEN 2 AND 3");
+        $this->db->where("status BETWEEN 2 AND 4");
         $query = $this->db->get();
         return $query->result();
-        // return $this->db->get_where('detail_laporan', ['status' => 2]);
-        // return $this->db->get('detail_laporan');
+    }
+    public function notif()
+    {
+        $this->db->where('status', 2);
+        $result = $this->db->get('detail_laporan')->result_array();
+        return $result;
     }
     public function getLB1bulan()
     {
@@ -17,7 +21,7 @@ class M_Dinkes extends CI_Model{
         $this->db->select('*');
         $this->db->from('detail_laporan');
         $this->db->where('month(tanggal)', $bulan['mon']);
-        $this->db->where('jenis_laporan', 'Bulanan');
+        $this->db->where('id_jp', 1);
         $this->db->where('status', 3);
         $query = $this->db->get();
         return $query->result();
@@ -38,7 +42,7 @@ class M_Dinkes extends CI_Model{
         $tahun = getdate();
         $this->db->select('*');
         $this->db->from('detail_laporan');
-        $this->db->where('month(tanggal)', $bulan['year']);
+        $this->db->where('month(tanggal)', $tahun['year']);
         $this->db->where('jenis_laporan', 'Tahunan');
         $this->db->where('status', 3);
         $query = $this->db->get();
@@ -48,8 +52,8 @@ class M_Dinkes extends CI_Model{
     {
         $bulan = getdate();
         $this->db->select('*');
-        $this->db->from('jenis_laporan as jp');
-        $this->db->join('detail_laporan as lb', 'lb.id_jp = jp.id_jp', 'left');
+        $this->db->from('detail_laporan as lb');
+        $this->db->join('jenis_laporan as jp', 'lb.id_jp = jp.id_jp', 'left');
         $this->db->join('data_puskesmas as dp', 'dp.nama_puskesmas = lb.nama_puskesmas', 'left');
         // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
         $query = $this->db->get();
@@ -60,6 +64,11 @@ class M_Dinkes extends CI_Model{
         // $this->db->join('data_puskesmas as dp', 'dp.nama_puskesmas = lb.nama_puskesmas', 'left');
         // $query = $this->db->get();
         // return $query->result();
+    }
+    public function sendMonitor($data, $where)
+    {
+        $this->db->where($where);
+        $this->db->update('detail_laporan', $data);
     }
     public function CetakBulan($bulan, $tahun)
     {

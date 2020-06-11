@@ -26,13 +26,20 @@
               <?php  foreach ($data as $dp ){
                 foreach ($dp->pasien as $pas) {
                   $bln = $pas->bulan = $pas->bulan1;
-                  $bulan = date('M', strtotime($bln));
+                  $bulan = date('F', strtotime($bln));
                   $tahun = date('Y', strtotime($bln));
-                  $judul = 'Laporan Data Kesakitan Bulan';
                   // var_dump($bulan);
                 }
             } ?>
-              <h3 class="box-title" text="<?php $judul ?>">Laporan Data Kesakitan Bulan <?php $bulan ?></h3>
+              <h3 class="box-title" text="<?php $judul ?>">Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?></h3>
+              <?php if ($this->session->flashdata('flash')): ?>
+                <div class="alert alert-success" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php endif;?>
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
               <div class="box-body">
@@ -76,7 +83,7 @@
             </form>
             <div class="box-body">
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped">
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -150,6 +157,8 @@
                       $totKKLL = 0;
                       $totJKKP = 0;
                       $totJKKL = 0;  
+                      $total = [];
+                      $jumlah = 0;
                       ?>
                     <?php if(count($d->pasien) == 0){ 
                       for($x = 0;$x<12;$x++){
@@ -165,6 +174,7 @@
                     <?php }}else{ ?>
                       <?php foreach($d->pasien as $pas){ ?>
                       <?php 
+                      $tot = 0;
                       $jumJKKP = $pas->Baru->Perempuan + $pas->Lama->Perempuan + $pas->KKL->Perempuan;
                       $jumJKKL = $pas->Baru->Laki + $pas->Lama->Laki + $pas->KKL->Laki ; 
                       $totBaruP += $pas->Baru->Perempuan;
@@ -181,10 +191,6 @@
                       $lm_lk = $pas->Lama->Laki;
                       $kkl_pr = $pas->KKL->Perempuan;
                       $kkl_lk = $pas->KKL->Laki;
-                      $bln = $pas->bulan = $pas->bulan1;
-                      $bulan = date('M', strtotime($bln));
-                      $tahun = date('Y', strtotime($bln));
-                      // var_dump($bulan);
                       ?>
                       <td><?= $br_pr ?></td>
                       <td><?= $br_lk?></td>
@@ -198,6 +204,7 @@
                     <?php }?>
                     <?php }?>
                     <!-- Total -->
+                    
                     <td><?= $totBaruP?></td>
                     <td><?= $totBaruL?></td>
                     <td><?= $totLamaP?></td>
@@ -209,6 +216,14 @@
                     </tr>
                     <?php ;}?>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align:right">Jumlah</th>
+                    <?php for ($i=0; $i <104 ; $i++) { ?>
+                      <th></th>
+                    <?php } ?>
+                </tr>
+                </tfoot>
               </table>
               
               <!-- kirim -->
@@ -256,7 +271,6 @@
                         </div>
                     </div>
                     <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
-                    
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-success" name="kirim">Send Kepala Puskesmas</button>                      
@@ -357,3 +371,10 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <!-- <script>
+  $(function () {
+    $('#example1').DataTable({
+      // "order": [[5, "desc"]]
+    });
+  })
+</script> -->

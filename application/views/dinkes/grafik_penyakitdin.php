@@ -45,7 +45,7 @@
                 $total = [];
                 $total2 = [];
                 $total3 = []; 
-                $grafik = json_decode($grafik_kpl[0]->datalb1);
+                $grafik = json_decode($lb_tribulan[0]->datalb1);
               // var_dump($grafik);
               foreach ($grafik as $dp) {         
                 $array = 0;   

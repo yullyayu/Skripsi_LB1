@@ -6,8 +6,8 @@
         <li class="active">Data tables</li>
       </ol>
       <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPeny_kpl') ?>">Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPenyThn_kpl') ?>">Kumulatif</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPeny_din') ?>">Bulan</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/dataPenyThn_din') ?>">Kumulatif</a></li>
      </ul>
     </section>
 
@@ -22,44 +22,42 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
-              <form method="post" action="<?php echo site_url('data_penyakit/filterPeny_kpl'); ?>">
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">Bulan</label>
-                    <div class="col-sm-12">
-                      <select class="form-control" name="bulan" id="bulan">
-                      <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                      foreach ($daftarBulan as $key) { 
-                      if($key == $bulan){?>
-                      <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?> selected=""><?php echo $key['bulan']?></option>
-                      <?php }
-                      else{?>
-                      <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?>><?php echo $key?></option>
-                      <?php } } ?>
-                      </select>
-                    </div>
-                  </div><br>
-                  <div class="form-group"><br>
-                    <label class="col-sm-1 control-label">Tahun</label>
-                    <div class="col-sm-12">
-                      <select class="form-control" name="tahun" id="tahun">
-                      <?php for($i=2019 ; $i<=2029;$i++){
-                      if($i == $tahun){?>
-                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
-                      <?php   } else{?>
-                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
-                      <?php   }} ?>
-                      </select>
-                    </div>
+              <form class="form-horizontal" action="<?php echo site_url('data_penyakit/filterPeny_kpl'); ?>" method="post">
+                <div class="form-group">
+                  <label class="col-sm-1 control-label">Bulan</label>
+                  <div class="col-sm-11">
+                     <select class="form-control" name="bulan" id="bulan">
+                  <?php 
+                  $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
+                  foreach ($daftarBulan as $key) {
+                    if($key== $bulan){?>
+                    <option value="<?php echo $key?>" selected=""><?php echo $key?></option>
+                 <?php }
+                    else{?>
+                     <option value="<?php echo $key?>" ><?php echo $key?></option>
+                  <?php } } ?>
+                    </select>
                   </div>
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                  <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
+                <div class="form-group">
+                  <label class="col-sm-1 control-label">Tahun</label>
+                  <div class="col-sm-11">
+                    <select class="form-control" name="tahun" id="tahun">
+                    <?php for($i=2019 ; $i<=2029;$i++){
+                      if($i==$tahun){?>
+                    <option value="<?php echo $i?>" selected=""><?php echo $i?></option>
+                    <?php   } else{?>
+                    <option value="<?php echo $i?>" ><?php echo $i?></option>
+                    <?php   }} ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                <div class="col-sm-12" align="right">
+                  <button type="submit" id="btn-filter" class="btn btn-primary" ><span class="glyphicon glyphicon-filter"></span>  Filter</button>
                 </div>
                 </div>
-                <!-- /.box-footer -->
-              </form>
+                </form>
                 <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -76,34 +74,35 @@
                 </thead>
                 <tbody>
                 <?php if ($this->session->flashdata('flash')){ ?>
-                      <div class="alert alert-danger" role="alert">
-                        <strong><?=$this->session->flashdata('flash');?></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                    <?php }else { 
-                      $datalaporan = json_decode($peny_bulan[0]->datalb1);
-                      $no =0; foreach ($datalaporan as $dt ): $no++; ?>
-                        <tr class="odd gradeX">
-                          <th scope="row"><?= $no ?></th>
-                          <th scope="row"><?= $dt->nama_penyakit?></th>
-                          <th scope="row"><?= $dt->kode_icdx?></th>
-                          <?php $total = 0; ?>
-                          <?php if (count($dt->pasien) == 0){ ?>
-                            <td>0</td>
-                            <td>0</td>
-                          <?php }else {
-                            foreach ($dt->pasien as $pas){ 
-                              $total = $pas->Laki + $pas->Perempuan?>
-                              <td><?= $pas->Laki?> </td>
-                              <td><?= $pas->Perempuan?> </td>
-                            <?php }
-                              } ?>
-                              <td><?= $total?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php } ?>
+                <div class="alert alert-danger" role="alert">
+                  <strong><?=$this->session->flashdata('flash');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } else { ?>
+                <?php  
+                $datalaporan = json_decode($peny_bulan[0]->datalb1);
+                $no =0; foreach ($datalaporan as $dt ): $no++; ?>
+                  <tr class="odd gradeX">
+                     <th scope="row"><?= $no ?></th>
+                     <th scope="row"><?= $dt->nama_penyakit?></th>
+                     <th scope="row"><?= $dt->kode_icdx?></th>
+                     <?php $total = 0; ?>
+                     <?php if (count($dt->pasien) == 0){ ?>
+                       <td>0</td>
+                       <td>0</td>
+                     <?php }else {
+                       foreach ($dt->pasien as $pas){ 
+                         $total = $pas->Laki + $pas->Perempuan?>
+                         <td><?= $pas->Laki?> </td>
+                         <td><?= $pas->Perempuan?> </td>
+                       <?php }
+                        } ?>
+                        <td><?= $total?></td>
+                  </tr>
+                  <?php endforeach; ?>
+              <?php } ?>
                 </tbody>
               </table>
               <div class="form-group"><br>

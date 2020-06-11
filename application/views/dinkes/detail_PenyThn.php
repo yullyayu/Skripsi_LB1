@@ -77,7 +77,7 @@
                 <div class="form-group"><br>
                   <div class="col-sm-12" align="right">
                     <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Terima </button>
-                    <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#kirim"> Evaluasi </button>
+                    <button type="submit" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#eval"> Evaluasi </button>
                   </div>
                 </div><br><br>
               <!-- end-kirim -->
@@ -117,6 +117,41 @@
                     </div>
                     </form>
                     </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
+              <!-- CATATAN LAPORAN -->
+              <div class="modal fade" id="eval">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Evaluasi Laporan</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('dinkes/evaluasiLB1/'. $peny_thn[0]->id_laporan); ?>" method="post">
+                    <div class="modal-body">
+                    <div class="form-group">
+                      <label for="status" class="col-sm-2 control-label">Status</label>
+                      <div class="col-sm-10">
+                        <input list="status" type="text" class="form-control" name="status" placeholder="Pilih status" required>
+                          <datalist id="status"> 
+                          <option value="Tolak"></option>
+                          <option value="Terima"></option>
+                          </datalist>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                    <label class="control-label" for="basicinput">Evaluasi: </label>
+                      <textarea id="ket" name="ket" rows="10" cols="90"></textarea>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" name="acc">Kirim</button>
+                    </div>
+                    </form>
                   </div>
                 </div>
               </div>

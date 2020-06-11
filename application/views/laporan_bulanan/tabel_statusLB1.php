@@ -30,6 +30,7 @@
                   <th >Tanggal</th>
                   <th style="width: 140px" >Action</th>
                   <th >Status</th>
+                  <th >Keterangan</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,8 @@
                   <td><?php echo $st->tanggal?></td>
                   <?php if ($st->status == 0 ) { ?>
                     <td style="text-align: center;">-</td>
+                  <?php }elseif ($st->status == 11 || $st->status == 4) {?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-times"></span></td>
                   <?php }elseif ($st->status == 1 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailLB/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 1 && $st->id_jp == 4) { ?>
@@ -61,9 +64,14 @@
                             echo "Dikirim ke Dinkes";
                         } elseif ($st->status == 3) {
                           echo "Laporan telah diterima";
+                        } elseif ($st->status == 11) {
+                          echo "Tidak disetujui Kepala puskesmas";
+                        } elseif ($st->status == 4) {
+                          echo "Tidak disetujui Dinkes";
                         }
                     ?>
                   </td>
+                  <td><?php echo $st->ket ?></td>
                 </tr>
                 <?php endforeach;?>
                 </tbody>

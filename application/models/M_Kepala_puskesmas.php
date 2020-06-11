@@ -1,6 +1,22 @@
 <?php
 class M_Kepala_puskesmas extends CI_Model{
 
+    public function notif()
+    {
+        $this->db->where('status', 0);
+        $result = $this->db->get('detail_laporan')->result_array();
+        return $result;
+    }
+    public function getDetailTri($id, $month, $year)
+    {
+    $this->db->select('*');
+    $this->db->from('detail_laporan');
+    $this->db->where('id_laporan', $id);
+    $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
+    $this->db->where('year(tanggal)', $year);
+    $query = $this->db->get();
+    return $query->result();
+    }
     public function getLB1bulan()
     {
         $status = 0;
@@ -8,19 +24,20 @@ class M_Kepala_puskesmas extends CI_Model{
         $this->db->select('*');
         $this->db->from('detail_laporan');
         $this->db->where('month(tanggal)', $bulan['mon']);
-        $this->db->where('jenis_laporan', 'Bulanan');
+        $this->db->where('id_jp', 1);
         $this->db->where('status !=', $status);
         $query = $this->db->get();
         return $query->result();
     }
-    public function getLBtribulan()
+    public function getLBtribulan($month, $year)
     {
         $status = 0;
-        $tribulan = getdate();
         $this->db->select('*');
         $this->db->from('detail_laporan');
-        $this->db->where('month(tanggal)', $tribulan['mon']);
-        $this->db->where('jenis_laporan', 'Tribulan');
+        $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
+        $this->db->where('year(tanggal)', $year);
+        // $this->db->where('month(tanggal)', $month[0]);
+        $this->db->where('id_jp', 2);
         $this->db->where('status !=', $status);
         $query = $this->db->get();
         return $query->result();
@@ -51,8 +68,32 @@ class M_Kepala_puskesmas extends CI_Model{
     }
     public function filterPeny_bln($bulan, $tahun)
     {
+        if ($bulan == 'Januari') {
+            $bulan = 1;
+        }elseif ($bulan == 'Februari') {
+            $bulan = 2;
+        }elseif ($bulan == 'Maret') {
+            $bulan = 3;
+        }elseif ($bulan == 'April') {
+            $bulan = 4;
+        }elseif ($bulan == 'Mei') {
+            $bulan = 5;
+        }elseif ($bulan == 'Juni') {
+            $bulan = 6;
+        }elseif ($bulan == 'Juli') {
+            $bulan = 7;
+        }elseif ($bulan == 'Agustus') {
+            $bulan = 8;
+        }elseif ($bulan == 'September') {
+            $bulan = 9;
+        }elseif ($bulan == 'Oktober') {
+            $bulan = 10;
+        }elseif ($bulan == 'November') {
+            $bulan = 11;
+        }elseif ($bulan == 'Desember') {
+            $bulan = 12;
+        }
         $status = 0;
-        $bulan = getdate();
         $this->db->select('*');
         $this->db->from('detail_laporan');
         $this->db->where('month(tanggal)', $bulan);
@@ -62,13 +103,13 @@ class M_Kepala_puskesmas extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function getPenyTri()
+    public function getPenyTri($month, $year)
     {
         $status = 0;
-        $tribulan = getdate();
         $this->db->select('*');
         $this->db->from('detail_laporan');
-        $this->db->where('month(tanggal)', $tribulan['mon']);
+        $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
+        $this->db->where('year(tanggal)', $year);
         $this->db->where('id_jp', 5);
         $this->db->where('status !=', $status);
         $query = $this->db->get();

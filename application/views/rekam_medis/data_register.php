@@ -20,6 +20,21 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Register Rekam Medis</h3>
+              <?php if ($this->session->flashdata('flash')){ ?>
+                <div class="alert alert-success" role="alert">
+                  <strong><?=$this->session->flashdata('flash');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php } elseif ($this->session->flashdata('success')) { ?>
+                <div class="alert alert-danger" role="alert">
+                  <strong><?=$this->session->flashdata('success');?></strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <?php }?>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -94,11 +109,35 @@
                       <td><?php echo $key->luar_wilayah?></td>
                     <?php }  ?>
                     <td><a class='btn btn-info btn-xs' href="<?php echo site_url('rekam_medis/editRM/'. $key->no_register);?>"><span class="fa fa-pencil" ></span></a></td>
-                    <td><a class='btn btn-danger btn-xs' href="<?php echo site_url('rekam_medis/hapusRegister/'. $key->no_register);?>"><span class="fa fa-trash-o"></span></a></td>
+                    <td><a class='btn btn-danger btn-xs' href="" data-toggle="modal" data-target="#hapus"><span class="fa fa-trash-o"></span></a></td> 
                   </tr>
                     <?php endforeach;?>
                 </tbody>
               </table>
+
+              <!-- MODAL KIRIM LAPORAN -->
+              <div class="modal fade" id="hapus">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Hapus Data Register</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('rekam_medis/hapusRegister/'. $key->no_register) ?>" method="post">
+                    <div class="modal-body">
+                      <p>Anda Yakin Hapus?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="kirim">Hapus</button>                      
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
+
             </div>
             <!-- /.box-body -->
           </div>

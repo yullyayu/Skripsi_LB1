@@ -48,9 +48,9 @@
                     <td><span class="label label-danger">Belum</span></td>
                   <?php } ?>
                   <?php if ($dt->status == 2 || $dt->status == 3) { ?>
-                    <td><span class="label label-primary">Selesai</span></td>
+                    <td><button class="btn btn-block btn-primary btn-xs">Selesai</button></td>
                   <?php } else { ?>
-                    <td><span class="label label-danger">Reminder</span></td>
+                    <td><button type='submit' class="btn btn-block btn-danger btn-xs" href="" data-toggle="modal" data-target="#pesan">Reminder</button></td>
                   <?php } ?>
                   <!-- <td><span class="label label-primary">Approved</span><td> -->
                 </tr>
@@ -58,6 +58,33 @@
                 </tbody>
             </table>
             </div>
+
+            <!-- MODAL Hapus Data -->
+            <div class="modal fade" id="pesan">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Kirim Pesan Puskesmas</h4>
+                    </div>
+                    <form class="form-horizontal" action="<?php echo site_url('dinkes/sendMessage/'.$dt->id_laporan) ?>" method="post">
+                    <div class="modal-body">
+                      <p>Apakah anda yakin ingin mengirim pesan?</p>
+                    </div>
+                    <textarea name="tanggal" style="display:none"><?php date_default_timezone_set('Asia/Jakarta');
+                    echo date("Y-m-d"); ?></textarea>
+                    <textarea name="waktu" style="display:none"><?php date_default_timezone_set('Asia/Jakarta');
+                    echo date("H:i:s"); ?></textarea>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success" name="acc">kirim</button>                      
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
             <!-- /.box-body -->
           </div>
           <!-- /.box -->

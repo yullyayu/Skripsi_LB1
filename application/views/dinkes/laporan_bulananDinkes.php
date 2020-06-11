@@ -23,8 +23,8 @@
               <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
                 <div class="box-body">
                   <div class="form-group">
-                    <label class="col-sm-2 control-label">Bulan</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-1 control-label">Bulan</label>
+                    <div class="col-sm-11">
                       <select class="form-control" name="bulan" id="bulan">
                       <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
                       foreach ($daftarBulan as $key) { 
@@ -38,8 +38,8 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-2 control-label">Tahun</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-1 control-label">Tahun</label>
+                    <div class="col-sm-11">
                       <select class="form-control" name="tahun" id="tahun">
                       <?php for($i=2019 ; $i<=2029;$i++){
                       if($i == $tahun){?>
@@ -54,13 +54,13 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
+                  <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
                 </div>
                 </div>
                 <!-- /.box-footer -->
               </form>
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped">
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -118,8 +118,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                <!--  -->
-                <tr class="odd gradeX">      
+                <?php if ($this->session->flashdata('flash')){ ?>
+                  <div class="alert alert-danger" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php } else { ?>
+                  <tr class="odd gradeX">      
                     <?php 
                     $datalaporan = json_decode($lbbulan[0]->datalb1);
                     foreach ($datalaporan as $d) {?>
@@ -189,7 +196,16 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
+                <?php } ?>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align:right">Jumlah</th>
+                    <?php for ($i=0; $i <104 ; $i++) { ?>
+                      <th></th>
+                    <?php } ?>
+                </tr>
+                </tfoot>
               </table>
             </div>
             </div>

@@ -287,6 +287,8 @@ class Export_excel extends CI_Controller{
       ->mergeCells('DB8:DC8')
       ->setCellValue('DB9', 'L')
       ->setCellValue('DC9', 'P')
+      ->setCellValue('A459', 'JUMLAH')
+      ->mergeCells('A459:C459')
       ;
       $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
       $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -398,18 +400,16 @@ class Export_excel extends CI_Controller{
         'borders' => [
             'allBorders' => [
                 'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-
             ],
         ],
       ];
-      $spreadsheet->getActiveSheet()->getStyle('A6:DC458')->applyFromArray($styleArray);
+      $spreadsheet->getActiveSheet()->getStyle('A6:DC459')->applyFromArray($styleArray);
       $styleAlg = [
         'alignment' => [
           'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
         ],
       ];
       $spreadsheet->getActiveSheet()->getStyle('A6:DC9')->applyFromArray($styleAlg);
-      
       $datalaporan = json_decode($data[0]->datalb1);
       $i = 10;
       foreach($datalaporan as $d){
@@ -475,6 +475,9 @@ class Export_excel extends CI_Controller{
       ->setCellValue('DC'.$i, $totJKKP);
       $i++; 
     }
+    $i = 459;
+    $k = 4;
+    $spreadsheet->getActiveSheet()->getCell('D459')->getCalculatedValue();
       $spreadsheet->getActiveSheet()->setTitle('Bulan '.date('d-m-Y H'));
       $spreadsheet->setActiveSheetIndex(0);
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

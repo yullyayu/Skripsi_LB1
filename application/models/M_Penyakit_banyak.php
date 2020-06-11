@@ -54,31 +54,24 @@ class M_Penyakit_banyak extends CI_Model{
             'laporanlb1' => $laporanlb1->result(),
         ];
     }
-    public function getGrafik()
+    public function getGrafik($month, $year)
     {
-      $bulan = getdate();
-      $dataPenyakit = $this->db->select('*')
-      ->from('data_penyakit')
-      ->order_by('kode_icdx')
-      ->limit(15)
-      ->get();
-      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, laporan_lb1.tanggal, laporan_lb1.kode_icdx,')
-      ->from('laporan_lb1')
-      ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx')
-      ->where('month(laporan_lb1.tanggal)', $bulan['mon'])
-      ->order_by('laporan_lb1.kode_icdx')
-      ->get();
-      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin, rekam_medis.dalam_wilayah, rekam_medis.luar_wilayah, rekam_medis.tanggal, d.nama_penyakit,kode_penyakit,kode_dx')
-      ->from('rekam_medis')
-      ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit')
-      ->where('month(rekam_medis.tanggal)', $bulan['mon'])
-      ->order_by('rekam_medis.kode_penyakit')
-      ->get();
-      return [
-          'dataPenyakit' => $dataPenyakit->result(),
-          'rekamMedis' => $rekamMedis->result(),
-          'laporanlb1' => $laporanlb1->result(),
-      ];
+      $this->db->select('d.kode_dx, d.kode_icdx, d.nama_penyakit, coalesce(IFNULL(x.bln1,0)+IFNULL(y.bulan1,0), 0) as total, coalesce(IFNULL(z.bln2,0)+IFNULL(a.bulan2,0), 0) as total2,
+      coalesce(IFNULL(b.bln3,0)+IFNULL(c.bulan3,0), 0) as total3');
+        $this->db->from('data_penyakit as d');
+        $this->db->join("(select l.kode_icdx, SUM(MONTH(l.tanggal) = $month[0]) as bln1  from laporan_lb1 as l where YEAR(l.tanggal)=$year group by l.kode_icdx )as x",'d.kode_icdx = x.kode_icdx', 'left');
+        $this->db->join("( select r.kode_penyakit, SUM(MONTH(r.tanggal) = $month[0]) as bulan1 from rekam_medis as r where YEAR(r.tanggal)=$year group by r.kode_penyakit )as y", 'd.kode_icdx=y.kode_penyakit', 'left');
+        $this->db->join("(select l.kode_icdx, SUM(MONTH(l.tanggal) = $month[1]) as bln2  from laporan_lb1 as l where YEAR(l.tanggal)=$year group by l.kode_icdx )as z",'d.kode_icdx = z.kode_icdx', 'left');
+        $this->db->join("( select r.kode_penyakit, SUM(MONTH(r.tanggal) = $month[1]) as bulan2 from rekam_medis as r where YEAR(r.tanggal)=$year group by r.kode_penyakit )as a", 'd.kode_icdx=a.kode_penyakit', 'left');
+        $this->db->join("(select l.kode_icdx, SUM(MONTH(l.tanggal) = $month[2]) as bln3  from laporan_lb1 as l where YEAR(l.tanggal)=$year group by l.kode_icdx )as b",'d.kode_icdx = b.kode_icdx', 'left');
+        $this->db->join("( select r.kode_penyakit, SUM(MONTH(r.tanggal) = $month[2]) as bulan3 from rekam_medis as r where YEAR(r.tanggal)=$year group by r.kode_penyakit )as c", 'd.kode_icdx=c.kode_penyakit', 'left');
+        $this->db->group_by('kode_icdx');
+        $this->db->order_by('total', 'desc');
+        $this->db->order_by('total2', 'desc');
+        $this->db->order_by('total3', 'desc');
+        $this->db->limit(15);
+        $query = $this->db->get();
+        return $query->result_array();
     }
     public function getFilterbln($bulan, $tahun)
     {
@@ -212,4 +205,54 @@ class M_Penyakit_banyak extends CI_Model{
       $query = $this->db->get();
       return $query->result();
   }
+  public function getPenyDin()
+    {
+        $status = 3;
+        $bulan = getdate();
+        $this->db->select('*');
+        $this->db->from('detail_laporan');
+        $this->db->where('month(tanggal)', $bulan['mon']);
+        $this->db->where('id_jp', 4);
+        $this->db->where('status =', $status);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function filterPenyDin($bulan, $tahun)
+    {
+        $status = 3;
+        $bulan = getdate();
+        $this->db->select('*');
+        $this->db->from('detail_laporan');
+        $this->db->where('month(tanggal)', $bulan);
+        $this->db->where('year(tanggal)', $tahun);
+        $this->db->where('id_jp', 4);
+        $this->db->where('status =', $status);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getPenyTriDin($month, $year)
+    {
+        $status = 3;
+        $tribulan = getdate();
+        $this->db->select('*');
+        $this->db->from('detail_laporan');
+        $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
+        $this->db->where('year(tanggal)', $year);
+        $this->db->where('id_jp', 5);
+        $this->db->where('status =', $status);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function getPenyThnDin()
+    {
+        $status = 3;
+        $tahun = getdate();
+        $this->db->select('*');
+        $this->db->from('detail_laporan');
+        $this->db->where('year(tanggal)', $tahun['year']);
+        $this->db->where('id_jp', 6);
+        $this->db->where('status =', $status);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

@@ -4,15 +4,20 @@ class DataLB1_model extends CI_Model{
   function tambahLB1($data, $table){
     $this->db->insert($table, $data);  
   }
-  function sumLB1(){
-    $this->db->select('d.kode_icdx, sum((CASE WHEN l.id_umr=1 and l.kasus="Baru" and l.jenis_kelamin="Laki-laki" then 1 else 0 END)) as umrlaki1b,');
-    $this->db->from('data_penyakit as d');
-    $this->db->join('laporan_lb1 as l', 'l.kode_icdx = d.kode_icdx', 'left');
-    $this->db->group_by('kode_icdx');
-    $query = $this->db->get();
-    return $query->result_array();
+  public function notif()
+  {
+    $this->db->where("(status=1 OR status=11 OR status=3 OR status=4)", NULL, FALSE);
+    // $this->db->where('pesan', 5);
+    $result = $this->db->get('detail_laporan')->result_array();
+    return $result;
   }
-
+  public function pesan()
+  {
+    $this->db->where('pesan', 5);
+    // $this->db->where('pesan', 11);
+    $result = $this->db->get('detail_laporan')->result_array();
+    return $result;
+  }
   function getJumlahLB(){
     $bulan = getdate();
     $dataPenyakit = $this->db->get('data_penyakit');
@@ -37,12 +42,12 @@ class DataLB1_model extends CI_Model{
   {
     $tribulan = getdate();
     $dataPenyakit = $this->db->get('data_penyakit');
-    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
     ->where('month(laporan_lb1.tanggal)', $tribulan['mon'])
     ->get();
-    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -58,12 +63,12 @@ class DataLB1_model extends CI_Model{
   {
     $tahun = getdate();
     $dataPenyakit = $this->db->get('data_penyakit');
-    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
     ->where('month(laporan_lb1.tanggal)', $tahun['year'])
     ->get();
-    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -206,13 +211,13 @@ class DataLB1_model extends CI_Model{
       $bulan = 12;
     }
     $dataPenyakit = $this->db->get('data_penyakit');
-    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
     ->where('month(laporan_lb1.tanggal)', $bulan)
     ->where('year(laporan_lb1.tanggal)', $tahun)
     ->get();
-    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -229,13 +234,13 @@ class DataLB1_model extends CI_Model{
   {
     if($tribulan == 'Tribulan 1'){
       $dataPenyakit = $this->db->get('data_penyakit');
-      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
       ->from('laporan_lb1')
       ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
       ->where("month(laporan_lb1.tanggal) BETWEEN 1 AND 3")
       ->where('year(laporan_lb1.tanggal)', $tahun)
       ->get();
-      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                             ')
       ->from('rekam_medis')
       ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -249,13 +254,13 @@ class DataLB1_model extends CI_Model{
       ];
     }elseif ($tribulan == 'Tribulan 2'){
       $dataPenyakit = $this->db->get('data_penyakit');
-      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
       ->from('laporan_lb1')
       ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
       ->where("month(laporan_lb1.tanggal) BETWEEN 4 AND 5")
       ->where('year(laporan_lb1.tanggal)', $tahun)
       ->get();
-      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                             ')
       ->from('rekam_medis')
       ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -269,13 +274,13 @@ class DataLB1_model extends CI_Model{
       ];
     }elseif ($tribulan == 'Tribulan 3'){
       $dataPenyakit = $this->db->get('data_penyakit');
-      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
       ->from('laporan_lb1')
       ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
       ->where("month(laporan_lb1.tanggal) BETWEEN 7 AND 9")
       ->where('year(laporan_lb1.tanggal)', $tahun)
       ->get();
-      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                             ')
       ->from('rekam_medis')
       ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -289,13 +294,13 @@ class DataLB1_model extends CI_Model{
       ];
     }elseif ($tribulan == 'Tribulan 4'){
       $dataPenyakit = $this->db->get('data_penyakit');
-      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+      $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
       ->from('laporan_lb1')
       ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
       ->where("month(laporan_lb1.tanggal) BETWEEN 4 AND 5")
       ->where('year(laporan_lb1.tanggal)', $tahun)
       ->get();
-      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+      $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                             ')
       ->from('rekam_medis')
       ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
@@ -313,12 +318,12 @@ class DataLB1_model extends CI_Model{
   public function filter_Tahun($tahun)
   {
     $dataPenyakit = $this->db->get('data_penyakit');
-    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
+    $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
     ->where('year(laporan_lb1.tanggal)', $tahun)
     ->get();
-    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
+    $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')

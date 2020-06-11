@@ -5,6 +5,21 @@
       <h1>
         Form Register Rekam Medis 
       </h1>
+      <?php if ($this->session->flashdata('flash')){ ?>
+        <div class="alert alert-danger" role="alert">
+          <strong><?=$this->session->flashdata('flash');?></strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php } elseif ($this->session->flashdata('success')) { ?>
+        <div class="alert alert-success" role="alert">
+          <strong><?=$this->session->flashdata('success');?></strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <?php }?>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Forms</a></li>
@@ -14,14 +29,9 @@
 
     <!-- Main content -->
     <section class="content">
-        <!--/.col (left) -->
-        <!-- right column -->
-          <!-- Horizontal Form -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
+      <div class="box box-info">
+        <div class="box-header with-border">
+          </div>
             <form class="form-horizontal" action="<?php echo site_url('rekam_medis/formRegister'); ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
@@ -150,7 +160,7 @@
                     }else if (btSubmit.value == 'Lama') {
                       dw.disabled = true;
                     }else if(btSubmit.value == 'KKL'){
-                      dw.disable = true;
+                      dw.disabled = true;
                     }else{
                       dw.disabled = false ;
                     }

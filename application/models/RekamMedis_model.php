@@ -11,7 +11,10 @@
         // private $no_bpjs;
         // private $dalam_wilayah;
         // private $luar_wilayah;
-    
+        public function get($no_register)
+        {
+            return $this->db->get_where('rekam_medis', ['no_register' => $no_register]);
+        }
         public function insertData($data, $table)
         {
             $this->db->insert($table, $data);       

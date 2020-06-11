@@ -16,11 +16,26 @@ class Laporan_bulanan extends CI_Controller{
       $this->load->model('DataLB1_model');
       $this->load->helper(array('form', 'url'));
     }
-    
+    public function header()
+    {
+      $pesan = $this->DataLB1_model->pesan();
+      $data['pesan'] = count($pesan);
+      $data['data_pesan'] = $pesan;
+      $result = $this->DataLB1_model->notif();
+      $data['notif'] = count($result);
+      $data['data_notif'] = $result;
+      $this->load->view('header/lb_header', $data);
+    }
+    public function pesanLB()
+    {
+      $this->header();
+      $this->load->view('laporan_bulanan/dashboard_lb1');
+      $this->load->view('footer/lb_footer');
+    }  
     public function dataRegisterLB()
     {
         $data['rekam_medis'] = $this->RekamMedis_model->tampil_data()->result();
-        $this->load->view('header/lb_header');
+        $this->header();
         $this->load->view('laporan_bulanan/data_registerlb', $data); 
         $this->load->view('footer/lb_footer');
     }
@@ -117,9 +132,9 @@ class Laporan_bulanan extends CI_Controller{
         }
         // json_encode($pen);
         // print_r($pen);
-         $this->load->view('header/lb_header');
-         $this->load->view('laporan_bulanan/laporan_bulanan', ['data' => $pen]);
-         $this->load->view('footer/lb_footer');
+        $this->header();
+        $this->load->view('laporan_bulanan/laporan_bulanan', ['data' => $pen]);
+        $this->load->view('footer/lb_footer');
     }
     public function dataLB1_tribln(){
       $data = $this->DataLB1_model->getJumTribulan();
@@ -144,6 +159,8 @@ class Laporan_bulanan extends CI_Controller{
                       $pen[$key]->pasien[$x]->Lama->Laki = 0;
                       $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
                       $pen[$key]->pasien[$x]->KKL->Laki =0;
+                      $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                      $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
                   }
                 }
               }
@@ -209,9 +226,9 @@ class Laporan_bulanan extends CI_Controller{
         }
         // echo json_encode($pen);
         // print_r($pen);
-         $this->load->view('header/lb_header');
-         $this->load->view('laporan_bulanan/laporan_tribulan', ['data' => $pen]);
-         $this->load->view('footer/lb_footer');
+        $this->header();
+        $this->load->view('laporan_bulanan/laporan_tribulan', ['data' => $pen]);
+        $this->load->view('footer/lb_footer');
     }
     public function rekapLB1()
     {
@@ -237,6 +254,8 @@ class Laporan_bulanan extends CI_Controller{
                       $pen[$key]->pasien[$x]->Lama->Laki = 0;
                       $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
                       $pen[$key]->pasien[$x]->KKL->Laki =0;
+                      $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                      $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
                   }
                 }
               }
@@ -303,9 +322,9 @@ class Laporan_bulanan extends CI_Controller{
         }
         // echo json_encode($pen);
         // print_r($pen);
-         $this->load->view('header/lb_header');
-         $this->load->view('laporan_bulanan/laporan_tahunan', ['data' => $pen]);
-         $this->load->view('footer/lb_footer');
+        $this->header();
+        $this->load->view('laporan_bulanan/laporan_tahunan', ['data' => $pen]);
+        $this->load->view('footer/lb_footer');
     }
     public function filterLB1()
     {
@@ -334,6 +353,8 @@ class Laporan_bulanan extends CI_Controller{
                       $pen[$key]->pasien[$x]->Lama->Laki = 0;
                       $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
                       $pen[$key]->pasien[$x]->KKL->Laki =0;
+                      $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                      $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
                   }
                 }
               }
@@ -399,9 +420,9 @@ class Laporan_bulanan extends CI_Controller{
         }
         // json_encode($pen);
         // print_r($pen);
-         $this->load->view('header/lb_header');
-         $this->load->view('laporan_bulanan/laporan_bulanan', ['data' => $pen]);
-         $this->load->view('footer/lb_footer');
+        $this->header();
+        $this->load->view('laporan_bulanan/laporan_bulanan', ['data' => $pen]);
+        $this->load->view('footer/lb_footer');
     }
     public function filterTribln()
     {
@@ -431,6 +452,8 @@ class Laporan_bulanan extends CI_Controller{
                 $pen[$key]->pasien[$x]->Lama->Laki = 0;
                 $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
                 $pen[$key]->pasien[$x]->KKL->Laki =0;
+                $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
               }
             }
           }
@@ -496,7 +519,7 @@ class Laporan_bulanan extends CI_Controller{
         }
         // echo json_encode($data);
         // print_r($pen);
-        $this->load->view('header/lb_header');
+        $this->header();
         $this->load->view('laporan_bulanan/laporan_tribulan', ['data' => $pen]);
         $this->load->view('footer/lb_footer');
     }
@@ -525,6 +548,8 @@ class Laporan_bulanan extends CI_Controller{
                       $pen[$key]->pasien[$x]->Lama->Laki = 0;
                       $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
                       $pen[$key]->pasien[$x]->KKL->Laki =0;
+                      $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                      $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
                   }
                 }
               }
@@ -590,7 +615,7 @@ class Laporan_bulanan extends CI_Controller{
           }
         // echo json_encode($data);
         // print_r($pen);
-        $this->load->view('header/lb_header');
+        $this->header();
         $this->load->view('laporan_bulanan/laporan_tahunan', ['data' => $pen]);
         $this->load->view('footer/lb_footer');
     }
@@ -637,23 +662,24 @@ class Laporan_bulanan extends CI_Controller{
         'tanggal' => $tanggal,
       );
       $this->DataLB1_model->tambahLB1($data, 'laporan_lb1');
+      $this->session->set_flashdata('flash', 'Data berhasil ditambahkan');
       redirect('laporan_bulanan/dataLB1');
     }
     public function viewCetak()
     {
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/cetak_LB1bulan');
       $this->load->view('footer/lb_footer');
     }
     public function viewCetakTribln()
     {
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/cetak_LB1tribulan');
       $this->load->view('footer/lb_footer');
     }
     public function viewCetakTahun()
     {
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/cetak_LB1tahun');
       $this->load->view('footer/lb_footer');
     }
@@ -687,35 +713,35 @@ class Laporan_bulanan extends CI_Controller{
     public function statusLB()
     {
       $data['status'] = $this->DataLB1_model->tampil_status()->result();
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/tabel_statusLB1', $data); 
       $this->load->view('footer/lb_footer');
     }
     public function detailLB($id)
     {
       $data['detail'] = $this->DataLB1_model->getDataLB1($id);
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/detail_laporanLB1', $data);
       $this->load->view('footer/lb_footer');
     }
     public function detailPBln($id)
     {
       $data['peny_bln'] = $this->DataLB1_model->getDataLB1($id);
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/detail_Penybulan', $data);
       // $this->load->view('footer/lb_footer');
     }
     public function detailPTri($id)
     {
       $data['peny_tri'] = $this->DataLB1_model->getDataLB1($id);
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/detail_Penytri', $data);
       $this->load->view('footer/lb_footer');
     }
     public function detailPThn($id)
     {
       $data['peny_thn'] = $this->DataLB1_model->getDataLB1($id);
-      $this->load->view('header/lb_header');
+      $this->header();
       $this->load->view('laporan_bulanan/detail_Penythn', $data);
       $this->load->view('footer/lb_footer');
     }

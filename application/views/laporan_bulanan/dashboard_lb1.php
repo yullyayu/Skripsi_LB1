@@ -20,14 +20,13 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
-
-              <p>New Orders</p>
+              <h4>Data Register</h4>
+              <p>Rekam Medis</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="fa fa-book"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?=site_url('laporan_bulanan/dataRegisterLB')?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -35,14 +34,13 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-              <p>Bounce Rate</p>
+              <h4>Laporan Bulanan(LB1)</h4>
+              <p>Data Penyakit</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?=site_url('laporan_bulanan/dataLB1')?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -50,31 +48,78 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>44</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>65</h3>
-
-              <p>Unique Visitors</p>
+              <h4>15 Besar Penyakit</h4>
+              <p>Penyakit Terbanyak</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?=site_url('data_penyakit/getJum_Penyakit')?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
+        <!-- ./col -->
+    <!-- Main content -->
+    <section class="content">
+      <?php $unique = ""; ?>
+      <?php foreach ($data_pesan as $dp) { ?>
+        <!-- row -->
+      <div class="row">
+        <div class="col-md-12">
+          <!-- The time line -->
+          <ul class="timeline">
+            <!-- timeline time label -->
+            <li class="time-label">
+            <?php
+            $date = $dp['tanggal'];
+            if ($unique == null) {
+                $unique = $date;
+                echo '<span class="bg-red">' .
+                    date('d F Y', strtotime($unique)) .
+                    '</span>';
+            } else {
+                if ($unique != $date) {
+                    if ($unique != null) {
+                        $unique = $date;
+                        echo '<span class="bg-red">' .
+                            date('d F Y', strtotime($unique)) .
+                            '</span>';
+                    }
+                }
+            }
+            ?>
+            </li>
+            <!-- /.timeline-label -->
+            <!-- timeline item -->
+            <li>
+              <i class="fa fa-envelope bg-blue"></i>
+
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> <?php echo $dp['waktu']; ?></span>
+
+                <h3 class="timeline-header"><a href="#">Dinas Kesehatan</a> sent you an email</h3>
+                <div class="timeline-body">
+                  <?php if ($dp['id_jp'] == 1) { ?>
+                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }elseif ($dp['id_jp'] == 2) { ?>
+                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }elseif ($dp['id_jp'] == 3) { ?>
+                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }elseif ($dp['id_jp'] == 4) { ?>
+                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php } ?>
+                  
+                </div>
+              </div>
+            </li>
+            <!-- END timeline item -->
+            <!-- timeline time label -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <?php } ?>
+      </section>
+    <!-- /.content -->
         <!-- ./col -->
       </div>
     </section>

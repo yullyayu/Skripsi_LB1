@@ -17,29 +17,13 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
+              <h3 class="box-title">Laporan Data Kesakitan(Tahunan)</h3>
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
-                <div class="box-body">
+              <form action="<?php echo site_url('kepala_puskesmas/filterTahun'); ?>" method="post">
                   <div class="form-group">
-                    <label class="col-sm-2 control-label">Bulan</label>
-                    <div class="col-sm-10">
-                      <select class="form-control" name="bulan" id="bulan">
-                      <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                      foreach ($daftarBulan as $key) { 
-                      if($key == $bulan){?>
-                      <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?> selected=""><?php echo $key['bulan']?></option>
-                      <?php }
-                      else{?>
-                      <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?>><?php echo $key?></option>
-                      <?php } } ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label">Tahun</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-1 control-label">Tahun</label>
+                    <div class="col-sm-12">
                       <select class="form-control" name="tahun" id="tahun">
                       <?php for($i=2019 ; $i<=2029;$i++){
                       if($i == $tahun){?>
@@ -54,13 +38,13 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
+                  <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
                 </div>
                 </div>
                 <!-- /.box-footer -->
               </form>
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped">
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -118,7 +102,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                <!--  -->
+                <?php if ($this->session->flashdata('flash')){ ?>
+                  <div class="alert alert-danger" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php }else { ?>
                 <tr class="odd gradeX">      
                     <?php 
                     $datalaporan = json_decode($lb_tahun[0]->datalb1);
@@ -189,7 +180,15 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
+                  <?php } ?>
                 </tbody>
+                <tr>
+                    <th colspan="3" style="text-align:right">Jumlah</th>
+                    <?php for ($i=0; $i <104 ; $i++) { ?>
+                      <th></th>
+                    <?php } ?>
+                </tr>
+                </tfoot>
               </table>
             </div>
             </div>

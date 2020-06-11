@@ -41,7 +41,9 @@
                   <td><?php echo $st->tanggal?></td>
                   <td><?php echo $st->nama_puskesmas?></td>
                   <td><?php echo $st->jenis_laporan?> 
-                  <?php if ($st->status == 2 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
+                  <?php if ($st->status == 4) { ?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-times"></span></td>
+                  <?php }elseif ($st->status == 2 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 2 && $st->id_jp == 4 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyBulan/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
@@ -59,6 +61,8 @@
                             echo "Belum dikirim";
                           }elseif ($st->status == 3) {
                             echo "Telah disetujui";
+                          }elseif ($st->status == 4) {
+                            echo "Tidak disetujui";
                           }
                     ?>
                   </td>

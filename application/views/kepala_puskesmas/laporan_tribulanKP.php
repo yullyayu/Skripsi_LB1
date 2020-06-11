@@ -20,47 +20,26 @@
               <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
-                <div class="box-body">
+              <form method="POST" action="<?php echo site_url('Kepala_puskesmas/filterTribulan') ?>">
                 <div class="form-group">
-                  <label class="col-sm-2 col-sm-2 control-label">Tribulan</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="tribulan" id="tribulan">
-                    <?php $daftarTribulan = array("Tribulan 1","Tribulan 2","Tribulan 3", "Tribulan 4");
-                    foreach ($daftarTribulan as $key) {
-                    if($key== $tribulan){?>
-                    <option value="<?php echo $key?>" <?php echo set_select('tribulan', $key);?> selected=""><?php echo $key['tribulan']?></option>
-                    <?php }
-                    else{?>
-                    <option value="<?php echo $key?>" <?php echo set_select('tribulan', $key);?>><?php echo $key?></option>
-                    <?php }}?>
-                    </select>
+                  <label for="exampleFormControlInput1">Tahun</label>
+                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Tahun" name="year" required>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Tribulan</label>
+                  <select class="form-control" id="exampleFormControlSelect1" name="triwulan" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+                  <div align="right">
+                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
                   </div>
-                </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label">Tahun</label>
-                    <div class="col-sm-10">
-                      <select class="form-control" name="tahun" id="tahun">
-                      <?php for($i=2019 ; $i<=2029;$i++){
-                      if($i == $tahun){?>
-                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
-                      <?php   } else{?>
-                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
-                      <?php   }} ?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                  <div class="col-sm-12" align="right">
-                  <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
-                </div>
-                </div>
-                <!-- /.box-footer -->
               </form>
               <div class="table-responsive">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped">
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -118,8 +97,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                <!--  -->
-                <tr class="odd gradeX">      
+                <?php if ($this->session->flashdata('flash')){ ?>
+                  <div class="alert alert-danger" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php } else { ?>
+                  <tr class="odd gradeX">      
                     <?php 
                     $datalaporan = json_decode($lb_tribulan[0]->datalb1);
                     foreach ($datalaporan as $d) {?>
@@ -189,7 +175,16 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
+                <?php } ?>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align:right">Jumlah</th>
+                    <?php for ($i=0; $i <104 ; $i++) { ?>
+                      <th></th>
+                    <?php } ?>
+                </tr>
+                </tfoot>
               </table>
             </div>
             </div>
