@@ -400,7 +400,7 @@ class Export_excel extends CI_Controller{
       $activeSheet->getStyle('A6:DC9')->applyFromArray($styleAlg);
       $datalaporan = json_decode($data[0]->datalb1);
       $i = 10;
-      $arrData = [];
+      $arrData = array();
       foreach($datalaporan as $d){
       $totBaruP = 0;
       $totBaruL = 0;
@@ -410,7 +410,7 @@ class Export_excel extends CI_Controller{
       $totKKLL = 0;
       $totJKKP = 0;
       $totJKKL = 0; 
-      $arrData[$i] = [] ;
+      $arrData[$i] = [];
       $activeSheet
       ->setCellValue('A'.$i, $d->kode_dx)
       ->setCellValue('B'.$i, $d->kode_icdx)
@@ -456,7 +456,6 @@ class Export_excel extends CI_Controller{
           ->setCellValueByColumnAndRow($k++, $i, $jumJKKP); 
           $tempArr = [$pas->Baru->Laki,$pas->Baru->Perempuan,$pas->Lama->Laki,$pas->Lama->Perempuan,$pas->KKL->Laki,$pas->KKL->Perempuan,$jumJKKL,$jumJKKP];
           $arrData[$i] = array_merge($arrData[$i],$tempArr);
-        //   ->setCellValueByColumnAndRow($k++, $i, '=SUM(D4:D458)')
         }
       }
       $activeSheet
@@ -468,19 +467,20 @@ class Export_excel extends CI_Controller{
       ->setCellValue('DA'.$i, $totKKLP)
       ->setCellValue('DB'.$i, $totJKKL)
       ->setCellValue('DC'.$i, $totJKKP);
+        $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
+        $arrData[$i] = array_merge($arrData[$i],$tempArr);
       $i++; 
     }
     $maxRow = $activeSheet->getHighestRow();
     $maxLoop = $maxRow - 10;
-    for($x=4;$x<=100;$x++){
+    for($x=0;$x<104;$x++){
         $count = 0;
         for($i=10;$i<=$maxLoop;$i++){
-            $count += $arrData[$x][$i];
+            $count += $arrData[$i][$x];
         }
-        $activeSheet->setCellValueByColumnAndRow($maxRow, $x, $count); 
+        $activeSheet->setCellValueByColumnAndRow($x+4, $maxRow, $count); 
     }
-      $activeSheet->getActiveSheet()->setTitle('Bulan '.date('d-m-Y H'));
-      $spreadsheet->setActiveSheetIndex(0);
+      $activeSheet->setTitle('Bulan '.date('d-m-Y H'));
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       header('Content-Disposition: attachment;filename="Laporan Bulanan.xlsx"');
       header('Cache-Control: max-age=0');
