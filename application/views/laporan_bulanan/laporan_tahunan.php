@@ -17,7 +17,13 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tahunan)</h3>
+              <?php  foreach ($data as $dp ){
+                  foreach ($dp->pasien as $pas) {
+                    $bln = $pas->bulan = $pas->bulan1;
+                    $tahun = date('Y', strtotime($bln));
+                  }
+              } ?>
+              <h3 class="box-title" >Laporan Data Kesakitan Tahun <?php echo $tahun ?></h3>
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterTahun'); ?>" method="post">
             <div class="box-body">

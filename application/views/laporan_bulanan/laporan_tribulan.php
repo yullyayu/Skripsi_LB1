@@ -17,7 +17,23 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
+              <?php  foreach ($data as $dp ){
+                  foreach ($dp->pasien as $pas) {
+                    $bln = $pas->bulan = $pas->bulan1;
+                    $bulan = date('m', strtotime($bln));
+                    $tahun = date('Y', strtotime($bln));
+                    if ($bulan == 1 || $bulan == 2 || $bulan == 3) {
+                      $tri = 'Tribulan 1';
+                    }elseif ($bulan == 4 || $bulan == 5 || $bulan == 6) {
+                      $tri = 'Tribulan 2';
+                    }elseif ($bulan == 7 || $bulan == 8 || $bulan == 9) {
+                      $tri = 'Tribulan 3';
+                    }elseif ($bulan == 10 || $bulan == 11 || $bulan == 12) {
+                      $tri = 'Tribulan 4';
+                    }
+                  }
+              } ?>
+              <h3 class="box-title" >Laporan Data Kesakitan <?php echo $tri ?> Tahun <?php echo $tahun ?></h3>
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterTribln'); ?>" method="post">
             <div class="box-body">

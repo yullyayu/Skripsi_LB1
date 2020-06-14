@@ -17,7 +17,21 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Bulan)</h3>
+            <?php if ($this->session->flashdata('flash')){ ?>
+                      <div class="alert alert-danger" role="alert">
+                        <strong><?=$this->session->flashdata('flash');?></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+            <?php  }else {
+                $datalaporan = $lbbulan;
+                foreach ($datalaporan as $d) {   
+                  $bulan = date('M', strtotime($d->tanggal));
+                  $tahun = date('Y', strtotime($d->tanggal));
+                }?>
+              <h3 class="box-title" >Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?></h3>
+              <?php } ?>
             </div>
             <div class="box-body">
               <form method="post" action="<?php echo site_url('kepala_puskesmas/filterBulan'); ?>">

@@ -71,13 +71,13 @@ class DataLB1_model extends CI_Model{
     $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.tanggal, laporan_lb1.kasus, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
-    ->where('month(laporan_lb1.tanggal)', $tahun['year'])
+    ->where('year(laporan_lb1.tanggal)', $tahun['year'])
     ->get();
     $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.tanggal, rekam_medis.jenis_kelamin,dalam_wilayah, luar_wilayah, d.nama_penyakit,kode_penyakit, kode_dx
                           ')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit', 'left')
-        ->where('month(rekam_medis.tanggal)', $tahun['year'])
+        ->where('year(rekam_medis.tanggal)', $tahun['year'])
         ->get();
     return [
         'dataPenyakit' => $dataPenyakit->result(),

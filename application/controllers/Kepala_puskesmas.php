@@ -101,10 +101,6 @@ class Kepala_puskesmas extends CI_Controller{
         $this->header();
         $this->load->view('kepala_puskesmas/laporan_bulananKP');
         $this->load->view('footer/kp_footer');
-        // echo "<script>
-        //       alert('Username or Password is Wrong');
-        //       window.location='".site_url('kepala_puskesmas/dataLB1_kepala')."';
-        //       </script>";
       }else {
         $data['lbbulan'] = $this->M_Kepala_puskesmas->getLB1bulan();
         $this->header();
@@ -152,7 +148,6 @@ class Kepala_puskesmas extends CI_Controller{
       $data['daftarBulan'] = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November", "Desember");
       $bulan = $this->input->post('bulan');
       $tahun = $this->input->post('tahun');
-      var_dump($bulan);
       $dt = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
       if ($dt == null) {
         $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
