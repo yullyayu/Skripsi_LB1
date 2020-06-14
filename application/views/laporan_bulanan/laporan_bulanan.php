@@ -44,8 +44,8 @@
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Bulan</label>
-                  <div class="col-sm-10">
+                  <label class="col-sm-1 control-label">Bulan</label>
+                  <div class="col-sm-11">
                     <select class="form-control" name="bulan" id="bulan">
                     <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
                     foreach ($daftarBulan as $key) { 
@@ -59,8 +59,8 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Tahun</label>
-                  <div class="col-sm-10">
+                  <label class="col-sm-1 control-label">Tahun</label>
+                  <div class="col-sm-11">
                     <select class="form-control" name="tahun" id="tahun">
                     <?php for($i=2019 ; $i<=2029;$i++){
                     if($i == $tahun){?>
@@ -76,77 +76,81 @@
               <div class="box-footer">
                 <div class="col-sm-12" align="right">
                 <button type="button" href="" class="btn bg-navy margin" data-toggle="modal" data-target="#tambah"> Tambah Data </button>
-                <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
+                <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
               </div>
               </div>
               <!-- /.box-footer -->
             </form>
             <div class="box-body">
               <div class="table-responsive">
-              <table id="example" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped" cellspacing="0">
               <thead>
                   <tr>
-                    <th scoop="col" rowspan="4">Kode DX</th>
-                    <th scoop="col" rowspan="4">Kode ICD-X</th>
-                    <th scoop="col" rowspan="4">Nama Penyakit</th>
-                    <th scoop="col" colspan="96">Jumlah Penderita Menurut Golongan Umur</th>
-                    <th scoop="col" colspan="8">Total</th>
+                    <th rowspan="4">Kode DX</th>                     
+                    <th rowspan="4">Kode ICD-X</th>
+                    <th rowspan="4">Nama Penyakit</th>
+                    <th colspan="96">Jumlah Penderita Menurut Golongan Umur</th>
+                    <th colspan="8">Total</th>
                   </tr>
                   <tr>
-                    <th scope="col" colspan="8">0-7 Hari</th>
-                    <th scope="col" colspan="8">8-28 Hari</th>
-                    <th scope="col" colspan="8">>29-1 Thn</th>
-                    <th scope="col" colspan="8">1-4 Thn</th>
-                    <th scope="col" colspan="8">5-9 Thn</th>
-                    <th scope="col" colspan="8">10-14 Thn</th>
-                    <th scope="col" colspan="8">15-19 Thn</th>
-                    <th scope="col" colspan="8">20-44 Thn</th>
-                    <th scope="col" colspan="8">45-54 Thn</th>
-                    <th scope="col" colspan="8">55-59 Thn</th>
-                    <th scope="col" colspan="8">60-69 Thn</th>
-                    <th scope="col" colspan="8">>70 Thn</th>
-                    <th scope="col" colspan="8"></th>
+                    <th colspan="8">0-7 Hari</th>
+                    <th colspan="8">8-28 Hari</th>
+                    <th colspan="8">>29-1 Thn</th>
+                    <th colspan="8">1-4 Thn</th>
+                    <th colspan="8">5-9 Thn</th>
+                    <th colspan="8">10-14 Thn</th>
+                    <th colspan="8">15-19 Thn</th>
+                    <th colspan="8">20-44 Thn</th>
+                    <th colspan="8">45-54 Thn</th>
+                    <th colspan="8">55-59 Thn</th>
+                    <th colspan="8">60-69 Thn</th>
+                    <th colspan="8">>70 Thn</th>
+                    <th colspan="8"></th>
                   </tr>
                   <tr>
                     <?php for($x=0;$x<12;$x++) { ?>
-                      <th scope="col" colspan="2">Baru</th>
-                      <th scope="col" colspan="2">Lama</th>
-                      <th scope="col" colspan="2">KKL</th>
-                      <th scope="col" colspan="2">JKK</th>
+                      <th colspan="2">Baru</th>
+                      <th colspan="2">Lama</th>
+                      <th colspan="2">KKL</th>
+                      <th colspan="2">JKK</th>
                     <?php }?>
-                    <th scope="col" colspan="2">Baru</th>
-                    <th scope="col" colspan="2">Lama</th>
-                    <th scope="col" colspan="2">KKL</th>
-                    <th scope="col" colspan="2">JKK</th>
+                    <th colspan="2">Baru</th>
+                    <th colspan="2">Lama</th>
+                    <th colspan="2">KKL</th>
+                    <th colspan="2">JKK</th>
                     </tr>
                   <tr>
                   <?php for($x=0;$x<12;$x++) { ?>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
                   <?php }?> 
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
-                    <th scope="col" >P</th>
-                    <th scope="col" >L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
+                    <th>P</th>
+                    <th>L</th>
                   </tr>
                 </thead>
                 <tbody>
                 <!--  -->
-                <tr class="odd gradeX">
-                    <?php foreach ($data as $d) {?>
-                    <th scope="row"><?= $d->kode_dx?></th>
+                  <?php foreach ($data as $d) {?>
+                  <?php if ($d->kode_dx == $d->kd) { ?>                
+                  <tr>
+                    <th scope="row"><?= $d->kode_dx ?></th>
                     <th scope="row"><?= $kode = $d->kode_icdx?></th>
-                    <th scope="row"><?= $nm_penyakit = $d->nama_penyakit?></th>
+                    <th scope="row">
+                    <?= $d->kategori_penyakit?>
+                      <?php echo $d->nama_penyakit = $d->nama_penyakit; ?>
+                    </th>
                     <!--Spasih 1-->
                     <?php 
                       $totBaruP = 0;
@@ -215,6 +219,7 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
+                  <?php }?>
                 </tbody>
                 <tfoot>
                 <tr>

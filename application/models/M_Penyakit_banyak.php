@@ -160,47 +160,103 @@ class M_Penyakit_banyak extends CI_Model{
     $query = $this->db->get();
     return $query->result();
   }
-  public function CetakPenyTri($tribulan, $tahun)
-  {
-    if($tribulan == 'Tribulan 1'){
-      $this->db->select('*');
-      $this->db->from('detail_laporan');
-      $this->db->where("month(tanggal) BETWEEN 1 AND 3");
-      $this->db->where('year(tanggal)', $tahun);
-      $this->db->where('id_jp', 5);
-      $query = $this->db->get();
-      return $query->result();
-    }elseif ($tribulan == 'Tribulan 2') {
-      $this->db->select('*');
-      $this->db->from('detail_laporan');
-      $this->db->where("month(tanggal) BETWEEN 4 AND 6");
-      $this->db->where('year(tanggal)', $tahun);
-      $this->db->where('id_jp', 5);
-      $query = $this->db->get();
-      return $query->result();
-    }elseif ($tribulan == 'Tribulan 3') {
-      $this->db->select('*');
-      $this->db->from('detail_laporan');
-      $this->db->where("month(tanggal) BETWEEN 7 AND 9");
-      $this->db->where('year(tanggal)', $tahun);
-      $this->db->where('id_jp', 5);
-      $query = $this->db->get();
-      return $query->result();
-    }elseif ($tribulan == 'Tribulan 4') {
-      $this->db->select('*');
-      $this->db->from('detail_laporan');
-      $this->db->where("month(tanggal) BETWEEN 10 AND 12");
-      $this->db->where('year(tanggal)', $tahun);
-      $this->db->where('id_jp', 5);
-      $query = $this->db->get();
-      return $query->result();
-    }  
-  }
   public function CetakPenyTahun($tahun)
   {
       $this->db->select('*');
       $this->db->from('detail_laporan');
       $this->db->where('year(tanggal)', $tahun);
+      $this->db->where('id_jp', 6);
+      $query = $this->db->get();
+      return $query->result();
+  }
+  public function getCetakPenyKP($bulan, $tahun)
+    {
+    if ($bulan == 'Januari') {
+      $bln = 1;
+    }elseif ($bulan == 'Februari') {
+      $bln = 2;
+    }elseif ($bulan == 'Maret') {
+      $bln = 3;
+    }elseif ($bulan == 'April') {
+      $bln = 4;
+    }elseif ($bulan == 'Mei') {
+      $bln = 5;
+    }elseif ($bulan == 'Juni') {
+      $bln = 6;
+    }elseif ($bulan = 'Juli') {
+      $bln = 7;
+    }elseif ($bulan = 'Agustus') {
+      $bln = 8;
+    }elseif ($bulan = 'September') {
+      $bln = 9;
+    }elseif ($bulan = 'Oktober') {
+      $bln = 10;
+    }elseif ($bulan = 'November') {
+      $bln = 11;
+    }elseif ($bulan = 'Desember') {
+      $bln = 12;
+    }
+    $this->db->select('*');
+    $this->db->from('detail_laporan');
+    $this->db->where('month(tanggal)', $bln);
+    $this->db->where('year(tanggal)', $tahun);
+    $this->db->where('status !=', 0);
+    $this->db->where('id_jp', 4);
+    $query = $this->db->get();
+    return $query->result();
+  }
+  public function CetakPenyTahunKP($tahun)
+  {
+      $this->db->select('*');
+      $this->db->from('detail_laporan');
+      $this->db->where('year(tanggal)', $tahun);
+      $this->db->where('status !=', 0);
+      $this->db->where('id_jp', 6);
+      $query = $this->db->get();
+      return $query->result();
+  }
+  public function getCetakPenyDin($bulan, $tahun)
+    {
+    if ($bulan == 'Januari') {
+      $bln = 1;
+    }elseif ($bulan == 'Februari') {
+      $bln = 2;
+    }elseif ($bulan == 'Maret') {
+      $bln = 3;
+    }elseif ($bulan == 'April') {
+      $bln = 4;
+    }elseif ($bulan == 'Mei') {
+      $bln = 5;
+    }elseif ($bulan == 'Juni') {
+      $bln = 6;
+    }elseif ($bulan = 'Juli') {
+      $bln = 7;
+    }elseif ($bulan = 'Agustus') {
+      $bln = 8;
+    }elseif ($bulan = 'September') {
+      $bln = 9;
+    }elseif ($bulan = 'Oktober') {
+      $bln = 10;
+    }elseif ($bulan = 'November') {
+      $bln = 11;
+    }elseif ($bulan = 'Desember') {
+      $bln = 12;
+    }
+    $this->db->select('*');
+    $this->db->from('detail_laporan');
+    $this->db->where('month(tanggal)', $bln);
+    $this->db->where('year(tanggal)', $tahun);
+    $this->db->where('status =', 3);
+    $this->db->where('id_jp', 4);
+    $query = $this->db->get();
+    return $query->result();
+  }
+  public function CetakPenyTahunDin($tahun)
+  {
+      $this->db->select('*');
+      $this->db->from('detail_laporan');
+      $this->db->where('year(tanggal)', $tahun);
+      $this->db->where('status =', 3);
       $this->db->where('id_jp', 6);
       $query = $this->db->get();
       return $query->result();

@@ -1,12 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-// Load library phpspreadsheet
-require('./excel/vendor/autoload.php');
-
-use PhpOffice\PhpSpreadsheet\Helper\Sample;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Laporan_bulanan extends CI_Controller{
     function __construct(){
@@ -44,32 +37,40 @@ class Laporan_bulanan extends CI_Controller{
     {
         $data = $this->DataLB1_model->getJumlahLB();
         $penyakit = $data['dataPenyakit'];
+        $dataKategori = $data['dataKategori'];
         $rekamMedis = $data['rekamMedis'];
         $laporanlb1 = $data['laporanlb1'];
         $pen = [];
         foreach ($penyakit as $key => $peny) {
-            $pen[$key] = (object)[];
-            $pen[$key]->pasien = [];
-            foreach ($rekamMedis as $ki => $rek) {
-              foreach ($laporanlb1 as $lab => $lb) {
-                if ($peny->kode_icdx == $rek->kode_penyakit || $peny->kode_icdx == $lb->kode_icdx) {
-                  for ($x = 0; $x < 12; $x++) {
-                      $pen[$key]->pasien[$x] = (object)[];
-                      $pen[$key]->pasien[$x]->Baru = (object)[];
-                      $pen[$key]->pasien[$x]->Lama = (object)[];
-                      $pen[$key]->pasien[$x]->KKL = (object)[];
-                      $pen[$key]->pasien[$x]->Baru->Perempuan = 0;
-                      $pen[$key]->pasien[$x]->Baru->Laki = 0;
-                      $pen[$key]->pasien[$x]->Lama->Perempuan = 0;
-                      $pen[$key]->pasien[$x]->Lama->Laki = 0;
-                      $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
-                      $pen[$key]->pasien[$x]->KKL->Laki =0;
-                      $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
-                      $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
+          foreach ($dataKategori as $dk => $kat) {
+            if ($peny->kode_dx == $kat->kode_dx) {
+              $pen[$key] = (object)[];
+              $pen[$key]->pasien = [];
+              foreach ($rekamMedis as $ki => $rek) {
+                foreach ($laporanlb1 as $lab => $lb) {
+                  if ($peny->kode_icdx == $rek->kode_penyakit || $peny->kode_icdx == $lb->kode_icdx) {
+                    for ($x = 0; $x < 12; $x++) {
+                        $pen[$key]->pasien[$x] = (object)[];
+                        $pen[$key]->pasien[$x]->Baru = (object)[];
+                        $pen[$key]->pasien[$x]->Lama = (object)[];
+                        $pen[$key]->pasien[$x]->KKL = (object)[];
+                        $pen[$key]->pasien[$x]->Baru->Perempuan = 0;
+                        $pen[$key]->pasien[$x]->Baru->Laki = 0;
+                        $pen[$key]->pasien[$x]->Lama->Perempuan = 0;
+                        $pen[$key]->pasien[$x]->Lama->Laki = 0;
+                        $pen[$key]->pasien[$x]->KKL->Perempuan = 0;
+                        $pen[$key]->pasien[$x]->KKL->Laki =0;
+                        $pen[$key]->pasien[$x]->bulan = $rek->tanggal;
+                        $pen[$key]->pasien[$x]->bulan1 = $lb->tanggal;
+                    }
                   }
                 }
               }
+              $pen[$key]->kd = $peny->kode_dx;
+              $pen[$key]->kategori_penyakit = $kat->kategori_penyakit; 
+              // var_dump($pen[$key]->kd = $peny->kode_dx);
             }
+          }
             // $pen[$key]->kategori_penyakit = $peny->kategori_penyakit;
             $pen[$key]->kode_dx = $peny->kode_dx;
             $pen[$key]->kode_icdx = $peny->kode_icdx;

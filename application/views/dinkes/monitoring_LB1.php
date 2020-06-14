@@ -27,7 +27,7 @@
                 <tr>
                   <th style="width: 10px">No</th>
                   <th >Jenis Laporan</th>
-                  <th> Tanggal </th> 
+                  <th >Tanggal </th> 
                   <th >Puskesmas</th>
                   <th >Kecamatan</th>
                   <th >Status Pengiriman LB1</th>

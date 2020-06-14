@@ -63,8 +63,7 @@ class Rekam_medis extends CI_Controller{
       }
       $jenis_kelamin = $this->input->post('jenis_kelamin');
       $jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
-      $kode_penyakit = $this->input->post('kode_penyakit');
-      
+      $kode_penyakit = $this->input->post('kode_penyakit');    
       $terapi = $this->input->post('terapi');
       $no_bpjs = $this->input->post('no_bpjs');
       $dalam_wilayah = "";
@@ -86,8 +85,7 @@ class Rekam_medis extends CI_Controller{
         $luar_wilayah = $this->input->post('luar_wilayah');
       }else {
         $luar_wilayah = "-";
-      }
-           
+      }        
       $data = array(
         'no_register' => $no_register,
         'tanggal' => $tanggal,

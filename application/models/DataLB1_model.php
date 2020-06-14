@@ -21,6 +21,10 @@ class DataLB1_model extends CI_Model{
   function getJumlahLB(){
     $bulan = getdate();
     $dataPenyakit = $this->db->get('data_penyakit');
+    $dataKategori = $this->db->select('kategori_penyakit.kode_dx, kategori_penyakit.kategori_penyakit, d.kode_dx')
+    ->from('kategori_penyakit')
+    ->join('data_penyakit as d', 'd.kode_dx = kategori_penyakit.kode_dx', 'left')
+    ->get();
     $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus, laporan_lb1.tanggal, d.nama_penyakit,d.kode_icdx, kode_dx')
     ->from('laporan_lb1')
     ->join('data_penyakit as d', 'd.kode_icdx = laporan_lb1.kode_icdx', 'left')
@@ -34,6 +38,7 @@ class DataLB1_model extends CI_Model{
         ->get();
     return [
         'dataPenyakit' => $dataPenyakit->result(),
+        'dataKategori' => $dataKategori->result(),
         'rekamMedis' => $rekamMedis->result(),
         'laporanlb1' => $laporanlb1->result(),
     ];

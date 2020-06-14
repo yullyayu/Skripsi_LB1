@@ -55,7 +55,6 @@
                 array_push($total, $array);
                 array_push($total2, $array2);
                 array_push($total3, $array3);
-                var_dump(json_encode($total));
                 // var_dump($tot2);
                 // var_dump($tot3);
               }
@@ -66,6 +65,8 @@
               </div>
             </div><br><br>
               <!-- end-kirim -->
+              
+
               <!-- MODAL KIRIM LAPORAN -->
               <div class="modal fade" id="kirim">
                 <div class="modal-dialog">

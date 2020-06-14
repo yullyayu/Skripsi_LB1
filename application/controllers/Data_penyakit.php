@@ -12,6 +12,9 @@ class Data_penyakit extends CI_Controller{
     }
     public function header() {
         if ($this->session->userdata('level') == '2') {
+            $pesan = $this->DataLB1_model->pesan();
+            $data['pesan'] = count($pesan);
+            $data['data_pesan'] = $pesan;
             $result = $this->DataLB1_model->notif();
             $data['notif'] = count($result);
             $data['data_notif'] = $result;
