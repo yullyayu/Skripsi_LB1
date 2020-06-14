@@ -101,7 +101,7 @@ class M_Dinkes extends CI_Model{
         $this->db->from('detail_laporan');
         $this->db->where('month(tanggal)', $bulan);
         $this->db->where('year(tanggal)', $tahun);
-        $this->db->where('jenis_laporan', 'Bulanan');
+        $this->db->where('id_jp', 1);
         $this->db->where('status', 3);
         $query = $this->db->get();
         return $query->result();
@@ -113,7 +113,7 @@ class M_Dinkes extends CI_Model{
             $this->db->from('detail_laporan');
             $this->db->where("month(tanggal) BETWEEN 1 AND 3");
             $this->db->where('year(tanggal)', $tahun);
-            $this->db->where('jenis_laporan', 'Tribulan');
+            $this->db->where('id_jp', 2);
             $this->db->where('status', 3);
             $query = $this->db->get();
             return $query->result();
@@ -123,7 +123,7 @@ class M_Dinkes extends CI_Model{
             $this->db->from('detail_laporan');
             $this->db->where("month(tanggal) BETWEEN 4 AND 6");
             $this->db->where('year(tanggal)', $tahun);
-            $this->db->where('jenis_laporan', 'Tribulan');
+            $this->db->where('id_jp', 2);
             $this->db->where('status', 3);
             $query = $this->db->get();
             return $query->result();
@@ -133,7 +133,7 @@ class M_Dinkes extends CI_Model{
             $this->db->from('detail_laporan');
             $this->db->where("month(tanggal) BETWEEN 7 AND 9");
             $this->db->where('year(tanggal)', $tahun);
-            $this->db->where('jenis_laporan', 'Tribulan');
+            $this->db->where('id_jp', 2);
             $this->db->where('status', 3);
             $query = $this->db->get();
             return $query->result();
@@ -143,7 +143,7 @@ class M_Dinkes extends CI_Model{
             $this->db->from('detail_laporan');
             $this->db->where("month(tanggal) BETWEEN 10 AND 12");
             $this->db->where('year(tanggal)', $tahun);
-            $this->db->where('jenis_laporan', 'Tribulan');
+            $this->db->where('id_jp', 2);
             $this->db->where('status', 3);
             $query = $this->db->get();
             return $query->result();
@@ -154,7 +154,7 @@ class M_Dinkes extends CI_Model{
         $this->db->select('*');
         $this->db->from('detail_laporan');
         $this->db->where('year(tanggal)', $tahun);
-        $this->db->where('jenis_laporan', 'Tahunan');
+        $this->db->where('id_jp', 3);
         $this->db->where('status', 3);
         $query = $this->db->get();
         return $query->result();

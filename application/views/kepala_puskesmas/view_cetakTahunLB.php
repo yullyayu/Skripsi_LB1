@@ -16,8 +16,16 @@
           <div class="box">
             <div class="box-header">
                 <h1 class="box-title">Laporan Bulanan(LB1) Puskesmas</h1>
+                <?php if ($this->session->flashdata('flash')){ ?>
+                <div class="alert alert-danger" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <?php }?>
             </div>
-            <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/cetakExcelLB'); ?>" method="post">
+            <form class="form-horizontal" action="<?php echo site_url('Export_excel/cetakTahun'); ?>" method="post">
               <div class="box-body">
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Tahun</label>

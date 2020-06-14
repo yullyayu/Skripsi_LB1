@@ -101,6 +101,10 @@ class Kepala_puskesmas extends CI_Controller{
         $this->header();
         $this->load->view('kepala_puskesmas/laporan_bulananKP');
         $this->load->view('footer/kp_footer');
+        // echo "<script>
+        //       alert('Username or Password is Wrong');
+        //       window.location='".site_url('kepala_puskesmas/dataLB1_kepala')."';
+        //       </script>";
       }else {
         $data['lbbulan'] = $this->M_Kepala_puskesmas->getLB1bulan();
         $this->header();
