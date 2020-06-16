@@ -47,8 +47,10 @@ class Data_penyakit extends CI_Controller{
                         $pen[$key]->pasien[0] = (object)[];
                         $pen[$key]->pasien[0]->Perempuan = (object)[];
                         $pen[$key]->pasien[0]->Laki = (object)[];
+                        $pen[$key]->pasien[0]->Total = (object)[];
                         $pen[$key]->pasien[0]->Perempuan = 0;
                         $pen[$key]->pasien[0]->Laki = 0;
+                        $pen[$key]->pasien[0]->Total = 0;
                     }          
                 }
             }
@@ -59,6 +61,7 @@ class Data_penyakit extends CI_Controller{
         foreach ($penyakit as $key => $peny) {
             foreach ($rekamMedis as $ki => $rm) {
                     if ($peny->kode_icdx == $rm->kode_penyakit) {
+                        $pen[$key]->pasien[0]->Total += 1; 
                         if ($rm->jenis_kelamin == 'Laki-laki') {
                             $pen[$key]->pasien[0]->Laki += 1;
                         }else {
@@ -69,6 +72,7 @@ class Data_penyakit extends CI_Controller{
             }
             foreach ($laporanlb1 as $lab => $lb) {
                 if($peny->kode_icdx == $lb->kode_icdx){
+                    $pen[$key]->pasien[0]->Total += 1; 
                     if ($lb->jenis_kelamin == 'Laki-laki') {
                         $pen[$key]->pasien[0]->Laki += 1;
                     }else {
@@ -84,7 +88,11 @@ class Data_penyakit extends CI_Controller{
     }
     public function getRekap_Penyakit()
     {
-        $data = $this->M_Penyakit_banyak->PenyKumulatif();
+        $tahun = date('Y');
+        if(isset($_POST['tahun'])){
+            $tahun = $_POST['tahun'];
+        }
+        $data = $this->M_Penyakit_banyak->PenyKumulatif($tahun);
         $penyakit = $data['dataPenyakit'];
         $rekamMedis = $data['rekamMedis'];
         $laporanlb1 = $data['laporanlb1'];
@@ -112,37 +120,28 @@ class Data_penyakit extends CI_Controller{
         foreach ($penyakit as $key => $peny) {
             foreach ($rekamMedis as $ki => $rm) {
                 if ($peny->kode_icdx == $rm->kode_penyakit) {
-                    // $lb->tanggal = Date('m');
-                        if ($rm->jenis_kelamin == 'Laki-laki') {
-                            // $pen[$key]->pasien[$rm->tanggal - 1]->Laki += 1;
-                            $pen[$key]->pasien[$rm->bulan - 1]->Laki += 1;
-                        }else {
-                            // $pen[$key]->pasien[$rm->tanggal - 1]->Perempuan += 1;
-                            $pen[$key]->pasien[$rm->bulan - 1]->Perempuan += 1;
-                        }
+                    if ($rm->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$rm->bulan - 1]->Laki += 1;
+                    }else {
+                        $pen[$key]->pasien[$rm->bulan - 1]->Perempuan += 1;
+                    }
                         unset($rekamMedis[$ki]);
                 }
             }
             foreach ($laporanlb1 as $lab => $lb) {
                 if($peny->kode_icdx == $lb->kode_icdx){
-                    // $lb->tanggal = Date('m');
-                        if ($lb->jenis_kelamin == 'Laki-laki') {
-                            // $pen[$key]->pasien[$lb->tanggal - 1]->Laki += 1;
-                            $pen[$key]->pasien[$lb->bulan - 1]->Laki += 1;
-                        }else {
-                            // $pen[$key]->pasien[$lb->tanggal - 1]->Perempuan +=1;
-                            $pen[$key]->pasien[$lb->bulan - 1]->Perempuan +=1;
-                        }
+                    if ($lb->jenis_kelamin == 'Laki-laki') {
+                        $pen[$key]->pasien[$lb->bulan - 1]->Laki += 1;
+                    }else {
+                        $pen[$key]->pasien[$lb->bulan - 1]->Perempuan +=1;
+                    }
                         unset($laporanlb1[$lab]);  
                     }
             }
         }
-        // print_r($pen);
         $this->header();
         $this->load->view('laporan_bulanan/penyakit_kumulatif', ['data' => $pen]);
         $this->load->view('footer/lb_footer');
-        // echo json_encode($data['rekamMedis']);
-        // echo json_encode($pen);
     }
     public function filterBulan()
     {
@@ -195,7 +194,6 @@ class Data_penyakit extends CI_Controller{
         }
         $this->header();
         $this->load->view('laporan_bulanan/penyakit_terbanyakbln',['data' => $pen]);
-
     }
     public function getGrafikLB1()
     {
@@ -231,8 +229,9 @@ class Data_penyakit extends CI_Controller{
         $dt = $this->M_Kepala_puskesmas->getPenybulan();
         if($dt == null) {
             $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+            $data['peny_bulan'] = $this->M_Kepala_puskesmas->getPenybulan();
             $this->header();
-            $this->load->view('kepala_puskesmas/penyakit_blnKP');
+            $this->load->view('kepala_puskesmas/penyakit_blnKP', $data);
             $this->load->view('footer/kp_footer');
         }else{
             $data['peny_bulan'] = $this->M_Kepala_puskesmas->getPenybulan();
@@ -249,29 +248,83 @@ class Data_penyakit extends CI_Controller{
         $this->load->view('footer/kp_footer');
     }
     public function dataPenyThn_kpl()
-    {
+    {  
         $data['peny_tahun'] = $this->M_Kepala_puskesmas->getPenyThn();
         $this->header();
         $this->load->view('kepala_puskesmas/penyakit_kumulatifKP', $data);
         $this->load->view('footer/kp_footer');
     }
-    public function filterPeny_kpl()
+    public function filterPeny()
     {
-        $data['daftarBulan'] = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November", "Desember");
-        $bulan = $this->input->post('bulan');
-        $tahun = $this->input->post('tahun');
-        $dt = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
-        if ($dt == null) {
-            $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tribulan belum tersedia');
-            $this->header();
-            $this->load->view('kepala_puskesmas/penyakit_blnKP');
-            $this->load->view('footer/kp_footer');
-        }else {
-            $data['peny_bulan'] = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
-            $this->header();
-            $this->load->view('kepala_puskesmas/penyakit_blnKP', $data);
-            $this->load->view('footer/kp_footer');
+        if ($this->session->userdata('level') == '3') {
+            $data['daftarBulan'] = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November", "Desember");
+            $bulan = $this->input->post('bulan');
+            $tahun = $this->input->post('tahun');
+            $dt = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+                $data['peny_bulan'] = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
+                $this->header();
+                $this->load->view('kepala_puskesmas/penyakit_blnKP', $data);
+                $this->load->view('footer/kp_footer');
+            }else {
+                $data['peny_bulan'] = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
+                $this->header();
+                $this->load->view('kepala_puskesmas/penyakit_blnKP', $data);
+                $this->load->view('footer/kp_footer');
+            }
+        }elseif ($this->session->userdata('level') == '4') {
+            $bulan = $this->input->post('bulan');
+            $tahun = $this->input->post('tahun');
+            $dt = $this->M_Penyakit_banyak->filterPenyDin($bulan, $tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+                $data['peny_bulan'] = $this->M_Penyakit_banyak->filterPenyDin($bulan, $tahun);
+                $this->header();
+                $this->load->view('dinkes/penyakit_dinkesbln', $data);
+                $this->load->view('footer/d_footer');
+            }else {
+                $data['peny_bulan'] = $this->M_Penyakit_banyak->filterPenyDin($bulan, $tahun);
+                $this->header();
+                $this->load->view('dinkes/penyakit_dinkesbln', $data);
+                $this->load->view('footer/d_footer');
+            }
         }
+    }
+    public function filterTahun()
+    {
+        if ($this->session->userdata('level') == '3') {
+            $tahun = $this->input->post('tahun');
+            $dt = $this->M_Kepala_puskesmas->CetakPenyThn($tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tahunan belum tersedia');
+                $data['peny_tahun'] = $this->M_Kepala_puskesmas->CetakPenyThn($tahun);
+                $this->header();
+                $this->load->view('kepala_puskesmas/penyakit_kumulatifKP', $data);
+                $this->load->view('footer/kp_footer');
+            }else {
+                $data['peny_tahun'] = $this->M_Kepala_puskesmas->CetakPenyThn($tahun);
+                $this->header();
+                $this->load->view('kepala_puskesmas/penyakit_kumulatifKP', $data);
+                $this->load->view('footer/kp_footer');
+            }
+        } elseif ($this->session->userdata('level') == '4') {
+            $tahun = $this->input->post('tahun');
+            $dt = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tahunan belum tersedia');
+                $data['peny_tahun'] = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+                $data['peny_tahun'] = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+                $this->header();
+                $this->load->view('dinkes/penyakit_kumulatifdin', $data);
+                $this->load->view('footer/d_footer');
+            }else {
+                $data['peny_tahun'] = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+                $this->header();
+                $this->load->view('dinkes/penyakit_kumulatifdin', $data);
+                $this->load->view('footer/d_footer');
+            }
+        } 
     }
     public function getGrafikLB1Kepala()
     {
@@ -298,8 +351,9 @@ class Data_penyakit extends CI_Controller{
         $dt = $this->M_Kepala_puskesmas->getPenyTri($month, $year);
         if ($dt == null) {
             $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tribulan belum tersedia');
+            $data['grafik_kpl'] = $this->M_Kepala_puskesmas->getPenyTri($month, $year);
             $this->header();
-            $this->load->view('kepala_puskesmas/grafik_penyakitKP');
+            $this->load->view('kepala_puskesmas/grafik_penyakitKP', $data);
             $this->load->view('footer/kp_footer');
         }else {
             $data['grafik_kpl'] = $this->M_Kepala_puskesmas->getPenyTri($month, $year);
@@ -315,9 +369,10 @@ class Data_penyakit extends CI_Controller{
         $dt = $this->M_Penyakit_banyak->getPenyDin();
         if ($dt == null) {
             $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+            $data['peny_bulan'] = $this->M_Penyakit_banyak->getPenyDin();
             $this->header();
-            $this->load->view('dinkes/penyakit_dinkesbln');
-            $this->load->view('footer/kp_footer');
+            $this->load->view('dinkes/penyakit_dinkesbln', $data);
+            $this->load->view('footer/d_footer');
         }else {
             $data['peny_bulan'] = $this->M_Penyakit_banyak->getPenyDin();
             $this->header();
@@ -367,8 +422,9 @@ class Data_penyakit extends CI_Controller{
         $dt = $this->M_Penyakit_banyak->getPenyDin();
         if ($dt == null) {
             $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Kumulutif belum tersedia');
+            $data['peny_tahun'] = $this->M_Penyakit_banyak->getPenyThnDin();
             $this->header();
-            $this->load->view('dinkes/penyakit_kumulatifdin');
+            $this->load->view('dinkes/penyakit_kumulatifdin', $data);
             $this->load->view('footer/kp_footer');
         }else {
             $data['peny_tahun'] = $this->M_Penyakit_banyak->getPenyThnDin();
@@ -377,21 +433,12 @@ class Data_penyakit extends CI_Controller{
             $this->load->view('footer/d_footer');
         }
     }
-    public function filterPenyDin()
-    {
-        $bulan = $this->input->post('bulan');
-        $tahun = $this->input->post('tahun');
-        $data['peny_bulan'] = $this->M_Kepala_puskesmas->filterPeny_bln($bulan, $tahun);
-        $this->header();
-        $this->load->view('kepala_puskesmas/penyakit_blnKP', $data);
-        $this->load->view('footer/kp_footer');
-    }
     public function getGrafikLB1Dinkes()
     {
         $data['grafik_kpl'] = $this->M_Kepala_puskesmas->getPenyTri();
         $this->header();
-        $this->load->view('kepala_puskesmas/grafik_penyakitKP', $data);
-        $this->load->view('footer/kp_footer');
+        $this->load->view('dinkes/grafik_penyakitKP', $data);
+        $this->load->view('footer/d_footer');
     }
     public function sendKP()
     {

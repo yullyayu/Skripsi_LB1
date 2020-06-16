@@ -4,6 +4,10 @@ class DataLB1_model extends CI_Model{
   function tambahLB1($data, $table){
     $this->db->insert($table, $data);  
   }
+  public function getKategoriPeny()
+  {
+    return $this->db->get('kategori_penyakit');
+  }
   public function notif()
   {
     $this->db->where("(status=1 OR status=11 OR status=3 OR status=4)", NULL, FALSE);

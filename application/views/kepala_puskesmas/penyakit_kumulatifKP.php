@@ -10,17 +10,44 @@
         <li class="active"><a href="<?php echo site_url('data_penyakit/dataPenyThn_kpl') ?>">Kumulatif</a></li>
       </ul>
     </section>
-
+    
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
+              <?php if ($peny_tahun == null) { ?>
                 <h1 class="box-title">Data Kumulatif 15 Besar Penyakit</h1>
+              <?php }else { 
+                    foreach ($peny_tahun as $lb) {
+                      $tahun = date('Y', strtotime($lb->tanggal));
+                    }?>
+                <h3 class="box-title" >Data Kumulatif 15 Besar Penyakit Tahun <?php echo $tahun ?> </h3>
+              <?php } ?> 
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+            <form class="form-horizontal" method="POST" action="<?php echo site_url('data_penyakit/filterTahun'); ?>">
+                  <div class="form-group"><br>
+                    <label class="col-sm-1 control-label" for="exampleFormControlSelect1">Tahun</label>
+                    <div class="col-sm-12">
+                      <select class="form-control" name="tahun" id="exampleFormControlSelect1">
+                      <?php for($i=2020 ; $i<=2029;$i++){
+                      if($i == $year){?>
+                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
+                      <?php   } else{?>
+                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
+                      <?php   }} ?>
+                      </select>
+                      </div>
+                  </div>
+                  <div class="box-footer">
+                    <div class="col-sm-12" align="right">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
+                    </div>
+                  </div>
+              </form>
               <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped"><br><br>
                 <thead>
@@ -51,7 +78,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php 
+                <?php if ($peny_tahun == null){ ?>
+                  <div class="alert alert-danger" role="alert">
+                    <strong><?=$this->session->flashdata('flash');?></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <?php }else { 
                 $datalaporan = json_decode($peny_tahun[0]->datalb1);
                 $no =0; foreach ($datalaporan as $dp ): $no++; ?>
                   <tr class="odd gradeX">
@@ -79,6 +113,7 @@
                      <td><?= $jumlah ?></td>
                   </tr>
                   <?php endforeach; ?>
+                <?php } ?>
                 </tbody>
               </table>
                <!-- kirim -->

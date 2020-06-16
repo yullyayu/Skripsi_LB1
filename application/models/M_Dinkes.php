@@ -9,17 +9,25 @@ class M_Dinkes extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    public function dt_laporan()
+    {
+        $this->db->select('*');
+        $this->db->from('data_puskesmas');
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function notif()
     {
         $this->db->where('status', 2);
         $result = $this->db->get('detail_laporan')->result_array();
         return $result;
     }
-    public function getLB1bulan()
+    public function getLB1bulan($id)
     {
         $bulan = getdate();
         $this->db->select('*');
         $this->db->from('detail_laporan');
+        $this->db->where('kd_puskesmas', $id);
         $this->db->where('month(tanggal)', $bulan['mon']);
         $this->db->where('id_jp', 1);
         $this->db->where('status', 3);
@@ -52,9 +60,9 @@ class M_Dinkes extends CI_Model{
     {
         $bulan = getdate();
         $this->db->select('*');
-        $this->db->from('detail_laporan as lb');
-        $this->db->join('jenis_laporan as jp', 'lb.id_jp = jp.id_jp', 'left');
-        $this->db->join('data_puskesmas as dp', 'dp.nama_puskesmas = lb.nama_puskesmas', 'left');
+        $this->db->from('jenis_laporan as jl');
+        $this->db->join('detail_laporan as dl', 'dl.id_jp = jl.id_jp', 'left');
+        $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = dl.kd_puskesmas', 'left');
         // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
         $query = $this->db->get();
         return $query->result();

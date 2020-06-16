@@ -31,7 +31,7 @@
                   // var_dump($bulan);
                 }
             } ?>
-              <h3 class="box-title" text="<?php $judul ?>">Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?></h3>
+              <h3 class="box-title" >Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?></h3>
               <?php if ($this->session->flashdata('flash')): ?>
                 <div class="alert alert-success" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
@@ -142,13 +142,16 @@
                 </thead>
                 <tbody>
                 <!--  -->
+                  <?php foreach ($kp as $key) { ?>
+                    <tr>
+                      <th colspan="107" style="background: yellow"><?php echo $key->kategori_penyakit; ?></th>
+                    </tr>
                   <?php foreach ($data as $d) {?>
-                  <?php if ($d->kode_dx == $d->kd) { ?>                
+                  <?php if ($d->kode_dx == $key->kode_dx) { ?>                
                   <tr>
                     <th scope="row"><?= $d->kode_dx ?></th>
                     <th scope="row"><?= $kode = $d->kode_icdx?></th>
                     <th scope="row">
-                    <?= $d->kategori_penyakit?>
                       <?php echo $d->nama_penyakit = $d->nama_penyakit; ?>
                     </th>
                     <!--Spasih 1-->
@@ -220,6 +223,7 @@
                     </tr>
                     <?php ;}?>
                   <?php }?>
+                  <?php } ?>
                 </tbody>
                 <tfoot>
                 <tr>

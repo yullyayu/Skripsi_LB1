@@ -17,29 +17,59 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
+            <?php if ($lb_tribulan == null) { ?>
+              <h3 class="box-title" >Laporan Data Kesakitan Bulan </h3>
+            <?php }else { 
+                  foreach ($lb_tribulan as $lb) {
+                    $bulan = date('m', strtotime($lb->tanggal));
+                    $tahun = date('Y', strtotime($lb->tanggal));
+                    if ($bulan == 1 || $bulan == 2 || $bulan == 3) {
+                      $tri = 'Tribulan 1';
+                    }elseif ($bulan == 4 || $bulan == 5 || $bulan == 6) {
+                      $tri = 'Tribulan 2';
+                    }elseif ($bulan == 7 || $bulan == 8 || $bulan == 9) {
+                      $tri = 'Tribulan 3';
+                    }elseif ($bulan == 10 || $bulan == 11 || $bulan == 12) {
+                      $tri = 'Tribulan 4';
+                    }
+                  }?>
+              <h3 class="box-title" >Laporan Data Kesakitan <?php echo $tri ?> Tahun <?php echo $tahun ?> </h3>
+            <?php } ?> 
             </div>
             <div class="box-body">
               <form method="POST" action="<?php echo site_url('Kepala_puskesmas/filterTribulan') ?>">
                 <div class="form-group">
-                  <label for="exampleFormControlInput1">Tahun</label>
-                  <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="Tahun" name="year" required>
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Tribulan</label>
+                  <label class="col-sm-1 control-label" for="exampleFormControlSelect1">Tribulan</label>
+                  <div class="col-sm-12">
                   <select class="form-control" id="exampleFormControlSelect1" name="triwulan" required>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                   </select>
-                </div>
-                  <div align="right">
-                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
+                  </div>
+                </div><br>
+                <div class="form-group"><br>
+                    <label class="col-sm-1 control-label" for="exampleFormControlSelect1">Tahun</label>
+                    <div class="col-sm-12">
+                      <select class="form-control" name="year" id="exampleFormControlSelect1">
+                      <?php for($i=2019 ; $i<=2029;$i++){
+                      if($i == $year){?>
+                      <option value="<?php echo $i?>" <?php echo set_select('year', $i); ?>selected=""><?php echo $i?></option>
+                      <?php   } else{?>
+                      <option value="<?php echo $i?>" <?php echo set_select('year', $i); ?>><?php echo $i?></option>
+                      <?php   }} ?>
+                      </select>
+                      </div>
+                  </div><br><br>
+                  <div class="box-footer"><br>
+                    <div class="col-sm-12" align="right">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
+                    </div>
                   </div>
               </form>
               <div class="table-responsive">
-              <table id="example" class="table table-bordered table-striped">
+              <table id="example" class="table table-bordered table-striped"><br><br>
               <thead>
                   <tr>
                     <th scoop="col" rowspan="4">Kode DX</th>
@@ -97,12 +127,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($lb_tribulan == null) {?>
                   <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      </button>
                   </div>
                 <?php } else { ?>
                   <tr class="odd gradeX">      

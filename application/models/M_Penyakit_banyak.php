@@ -28,9 +28,9 @@ class M_Penyakit_banyak extends CI_Model{
             'laporanlb1' => $laporanlb1->result(),
         ];
     }
-    public function PenyKumulatif()
+    public function PenyKumulatif($tahun)
     {
-        $tahun = getdate();
+        // $tahun = getdate();
         $dataPenyakit = $this->db->select('*')
         ->from('data_penyakit')
         ->limit(15)
@@ -38,14 +38,14 @@ class M_Penyakit_banyak extends CI_Model{
         $laporanlb1 = $this->db->select('laporan_lb1.id_umr, laporan_lb1.jenis_kelamin, laporan_lb1.kasus,kode_icdx, 
         MONTH(tanggal) as bulan')
         ->from('laporan_lb1')
-        ->where('year(laporan_lb1.tanggal)', $tahun['year'])
+        ->where('year(laporan_lb1.tanggal)', $tahun)
         ->order_by('laporan_lb1.kode_icdx', 'desc')
         ->get();
         $rekamMedis = $this->db->select('rekam_medis.id_umr, rekam_medis.jenis_kelamin, rekam_medis.dalam_wilayah, rekam_medis.luar_wilayah, d.nama_penyakit,kode_penyakit,kode_dx,
         MONTH(rekam_medis.tanggal) as bulan')
         ->from('rekam_medis')
         ->join('data_penyakit as d', 'd.kode_icdx = kode_penyakit')
-        ->where('year(rekam_medis.tanggal)', $tahun['year'])
+        ->where('year(rekam_medis.tanggal)', $tahun)
         ->order_by('rekam_medis.kode_penyakit', 'desc')
         ->get();
         return [
@@ -275,16 +275,40 @@ class M_Penyakit_banyak extends CI_Model{
     }
     public function filterPenyDin($bulan, $tahun)
     {
-        $status = 3;
-        $bulan = getdate();
-        $this->db->select('*');
-        $this->db->from('detail_laporan');
-        $this->db->where('month(tanggal)', $bulan);
-        $this->db->where('year(tanggal)', $tahun);
-        $this->db->where('id_jp', 4);
-        $this->db->where('status =', $status);
-        $query = $this->db->get();
-        return $query->result();
+      if ($bulan == 'Januari') {
+          $bulan = 1;
+      }elseif ($bulan == 'Februari') {
+          $bulan = 2;
+      }elseif ($bulan == 'Maret') {
+          $bulan = 3;
+      }elseif ($bulan == 'April') {
+          $bulan = 4;
+      }elseif ($bulan == 'Mei') {
+          $bulan = 5;
+      }elseif ($bulan == 'Juni') {
+          $bulan = 6;
+      }elseif ($bulan == 'Juli') {
+          $bulan = 7;
+      }elseif ($bulan == 'Agustus') {
+          $bulan = 8;
+      }elseif ($bulan == 'September') {
+          $bulan = 9;
+      }elseif ($bulan == 'Oktober') {
+          $bulan = 10;
+      }elseif ($bulan == 'November') {
+          $bulan = 11;
+      }elseif ($bulan == 'Desember') {
+          $bulan = 12;
+      }
+      $status = 3;
+      $this->db->select('*');
+      $this->db->from('detail_laporan');
+      $this->db->where('month(tanggal)', $bulan);
+      $this->db->where('year(tanggal)', $tahun);
+      $this->db->where('id_jp', 4);
+      $this->db->where('status !=', $status);
+      $query = $this->db->get();
+      return $query->result();
     }
     public function getPenyTriDin($month, $year)
     {

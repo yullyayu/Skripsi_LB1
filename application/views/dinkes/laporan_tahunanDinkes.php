@@ -17,10 +17,10 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
+              <h3 class="box-title">Laporan Data Kesakitan</h3>
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
+              <form class="form-horizontal" action="<?php echo site_url('dinkes/filterRekap'); ?>" method="post">
                 <div class="box-body">
                   <div class="form-group">
                     <label class="col-sm-1 control-label">Tahun</label>
@@ -103,7 +103,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($lb_tahun == null){ ?>
                   <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

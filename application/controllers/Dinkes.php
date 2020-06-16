@@ -16,6 +16,13 @@ class Dinkes extends CI_Controller{
       $data['data_notif'] = $result;
       $this->load->view('header/d_header', $data);
     }
+    public function dt_laporan()
+    {
+      $data['dt_laporan'] = $this->M_Dinkes->dt_laporan();
+      $this->header();
+      $this->load->view('dinkes/data_laporan', $data);
+      $this->load->view('footer/d_footer');
+    }
     public function dashboard()
     {
       $this->header();
@@ -80,9 +87,8 @@ class Dinkes extends CI_Controller{
     }
     public function monitoringLB1()
     {
+      $data['puskesmas'] = $this->M_Data_Puskesmas->tampil_puskesmas()->result();
       $data['monitoring'] = $this->M_Dinkes->monitoringLB();
-      // $tgl = 5;
-      // $tgl = date('d');
       $this->header();
       $this->load->view('dinkes/monitoring_LB1', $data); 
       $this->load->view('footer/d_footer');
@@ -159,16 +165,35 @@ class Dinkes extends CI_Controller{
       }
       redirect('dinkes/laporanDinkes');
     }
-    public function dataLB1_dinkes()
-    {
-      $dt = $this->M_Dinkes->getLB1bulan();
+    public function dataLB1_dinkes($id)
+    { 
+      $dt = $this->M_Dinkes->getLB1bulan($id);
       if ($dt == null) {
         $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $data['lbbulan'] = $this->M_Dinkes->getLB1bulan($id);
         $this->header();
-        $this->load->view('dinkes/laporan_bulananDinkes');
+        $this->load->view('dinkes/laporan_bulananDinkes', $data);
         $this->load->view('footer/d_footer');
       }else {
-        $data['lbbulan'] = $this->M_Dinkes->getLB1bulan();
+        $data['lbbulan'] = $this->M_Dinkes->getLB1bulan($id);
+        $this->header();
+        $this->load->view('dinkes/laporan_bulananDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }
+    }
+    public function filterDataLB1()
+    {
+      $bulan = $this->input->post('bulan');
+      $tahun = $this->input->post('tahun');
+      $dt = $this->M_Dinkes->CetakBulan($bulan, $tahun);
+      if ($dt == null) {
+        $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $data['lbbulan'] = $this->M_Dinkes->CetakBulan($bulan, $tahun);
+        $this->header();
+        $this->load->view('dinkes/laporan_bulananDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }else {
+        $data['lbbulan'] = $this->M_Dinkes->CetakBulan($bulan, $tahun);
         $this->header();
         $this->load->view('dinkes/laporan_bulananDinkes', $data);
         $this->load->view('footer/d_footer');
@@ -179,11 +204,30 @@ class Dinkes extends CI_Controller{
       $dt = $this->M_Dinkes->getLBtribulan();
       if ($dt == null) {
         $this->session->set_flashdata('flash', 'Data Laporan Tribulan(LB1) belum tersedia');
+        $data['lb_tribulan'] = $this->M_Dinkes->getLBtribulan();
         $this->header();
-        $this->load->view('dinkes/laporan_tribulanDinkes');
+        $this->load->view('dinkes/laporan_tribulanDinkes', $data);
         $this->load->view('footer/d_footer');
       }else {
         $data['lb_tribulan'] = $this->M_Dinkes->getLBtribulan();
+        $this->header();
+        $this->load->view('dinkes/laporan_tribulanDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }
+    }
+    public function filterTriLB1()
+    {
+      $tribulan = $this->input->post('tribulan');
+      $tahun = $this->input->post('tahun');
+      $dt = $this->M_Dinkes->CetakTribulan($tribulan, $tahun);
+      if ($dt == null) {
+        $this->session->set_flashdata('flash', 'Data Laporan Tribulan(LB1) belum tersedia');
+        $data['lb_tribulan'] = $this->M_Dinkes->CetakTribulan($tribulan, $tahun);
+        $this->header();
+        $this->load->view('dinkes/laporan_tribulanDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }else {
+        $data['lb_tribulan'] = $this->M_Dinkes->CetakTribulan($tribulan, $tahun);
         $this->header();
         $this->load->view('dinkes/laporan_tribulanDinkes', $data);
         $this->load->view('footer/d_footer');
@@ -194,11 +238,29 @@ class Dinkes extends CI_Controller{
       $dt = $this->M_Dinkes->getLBtahun();
       if ($dt == null) {
         $this->session->set_flashdata('flash', 'Data Laporan Tahunan(LB1) belum tersedia');
+        $data['lb_tahun'] = $this->M_Dinkes->getLBtahun();
         $this->header();
-        $this->load->view('dinkes/laporan_tahunanDinkes');
+        $this->load->view('dinkes/laporan_tahunanDinkes', $data);
         $this->load->view('footer/d_footer');
       }else {
         $data['lb_tahun'] = $this->M_Dinkes->getLBtahun();
+        $this->header();
+        $this->load->view('dinkes/laporan_tahunanDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }
+    }
+    public function filterRekap()
+    {
+      $tahun = $this->input->post('tahun');
+      $dt = $this->M_Dinkes->CetakTahun($tahun);
+      if ($dt == null) {
+        $this->session->set_flashdata('flash', 'Data Laporan Tahunan(LB1) belum tersedia');
+        $data['lb_tahun'] = $this->M_Dinkes->CetakTahun($tahun);
+        $this->header();
+        $this->load->view('dinkes/laporan_tahunanDinkes', $data);
+        $this->load->view('footer/d_footer');
+      }else {
+        $data['lb_tahun'] = $this->M_Dinkes->CetakTahun($tahun);
         $this->header();
         $this->load->view('dinkes/laporan_tahunanDinkes', $data);
         $this->load->view('footer/d_footer');

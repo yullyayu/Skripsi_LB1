@@ -25,13 +25,16 @@
               <table class="table table-bordered">
                 <thead>
                 <tr>
-                  <th style="width: 10px">No</th>
-                  <th >Jenis Laporan</th>
-                  <th >Tanggal </th> 
-                  <th >Puskesmas</th>
-                  <th >Kecamatan</th>
-                  <th >Status Pengiriman LB1</th>
-                  <th style="width: 140px" >Action</th>
+                  <th rowspan="2">No</th>
+                  <th rowspan="2">Jenis Laporan</th>
+                  <th rowspan="2">Tanggal </th> 
+                  <th colspan="1">Status Pengiriman LB1</th>
+                  <th rowspan="2">Action</th>
+                </tr>
+                <tr>
+                  <?php foreach ($puskesmas as $ps){ ?>
+                  <th scope="col"><?php echo $ps->nama_puskesmas ?></th>
+                  <?php } ?>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,9 +42,7 @@
                 <tr class="odd gradeX">
                   <td><?php echo $no ?></td>
                   <td><?php echo $dt->nama_laporan?></td>
-                  <td><?php echo date("Y-m-d") ?> </td>
-                  <td><?php echo $dt->nama_puskesmas?></td>
-                  <td><?php echo $dt->kecamatan?></td>
+                  <td><?php echo $dt->tanggal ?> </td>
                   <?php if ($dt->status == 2 || $dt->status == 3) { ?>
                     <td><span class="label label-primary">Sudah</span></td>
                   <?php } else { ?>

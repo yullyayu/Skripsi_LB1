@@ -66,9 +66,9 @@
                   </div>
                 </div>
                 <div class="form-group">
-                <div class="col-sm-12" align="right">
+                  <div class="col-sm-12" align="right">
                   <button type="submit" id="btn-filter" class="btn btn-success" ><span class="glyphicon glyphicon-filter"></span>  Filter</button>
-                </div>
+                  </div>
                 </div>
                 </form>
                 <div class="table-responsive">

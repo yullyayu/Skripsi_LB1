@@ -17,12 +17,20 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-                <h1 class="box-title">15 Besar Penyakit Puskesmas Dinoyo</h1>
+              <?php if ($peny_bulan == null) { ?>
+                  <h1 class="box-title">15 Besar Penyakit Puskesmas Dinoyo</h1>
+                <?php }else { 
+                      foreach ($peny_bulan as $lb) {
+                        $bulan = date('M', strtotime($lb->tanggal));
+                        $tahun = date('Y', strtotime($lb->tanggal));
+                      }?>
+                  <h3 class="box-title">15 Besar Penyakit Puskesmas Dinoyo Bulan <?php echo $bulan ?> </h3>
+                <?php } ?> 
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
-              <form method="post" action="<?php echo site_url('data_penyakit/filterPeny_kpl'); ?>">
+              <form method="post" action="<?php echo site_url('data_penyakit/filterPeny'); ?>">
                   <div class="form-group">
                     <label class="col-sm-1 control-label">Bulan</label>
                     <div class="col-sm-12">
@@ -75,7 +83,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($peny_bulan == null){ ?>
                       <div class="alert alert-danger" role="alert">
                         <strong><?=$this->session->flashdata('flash');?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

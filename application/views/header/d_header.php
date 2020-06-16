@@ -187,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </a>
         </li>
         <li>
-          <a href="<?=site_url('dinkes/dataLB1_dinkes')?>">
+          <a href="<?=site_url('dinkes/dt_laporan')?>">
             <i class="fa fa-table"></i>
             <span>Laporan Bulanan(LB1)</span>
             <span class="pull-right-container">

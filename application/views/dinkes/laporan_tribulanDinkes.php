@@ -17,10 +17,27 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tribulan)</h3>
+              <?php if ($lb_tribulan == null) { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan Tribulan </h3>
+              <?php }else { 
+                    foreach ($lb_tribulan as $lb) {
+                      $bulan = date('m', strtotime($lb->tanggal));
+                      $tahun = date('Y', strtotime($lb->tanggal));
+                      if ($bulan == 1 || $bulan == 2 || $bulan == 3) {
+                        $tri = 'Tribulan 1';
+                      }elseif ($bulan == 4 || $bulan == 5 || $bulan == 6) {
+                        $tri = 'Tribulan 2';
+                      }elseif ($bulan == 7 || $bulan == 8 || $bulan == 9) {
+                        $tri = 'Tribulan 3';
+                      }elseif ($bulan == 10 || $bulan == 11 || $bulan == 12) {
+                        $tri = 'Tribulan 4';
+                      }
+                    }?>
+                <h3 class="box-title" >Laporan Data Kesakitan <?php echo $tri ?> Tahun <?php echo $tahun ?> </h3>
+              <?php } ?> 
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
+              <form class="form-horizontal" action="<?php echo site_url('dinkes/filterTriLB1'); ?>" method="post">
                 <div class="box-body">
                 <div class="form-group">
                   <label class="col-sm-1 control-label">Tribulan</label>
@@ -118,7 +135,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($lb_tribulan == null){ ?>
                   <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

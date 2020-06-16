@@ -17,7 +17,14 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Tahunan)</h3>
+            <?php if ($lb_tahun == null) { ?>
+              <h3 class="box-title" >Laporan Data Kesakitan Tahun </h3>
+            <?php }else { 
+                  foreach ($lb_tahun as $lb) {
+                    $tahun = date('Y', strtotime($lb->tanggal));
+                  }?>
+              <h3 class="box-title" >Laporan Data Kesakitan Tahun <?php echo $tahun ?> </h3>
+            <?php } ?> 
             </div>
             <div class="box-body">
               <form action="<?php echo site_url('kepala_puskesmas/filterTahun'); ?>" method="post">
@@ -102,14 +109,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($lb_tahun == null) {?>
                   <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      </button>
                   </div>
-                <?php }else { ?>
+                <?php } else { ?>
                 <tr class="odd gradeX">      
                     <?php 
                     $datalaporan = json_decode($lb_tahun[0]->datalb1);

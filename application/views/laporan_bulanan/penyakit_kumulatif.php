@@ -21,6 +21,26 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+            <form class="form-horizontal" method="POST" action="<?php echo site_url('data_penyakit/getRekap_Penyakit'); ?>">
+                  <div class="form-group"><br>
+                    <label class="col-sm-1 control-label" for="exampleFormControlSelect1">Tahun</label>
+                    <div class="col-sm-12">
+                      <select class="form-control" name="tahun" id="exampleFormControlSelect1">
+                      <?php for($i=2020 ; $i<=2029;$i++){
+                      if($i == $year){?>
+                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>selected=""><?php echo $i?></option>
+                      <?php   } else{?>
+                      <option value="<?php echo $i?>" <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
+                      <?php   }} ?>
+                      </select>
+                      </div>
+                  </div><br><br>
+                  <div class="box-footer"><br>
+                    <div class="col-sm-12" align="right">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
+                    </div>
+                  </div>
+              </form>
               <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped"><br><br>
                 <thead>

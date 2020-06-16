@@ -36,7 +36,6 @@ class M_Kepala_puskesmas extends CI_Model{
         $this->db->from('detail_laporan');
         $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
         $this->db->where('year(tanggal)', $year);
-        // $this->db->where('month(tanggal)', $month[0]);
         $this->db->where('id_jp', 2);
         $this->db->where('status !=', $status);
         $query = $this->db->get();

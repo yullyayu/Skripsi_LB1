@@ -11,6 +11,7 @@ class Laporan_bulanan extends CI_Controller{
     }
     public function header()
     {
+      $data['kp'] = $this->DataLB1_model->getKategoriPeny()->result();
       $pesan = $this->DataLB1_model->pesan();
       $data['pesan'] = count($pesan);
       $data['data_pesan'] = $pesan;

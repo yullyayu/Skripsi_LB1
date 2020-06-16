@@ -17,21 +17,15 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-            <?php if ($this->session->flashdata('flash')){ ?>
-                      <div class="alert alert-danger" role="alert">
-                        <strong><?=$this->session->flashdata('flash');?></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-            <?php  }else {
-                $datalaporan = $lbbulan;
-                foreach ($datalaporan as $d) {   
-                  $bulan = date('M', strtotime($d->tanggal));
-                  $tahun = date('Y', strtotime($d->tanggal));
-                }?>
-              <h3 class="box-title" >Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?></h3>
-              <?php } ?>
+            <?php if ($lbbulan == null) { ?>
+              <h3 class="box-title" >Laporan Data Kesakitan Bulan </h3>
+            <?php }else { 
+                  foreach ($lbbulan as $lb) {
+                    $bulan = date('F', strtotime($lb->tanggal));
+                    $tahun = date('Y', strtotime($lb->tanggal));
+                  }?>
+              <h3 class="box-title" >Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?> </h3>
+            <?php } ?>           
             </div>
             <div class="box-body">
               <form method="post" action="<?php echo site_url('kepala_puskesmas/filterBulan'); ?>">
@@ -132,15 +126,15 @@
                 </thead>
                 <tbody>
                 <!--  -->
-                <?php if ($this->session->flashdata('flash')){ ?>
-                      <div class="alert alert-danger" role="alert">
+                <?php if ($lbbulan == null) {?>
+                  <div class="alert alert-danger" role="alert">
                         <strong><?=$this->session->flashdata('flash');?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                    <?php }else { ?>
-                      <tr class="odd gradeX">      
+                <?php } else { ?>
+                  <tr class="odd gradeX">      
                     <?php 
                     $datalaporan = json_decode($lbbulan[0]->datalb1);
                     foreach ($datalaporan as $d) {?>
@@ -210,7 +204,7 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
-                  <?php } ?>
+                <?php } ?>
                 </tbody>
                 <tfoot>
                 <tr>

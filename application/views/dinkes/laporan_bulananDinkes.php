@@ -17,10 +17,18 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Laporan Data Kesakitan(Bulan)</h3>
+              <?php if ($lbbulan == null) { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan Bulan </h3>
+              <?php }else { 
+                    foreach ($lbbulan as $lb) {
+                      $bulan = date('F', strtotime($lb->tanggal));
+                      $tahun = date('Y', strtotime($lb->tanggal));
+                    }?>
+                <h3 class="box-title" >Laporan Data Kesakitan Bulan <?php echo $bulan ?> <?php echo $tahun ?> </h3>
+              <?php } ?>  
             </div>
             <div class="box-body">
-              <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterLB1'); ?>" method="post">
+              <form class="form-horizontal" action="<?php echo site_url('dinkes/filterDataLB1'); ?>" method="post">
                 <div class="box-body">
                   <div class="form-group">
                     <label class="col-sm-1 control-label">Bulan</label>
@@ -118,7 +126,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php if ($this->session->flashdata('flash')){ ?>
+                <?php if ($lbbulan == null){ ?>
                   <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -34,7 +34,7 @@
             <div class="box-header">
             </div>
             <div id="container"></div>
-            <?php if ($this->session->flashdata('flash')){ ?>
+            <?php if ($grafik_kpl == null){ ?>
               <div class="alert alert-danger" role="alert">
                 <strong><?=$this->session->flashdata('flash');?></strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">

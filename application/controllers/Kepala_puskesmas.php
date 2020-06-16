@@ -97,9 +97,10 @@ class Kepala_puskesmas extends CI_Controller{
     {
       $dt = $this->M_Kepala_puskesmas->getLB1bulan();
       if ($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $this->session->set_flashdata('flash', 'Data Laporan Bulanan belum tersedia');
+        $data['lbbulan'] = $this->M_Kepala_puskesmas->getLB1bulan();
         $this->header();
-        $this->load->view('kepala_puskesmas/laporan_bulananKP');
+        $this->load->view('kepala_puskesmas/laporan_bulananKP', $data);
         $this->load->view('footer/kp_footer');
       }else {
         $data['lbbulan'] = $this->M_Kepala_puskesmas->getLB1bulan();
@@ -115,9 +116,10 @@ class Kepala_puskesmas extends CI_Controller{
       $bulan = ['Januari', 'Februari', 'Maret'];
       $dt = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
       if ($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $this->session->set_flashdata('flash', 'Data Laporan Tribulan belum tersedia');
+        $data['lb_tribulan'] = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
         $this->header();
-        $this->load->view('kepala_puskesmas/laporan_tribulanKP');
+        $this->load->view('kepala_puskesmas/laporan_tribulanKP', $data);
         $this->load->view('footer/kp_footer');
       }else {
         $data['lb_tribulan'] = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
@@ -132,9 +134,10 @@ class Kepala_puskesmas extends CI_Controller{
     {
       $dt = $this->M_Kepala_puskesmas->getLBtahun();
       if ($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Tahunan(LB1) belum tersedia');
+        $this->session->set_flashdata('flash', 'Data Laporan Tahunan belum tersedia');
+        $data['lb_tahun'] = $this->M_Kepala_puskesmas->getLBtahun();
         $this->header();
-        $this->load->view('kepala_puskesmas/laporan_tahunanKP');
+        $this->load->view('kepala_puskesmas/laporan_tahunanKP', $data);
         $this->load->view('footer/kp_footer');
       }else {
         $data['lb_tahun'] = $this->M_Kepala_puskesmas->getLBtahun();
@@ -150,9 +153,10 @@ class Kepala_puskesmas extends CI_Controller{
       $tahun = $this->input->post('tahun');
       $dt = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
       if ($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $this->session->set_flashdata('flash', 'Data Laporan Bulanan belum tersedia');
+        $data['lbbulan'] = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
         $this->header();
-        $this->load->view('kepala_puskesmas/laporan_bulananKP');
+        $this->load->view('kepala_puskesmas/laporan_bulananKP', $data);
         $this->load->view('footer/kp_footer');
       }else {
         $data['lbbulan'] = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
@@ -180,32 +184,34 @@ class Kepala_puskesmas extends CI_Controller{
             $bulan = ['Oktober','November','Desember'];
         }
       }
-      $dt = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
-      if($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Tribulan(LB1) belum tersedia');
-        $this->header();
-        $this->load->view('kepala_puskesmas/laporan_tribulanKP');
-        $this->load->view('footer/kp_footer');
-      }else{
-        $data['lb_tribulan'] = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
-        $data['nama_bulan'] = $bulan;
-        $data['nama_tahun'] = $year;
-        $this->header();
-        $this->load->view('kepala_puskesmas/laporan_tribulanKP', $data);
-        $this->load->view('footer/kp_footer');
-      }
+        $dt = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
+        if ($dt == null) {
+          $this->session->set_flashdata('flash', 'Data Laporan Tribulan belum tersedia');
+          $data['lb_tribulan'] = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
+          $this->header();
+          $this->load->view('kepala_puskesmas/laporan_tribulanKP', $data);
+          $this->load->view('footer/kp_footer');
+        }else {
+          $data['lb_tribulan'] = $this->M_Kepala_puskesmas->getLBtribulan($month, $year);
+          $data['nama_bulan'] = $bulan;
+          $data['nama_tahun'] = $year;
+          $this->header();
+          $this->load->view('kepala_puskesmas/laporan_tribulanKP', $data);
+          $this->load->view('footer/kp_footer');
+        }
     }
     public function filterTahun()
     {
       $tahun = $this->input->post('tahun');
       $dt = $this->M_Kepala_puskesmas->getCetakTahun($tahun);
       if ($dt == null) {
-        $this->session->set_flashdata('flash', 'Data Laporan Bulanan(LB1) belum tersedia');
+        $this->session->set_flashdata('flash', 'Data Laporan Tahunan belum tersedia');
+        $data['lb_tahun'] = $this->M_Kepala_puskesmas->getCetakTahun($tahun);
         $this->header();
-        $this->load->view('kepala_puskesmas/laporan_tahunanKP');
+        $this->load->view('kepala_puskesmas/laporan_tahunanKP', $data);
         $this->load->view('footer/kp_footer');
       }else {
-        $data = $this->M_Kepala_puskesmas->getCetakTahun($tahun);
+        $data['lb_tahun'] = $this->M_Kepala_puskesmas->getCetakTahun($tahun);
         $this->header();
         $this->load->view('kepala_puskesmas/laporan_tahunanKP', $data);
         $this->load->view('footer/kp_footer');
