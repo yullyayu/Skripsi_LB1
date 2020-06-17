@@ -684,8 +684,7 @@ class Laporan_bulanan extends CI_Controller{
       $this->header();
       $this->load->view('laporan_bulanan/cetak_LB1tahun');
       $this->load->view('footer/lb_footer');
-    }
-    
+    } 
     public function sendKP()
     {
       $tanggal = $this->input->post('tanggal');

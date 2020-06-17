@@ -71,15 +71,15 @@
                 <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th scoop="col" rowspan="2">No</th>
-                  <th scoop="col" rowspan="2">Penyakit</th>
-                  <th scoop="col" rowspan="2">Kode ICDX</th>
-                  <th scoop="col" colspan="2" >Jumlah</th>
-                  <th scoop="col" rowspan="2">Total</th>
+                  <th  rowspan="2">No</th>
+                  <th  rowspan="2">Penyakit</th>
+                  <th  rowspan="2">Kode ICDX</th>
+                  <th  colspan="2" >Jumlah</th>
+                  <th  rowspan="2">Total</th>
                 </tr>
                 <tr>
-                  <th scope="col">Laki-Laki</th>
-                  <th scope="col">Perempuan</th>
+                  <th >Laki-Laki</th>
+                  <th >Perempuan</th>
                 </tr>
                 </thead>
                 <tbody>

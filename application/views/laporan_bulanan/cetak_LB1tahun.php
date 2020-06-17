@@ -8,6 +8,11 @@
         <li><a href="#">Tables</a></li>
         <li class="active">Data tables</li>
       </ol>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo site_url('laporan_bulanan/viewCetak') ?>">Bulan</a></li>
+        <li class="active"><a href="<?php echo site_url('laporan_bulanan/viewCetakTribln') ?>">Tri Bulan</a></li>
+        <li class="active"><a href="<?php echo site_url('laporan_bulanan/viewCetakTahun') ?>">Tahun</a></li>
+     </ul>
     </section>
 
     <!-- Main content -->

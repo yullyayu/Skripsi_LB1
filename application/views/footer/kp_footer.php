@@ -49,6 +49,19 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo base_url()."assets/"; ?>dist/js/demo.js"></script>
 <script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
+<script>
   $(document).ready(function() {
     $('#example').DataTable( {
         "footerCallback": function ( row, data, start, end, display ) {

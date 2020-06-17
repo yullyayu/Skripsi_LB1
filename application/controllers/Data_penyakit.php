@@ -139,6 +139,7 @@ class Data_penyakit extends CI_Controller{
                     }
             }
         }
+        // ['data' => $pen]
         $this->header();
         $this->load->view('laporan_bulanan/penyakit_kumulatif', ['data' => $pen]);
         $this->load->view('footer/lb_footer');
@@ -469,5 +470,17 @@ class Data_penyakit extends CI_Controller{
       }else {
         redirect('data_penyakit/getJum_Penyakit');
       }
+    }
+    public function viewCetak()
+    {
+      $this->header();
+      $this->load->view('laporan_bulanan/cetak_penyakitbln');
+      $this->load->view('footer/lb_footer');
+    }
+    public function viewCetakTahun()
+    {
+      $this->header();
+      $this->load->view('laporan_bulanan/cetak_penyakitThn');
+      $this->load->view('footer/lb_footer');
     }
 }

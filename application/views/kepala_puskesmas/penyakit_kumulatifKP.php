@@ -52,28 +52,28 @@
                 <table id="example1" class="table table-bordered table-striped"><br><br>
                 <thead>
                 <tr>
-                  <th scoop="col" rowspan="2">No</th>
-                  <th scoop="col" rowspan="2">Diagnosa</th>
-                  <th scoop="col" rowspan="2">Kode ICDX</th>
-                  <th scoop="col" colspan="3">Januari</th>
-                  <th scoop="col" colspan="3">Februari</th>
-                  <th scoop="col" colspan="3">Maret</th>
-                  <th scoop="col" colspan="3">April</th>
-                  <th scoop="col" colspan="3">Mei</th>
-                  <th scoop="col" colspan="3">Juni</th>
-                  <th scoop="col" colspan="3">Juli</th>
-                  <th scoop="col" colspan="3">Agustus</th>
-                  <th scoop="col" colspan="3">September</th>
-                  <th scoop="col" colspan="3">Oktober</th>
-                  <th scoop="col" colspan="3">November</th>
-                  <th scoop="col" colspan="3">Desember</th>
-                  <th scoop="col" rowspan="2">Jumlah</th>
+                  <th rowspan="2">No</th>
+                  <th  rowspan="2">Diagnosa</th>
+                  <th  rowspan="2">Kode ICDX</th>
+                  <th  colspan="3">Januari</th>
+                  <th  colspan="3">Februari</th>
+                  <th  colspan="3">Maret</th>
+                  <th  colspan="3">April</th>
+                  <th  colspan="3">Mei</th>
+                  <th  colspan="3">Juni</th>
+                  <th  colspan="3">Juli</th>
+                  <th  colspan="3">Agustus</th>
+                  <th  colspan="3">September</th>
+                  <th  colspan="3">Oktober</th>
+                  <th  colspan="3">November</th>
+                  <th  colspan="3">Desember</th>
+                  <th  rowspan="2">Jumlah</th>
                 </tr>
                 <tr>
                   <?php for ($x=0; $x <12 ; $x++) { ?>
-                    <th scope="col">L</th>
-                    <th scope="col">P</th>
-                    <th scope="col">Total</th>
+                    <th >L</th>
+                    <th >P</th>
+                    <th >Total</th>
                   <?php } ?>
                 </tr>
                 </thead>

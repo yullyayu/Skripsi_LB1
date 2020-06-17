@@ -2103,13 +2103,6 @@ class Export_excel extends CI_Controller{
     {
         $bulan = $this->input->post('bulan');
         $tahun = $this->input->post('tahun');
-        if ($this->session->userdata('level') == '2') {
-            $data = $this->M_Penyakit_banyak->getCetakPeny($bulan,$tahun);
-        } elseif ($this->session->userdata('level') == '3'){
-            $data = $this->M_Penyakit_banyak->getCetakPenyKP($bulan,$tahun);
-        }elseif ($this->session->userdata('level') == '4') {
-            $data = $this->M_Penyakit_banyak->getCetakPenyDin($bulan,$tahun);
-        }
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreator('Export - Excel')
         ->setLastModifiedBy('Export - Excel')
@@ -2120,7 +2113,6 @@ class Export_excel extends CI_Controller{
         ->setCategory('Test result file');
         $spreadsheet->setActiveSheetIndex(0);
         $activeSheet = $spreadsheet->getActiveSheet();
-
         $activeSheet
         ->setCellValue('A1', '15 BESAR PENYAKIT')
         ->mergeCells('A1:F1')
@@ -2161,47 +2153,69 @@ class Export_excel extends CI_Controller{
             ],
         ];
         $activeSheet->getStyle('A1:F7')->applyFromArray($styleAlg);
-        
-        $datalaporan = json_decode($data[0]->datalb1);
-        $i = 8;
-        foreach($datalaporan as $d){
-        $total = 0;
-        $spreadsheet->setActiveSheetIndex(0)
-        ->setCellValue('A'.$i, '1')
-        ->setCellValue('B'.$i, $d->nama_penyakit)
-        ->setCellValue('C'.$i, $d->kode_icdx);
-        if (count($d->pasien) == 0) {
-            $k = 4;
-            $dt =0;
-            $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('D'.$i, $dt)
-            ->setCellValue('E'.$i, $dt);
-        }else {
-            $k = 4;
-            foreach ($d->pasien as $pas) {
-            $total = $pas->Laki + $pas->Perempuan ;
-            $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('D'.$i, $pas->Laki)
-            ->setCellValue('E'.$i, $pas->Perempuan);
+        if ($this->session->userdata('level') == '2') {
+            $dt = $this->M_Penyakit_banyak->getCetakPeny($bulan,$tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+                $this->header();
+                $this->load->view('laporan_bulanan/cetak_penyakitbln');
+                $this->load->view('footer/lb_footer');
+            }else {
+                $data = $this->M_Penyakit_banyak->getCetakPeny($bulan,$tahun);
+                $datalaporan = json_decode($data[0]->datalb1);
+                $i = 8;
+                foreach($datalaporan as $d){
+                $total = 0;
+                $activeSheet
+                ->setCellValue('A'.$i, '1')
+                ->setCellValue('B'.$i, $d->nama_penyakit)
+                ->setCellValue('C'.$i, $d->kode_icdx);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValue('D'.$i, $dt)
+                    ->setCellValue('E'.$i, $dt);
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $total = $pas->Laki + $pas->Perempuan ;
+                    $activeSheet
+                    ->setCellValue('D'.$i, $pas->Laki)
+                    ->setCellValue('E'.$i, $pas->Perempuan);
+                    }
+                }
+                $activeSheet
+                ->setCellValue('F'.$i, $total);
+                $i++; 
+                }
+                $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
+                $spreadsheet->setActiveSheetIndex(0);
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="15 Besar Penyakit.xlsx"');
+                header('Cache-Control: max-age=0');
+                header('Cache-Control: max-age=1');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
+                $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer->save('php://output');
+                exit;
+            }   
+        } elseif ($this->session->userdata('level') == '3'){
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Bulanan belum tersedia');
+                $this->header();
+                $this->load->view('laporan_bulanan/cetak_penyakitbln');
+                $this->load->view('footer/lb_footer');
+            }else {
+            $data = $this->M_Penyakit_banyak->getCetakPenyKP($bulan,$tahun);
             }
+        }elseif ($this->session->userdata('level') == '4') {
+            $data = $this->M_Penyakit_banyak->getCetakPenyDin($bulan,$tahun);
         }
-        $spreadsheet->setActiveSheetIndex(0)
-        ->setCellValue('F'.$i, $total);
-        $i++; 
-        }
-        $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
-        $spreadsheet->setActiveSheetIndex(0);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        exit;
+        
     }
     public function cetakPenyThn()
     {

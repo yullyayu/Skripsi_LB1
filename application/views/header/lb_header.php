@@ -371,14 +371,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=site_url('laporan_bulanan/viewCetak')?>"><i class="fa fa-fw fa-print"></i> Laporan Bulanan</a></li>
-            <li><a href="<?=site_url('laporan_bulanan/viewCetakTribln')?>"><i class="fa fa-fw fa-print"></i> Laporan Tribulan</a></li>
-            <li><a href="<?=site_url('laporan_bulanan/viewCetakTahun')?>"><i class="fa fa-fw fa-print"></i> Laporan Tahunan</a></li>
+            <li><a href="<?=site_url('laporan_bulanan/viewCetak')?>"><i class="fa fa-fw fa-print"></i> Laporan Bulanan(LB1)</a></li>
+            <li><a href="<?=site_url('data_penyakit/viewCetak')?>"><i class="fa fa-fw fa-print"></i> 15 Besar Penyakit</a></li>
           </ul>
         </li>
       </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
-  
   

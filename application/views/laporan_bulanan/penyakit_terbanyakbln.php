@@ -61,7 +61,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer">
                                 <div class="col-sm-12" align="right">
-                                    <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span
+                                    <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span
                                             class="glyphicon glyphicon-filter"></span> Filter</button>
                                 </div>
                             </div>
@@ -85,14 +85,6 @@
                                 $jumlah = []; 
                                 $no = 0; 
                                 foreach ($data as $dt ): $no++; ?>
-                                <?php $nm = $dt->nama_penyakit;
-                                $kd = $dt->kode_icdx;
-                                $jumlah = []; 
-                                // array_push($array, $nm); 
-                                // array_push($array, $kd); 
-                                // var_dump($array);
-                                // var_dump($kd);
-                                ?>
                                 <tr class="odd gradeX">
                                     <th scope="row"><?= $no ?></th>
                                     <th scope="row"><?= $dt->nama_penyakit?></th>
@@ -110,10 +102,9 @@
                                         $lk = $pas->Laki;
                                         $pr = $pas->Perempuan;
                                         $tot = $pas->Total;
-                                        // $j = json_encode($tot);
                                         array_push($jumlah, $tot);
                                         rsort($jumlah);
-                                        var_dump($jumlah);
+                                        print_r($jumlah);
                                         // $coba = array(1,2);
                                         // var_dump($coba);
                                         // usort($j,function($a,$b){
@@ -158,8 +149,6 @@
                         <!-- kirim -->
                         <div class="form-group"><br>
                             <div class="col-sm-12" align="right">
-                                <button type="submit" id="btn-filter" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#cetak"><span class="fa fa-print"></span> Cetak Excel</button>
                                 <button type="button" href="" class="btn bg-navy margin" data-toggle="modal"
                                     data-target="#kirim"> Kirim Laporan </button>
                             </div>
@@ -225,69 +214,6 @@
                         </div>
                     </div>
                     <!-- end modal -->
-
-                    <!-- MODAL CETAK LAPORAN -->
-                    <div class="modal fade" id="cetak">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">Cetak 15 Besar Penyakit</h4>
-                                </div>
-                                <form class="form-horizontal"
-                                    action="<?php echo site_url('export_excel/cetakPenyBln'); ?>" method="post">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Bulan</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control" name="bulan" id="bulan">
-                                                    <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                            foreach ($daftarBulan as $key) { 
-                            if($key == $bulan){?>
-                                                    <option value="<?php echo $key?>"
-                                                        <?php echo set_select('bulan', $key); ?> selected="">
-                                                        <?php echo $key['bulan']?></option>
-                                                    <?php }
-                            else{?>
-                                                    <option value="<?php echo $key?>"
-                                                        <?php echo set_select('bulan', $key); ?>><?php echo $key?>
-                                                    </option>
-                                                    <?php } } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Tahun</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control" name="tahun" id="tahun">
-                                                    <?php for($i=2019 ; $i<=2029;$i++){
-                            if($i == $tahun){?>
-                                                    <option value="<?php echo $i?>"
-                                                        <?php echo set_select('tahun', $i); ?>selected="">
-                                                        <?php echo $i?></option>
-                                                    <?php   } else{?>
-                                                    <option value="<?php echo $i?>"
-                                                        <?php echo set_select('tahun', $i); ?>><?php echo $i?></option>
-                                                    <?php   }} ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.box-body -->
-                                    <div class="box-footer">
-                                        <div class="col-sm-12" align="right">
-                                            <button type="submit" id="btn-filter" class="btn btn-primary"
-                                                name="cetak"><span class="fa fa-print"></span> Cetak Excel</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end modal -->
-
             </div>
         </div>
         <!-- /.box-body -->
