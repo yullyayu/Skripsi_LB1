@@ -6,12 +6,14 @@ class Page extends CI_Controller{
     $this->load->model('M_Dinkes');
     $this->load->model('M_Kepala_puskesmas');
     $this->load->model('DataLB1_model');
+    $this->load->model('Login_model');
     if($this->session->userdata('logged_in') !== TRUE){
       redirect('login');
     }
   }
   public function header() {
     if ($this->session->userdata('level') == '2') {
+      $data['user'] = $this->Login_model->get()->result();
       $pesan = $this->DataLB1_model->pesan();
       $data['pesan'] = count($pesan);
       $data['data_pesan'] = $pesan;
@@ -20,11 +22,13 @@ class Page extends CI_Controller{
       $data['data_notif'] = $result;
       $this->load->view('header/lb_header', $data);
     } elseif ($this->session->userdata('level') == '3') {
+      $data['user'] = $this->Login_model->get()->result();
       $result = $this->M_Kepala_puskesmas->notif();
       $data['notif'] = count($result);
       $data['data_notif'] = $result;
       $this->load->view('header/kp_header', $data);
     } elseif ($this->session->userdata('level') == '4') {
+      $data['user'] = $this->Login_model->get()->result();
       $result = $this->M_Dinkes->notif();
       $data['notif'] = count($result);
       $data['data_notif'] = $result;
@@ -34,7 +38,8 @@ class Page extends CI_Controller{
 
   function index(){
       if($this->session->userdata('level')==='1'){
-          $this->load->view('header/rm_header');
+          $data['user'] = $this->Login_model->get()->result();
+          $this->load->view('header/rm_header', $data);
           $this->load->view('rekam_medis/dashboard_rm');
           $this->load->view('footer/rm_footer');
       }else{

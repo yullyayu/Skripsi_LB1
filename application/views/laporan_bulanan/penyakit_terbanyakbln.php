@@ -82,65 +82,26 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                $jumlah = []; 
-                                $no = 0; 
+                                $no = 0;
                                 foreach ($data as $dt ): $no++; ?>
                                 <tr class="odd gradeX">
                                     <th scope="row"><?= $no ?></th>
                                     <th scope="row"><?= $dt->nama_penyakit?></th>
                                     <th scope="row"><?= $dt->kode_icdx?></th>
                                     <?php 
-                                    $coba = 0;
-                                    $tot = 0 ;
+                                    $total = 0;
                                      ?>
                                     <?php if (count($dt->pasien) == 0){ ?>
                                     <td>0</td>
                                     <td>0</td>
                                     <?php }else {
-                                      foreach ($dt->pasien as $pas){ 
-                                        
-                                        $lk = $pas->Laki;
-                                        $pr = $pas->Perempuan;
-                                        $tot = $pas->Total;
-                                        array_push($jumlah, $tot);
-                                        rsort($jumlah);
-                                        print_r($jumlah);
-                                        // $coba = array(1,2);
-                                        // var_dump($coba);
-                                        // usort($j,function($a,$b){
-                                        //     if ($a == $b) {
-                                        //         return 0;
-                                        //     }elseif ($a > $b) {
-                                        //         return -1;
-                                        //     }else {
-                                        //         return 1;
-                                        //     }
-                                        // });
-                                        // var_dump($j);
-                                        
-                                        // $total = $pas->Laki + $pas->Perempuan;
-                                        // $tampArray = array($pas=>$lk, $pas=>$pr, $pas => $total);
-                                        // var_dump($tampArray);
-                                        // array_push($array,$lk);
-                                        // array_push($array,$pr);
-                                        // array_push($array, $total);
-                                        // $arr = json_encode($array);
-                                        // var_dump($arr);
-                                        
-                                        // $array = json_decode($total, true);
-                                        // array_push($jumlah, $array);
-                                        // rsort($jumlah);
-                                        // // $jm = implode(',',$total);
-                                        // // array_chunk($total, 1);
-                                        // $jm = implode(',',$jumlah);
-                                        // var_dump($jm);
-                                        ?>
+                                      foreach ($dt->pasien as $pas){ ?>
                                     <td><?= $pas->Laki?> </td>
                                     <td><?= $pas->Perempuan?> </td>
                                     <?php }
                                     } 
                                     ?>
-                                    <td><?= $jumlah?></td>
+                                    <td><?= $dt->total?></td>
                                 </tr>
                                 <?php endforeach; 
                                  ?>

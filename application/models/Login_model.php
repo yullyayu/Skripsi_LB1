@@ -7,4 +7,8 @@ class Login_model extends CI_Model{
     $result = $this->db->get('tbl_users',1);
     return $result;
   }
+  public function get()
+  {
+    return $this->db->get('tbl_users');
+  }
 }

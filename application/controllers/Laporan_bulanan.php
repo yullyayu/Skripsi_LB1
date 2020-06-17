@@ -38,13 +38,13 @@ class Laporan_bulanan extends CI_Controller{
     {
         $data = $this->DataLB1_model->getJumlahLB();
         $penyakit = $data['dataPenyakit'];
-        $dataKategori = $data['dataKategori'];
+        // $dataKategori = $data['dataKategori'];
         $rekamMedis = $data['rekamMedis'];
         $laporanlb1 = $data['laporanlb1'];
         $pen = [];
         foreach ($penyakit as $key => $peny) {
-          foreach ($dataKategori as $dk => $kat) {
-            if ($peny->kode_dx == $kat->kode_dx) {
+          // foreach ($dataKategori as $dk => $kat) {
+          //   if ($peny->kode_dx == $kat->kode_dx) {
               $pen[$key] = (object)[];
               $pen[$key]->pasien = [];
               foreach ($rekamMedis as $ki => $rek) {
@@ -67,11 +67,11 @@ class Laporan_bulanan extends CI_Controller{
                   }
                 }
               }
-              $pen[$key]->kd = $peny->kode_dx;
-              $pen[$key]->kategori_penyakit = $kat->kategori_penyakit; 
+              // $pen[$key]->kd = $peny->kode_dx;
+              // $pen[$key]->kategori_penyakit = $kat->kategori_penyakit; 
               // var_dump($pen[$key]->kd = $peny->kode_dx);
-            }
-          }
+          //   }
+          // }
             // $pen[$key]->kategori_penyakit = $peny->kategori_penyakit;
             $pen[$key]->kode_dx = $peny->kode_dx;
             $pen[$key]->kode_icdx = $peny->kode_icdx;

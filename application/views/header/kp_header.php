@@ -118,7 +118,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-fw fa-user"></i>
-              <span class="hidden-xs">Kepala Puskesmas</span>
+              <?php foreach ($user as $key) {
+                if ($key->user_level == 3) { ?>
+              <span class="hidden-xs"><?php echo $key->jabatan ?> <?php echo $key->instansi ?> </span>
+              <?php }}?>
             </a>
             <ul class="dropdown-menu">
               <li class="user-footer">
@@ -140,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?php echo base_url()."assets/"; ?>/image/image.png" class="img-circle" alt="User Image">
+          <img src="<?php echo base_url()."assets/"; ?>/image/gambar1.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>Puskesmas</p>
@@ -205,12 +208,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=site_url('kepala_puskesmas/viewCetakbln')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Bulanan</a></li>
-            <li><a href="<?=site_url('kepala_puskesmas/viewCetakTribln')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Tribulan</a></li>
-            <li><a href="<?=site_url('kepala_puskesmas/viewCetakTahun')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Tahunan</a></li>
+            <li><a href="<?=site_url('kepala_puskesmas/viewCetakbln')?>"><i class="fa fa-fw fa-print"></i> Laporan Bulanan(LB1)</a></li>
+            <li><a href="<?=site_url('data_penyakit/viewCetak')?>"><i class="fa fa-fw fa-print"></i> 15 Besar Penyakit</a></li>
+            
           </ul>
         </li>
       </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
+  

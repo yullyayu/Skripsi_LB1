@@ -279,7 +279,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-fw fa-user"></i>
-              <span class="hidden-xs">Petugas LB1</span>
+              <?php foreach ($user as $key) {
+                if ($key->user_level == 2) { ?>
+              <span class="hidden-xs"><?php echo $key->jabatan ?></span>
+              <?php }}?>
             </a>
             <ul class="dropdown-menu">
               <li class="user-footer">
@@ -301,7 +304,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <!-- Sidebar user panel -->
       <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?php echo base_url()."assets/"; ?>/image/image.png" class="img-circle" alt="User Image">
+                <img src="<?php echo base_url()."assets/"; ?>/image/gambar1.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>Puskesmas</p>

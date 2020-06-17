@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-        CETAK LAPORAN BULANAN
+        CETAK LAPORAN 15 BESAR PENYAKIT
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -9,9 +9,8 @@
         <li class="active">Data tables</li>
       </ol>
       <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo site_url('dinkes/viewCetakBln') ?>">Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('dinkes/viewCetakTribln') ?>">Tri Bulan</a></li>
-        <li class="active"><a href="<?php echo site_url('dinkes/viewCetakThn') ?>">Tahun</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/viewCetak') ?>">Bulan</a></li>
+        <li class="active"><a href="<?php echo site_url('data_penyakit/viewCetakTahun') ?>">Tahun</a></li>
       </ul>
     </section>
 
@@ -20,7 +19,7 @@
       <div class="row">          
           <div class="box">
             <div class="box-header">
-                <h1 class="box-title">Laporan Bulanan(LB1) Dinas Kesehatan</h1>
+                <h1 class="box-title">15 Besar Penyakit Puskesmas</h1>
                 <?php if ($this->session->flashdata('flash')){ ?>
                 <div class="alert alert-danger" role="alert">
                     <strong><?=$this->session->flashdata('flash');?></strong>
@@ -30,23 +29,8 @@
                 </div>
                 <?php }?>
             </div>
-            <form class="form-horizontal" action="<?php echo site_url('export_excel/cetakExcelLB'); ?>" method="post">
+            <form class="form-horizontal" action="<?php echo site_url('export_excel/cetakPenyThn'); ?>" method="post">
               <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Bulan</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="bulan" id="bulan">
-                    <?php $daftarBulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober", "Desember");
-                    foreach ($daftarBulan as $key) { 
-                    if($key == $bulan){?>
-                    <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?> selected=""><?php echo $key['bulan']?></option>
-                    <?php }
-                    else{?>
-                    <option value="<?php echo $key?>" <?php echo set_select('bulan', $key); ?>><?php echo $key?></option>
-                    <?php } } ?>
-                    </select>
-                  </div>
-                </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Tahun</label>
                   <div class="col-sm-10">
@@ -64,7 +48,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <div class="col-sm-12" align="right">
-                <button type="submit" id="btn-filter" class="btn btn-success" name="filter"><span class="fa fa-print"></span>  Cetak Excel</button>
+                <button type="submit" id="btn-filter" class="btn btn-primary" name="filter"><span class="fa fa-print"></span>  Cetak Excel</button>
                 </div>
               </div>
               <!-- /.box-footer -->

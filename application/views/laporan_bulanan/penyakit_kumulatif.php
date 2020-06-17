@@ -24,7 +24,7 @@
               <div class="box-body">
                   <div class="form-group"><br>
                     <label class="col-sm-1 control-label" for="exampleFormControlSelect1">Tahun</label>
-                    <div class="col-sm-12">
+                    <div class="col-sm-11">
                       <select class="form-control" name="tahun" id="exampleFormControlSelect1">
                       <?php for($i=2020 ; $i<=2029;$i++){
                       if($i == $year){?>
@@ -77,7 +77,7 @@
                      <th scope="row"><?= $dp->nama_penyakit?></th>
                      <th scope="row"><?= $dp->kode_icdx?></th>
                      <?php 
-                     $total = 0 ;
+                     
                      $jumlah = 0;
                      if(count($dp->pasien) == 0) {
                        for ($x=0; $x<12 ; $x++) {  ?>
@@ -86,11 +86,12 @@
                         <td>0</td>
                      <?php }} else {
                        foreach ($dp->pasien as $pas) { 
-                         $total = $pas->Laki + $pas->Perempuan ;
+                         $total = 0;
+                          $total = $pas->total ;
                          $jumlah += $total ; ?>
                         <td><?= $pas->Laki ?></td>
                         <td><?= $pas->Perempuan?></td>
-                        <td><?= $total ?></td>
+                        <td><?= $pas->total  ?></td>
                      <?php  }
                      } ?>
                      <td><?= $jumlah ?></td>

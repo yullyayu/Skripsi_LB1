@@ -142,18 +142,16 @@
                 </thead>
                 <tbody>
                 <!--  -->
-                  <?php foreach ($kp as $key) { ?>
+                  <!-- <?php //foreach ($kp as $key) { ?>
                     <tr>
-                      <th colspan="107" style="background: yellow"><?php echo $key->kategori_penyakit; ?></th>
-                    </tr>
+                      <th colspan="107" style="background: yellow"><?php// echo $key->kategori_penyakit; ?></th>
+                    </tr> -->
                   <?php foreach ($data as $d) {?>
-                  <?php if ($d->kode_dx == $key->kode_dx) { ?>                
+                  <?php //if ($d->kode_dx == $key->kode_dx) { ?>                
                   <tr>
                     <th scope="row"><?= $d->kode_dx ?></th>
                     <th scope="row"><?= $kode = $d->kode_icdx?></th>
-                    <th scope="row">
-                      <?php echo $d->nama_penyakit = $d->nama_penyakit; ?>
-                    </th>
+                    <th scope="row"><?php echo $d->nama_penyakit; ?></th>
                     <!--Spasih 1-->
                     <?php 
                       $totBaruP = 0;
@@ -222,8 +220,8 @@
                     <td><?= $totJKKL?></td>
                     </tr>
                     <?php ;}?>
-                  <?php }?>
-                  <?php } ?>
+                  <?php ?>
+                  <?php  ?>
                 </tbody>
                 <tfoot>
                 <tr>
