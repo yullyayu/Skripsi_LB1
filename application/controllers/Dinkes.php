@@ -12,6 +12,7 @@ class Dinkes extends CI_Controller{
     }
     public function header()
     {
+      $data['puskesmas'] = $this->M_Data_Puskesmas->tampil_puskesmas()->result();
       $data['user'] = $this->Login_model->get()->result();
       $result = $this->M_Dinkes->notif();
       $data['notif'] = count($result);
@@ -136,13 +137,80 @@ class Dinkes extends CI_Controller{
     }
     public function monitoringLB1()
     {
-      // $bln = date('m');
-      // $bulan = $this->input->post('bulan');
-      // $bln = date('m', strtotime($bulan));
-      $data['puskesmas'] = $this->M_Data_Puskesmas->tampil_puskesmas()->result();
-      $data['monitoring'] = $this->M_Dinkes->monitoringLB();
+      $data = $this->M_Dinkes->monitoringLB();
+      $jenisLaporan = $data['jenisLaporan'];
+      $detailLaporan = $data['detailLaporan'];
+      $st = [];
+      foreach ($jenisLaporan as $key => $dt) {
+        $st[$key] = (object)[];
+        $st[$key]->status = [];
+        foreach ($detailLaporan as $ki => $dl) {
+          if ($dt->id_jp == $dl->id_jp) {
+            $st[$key]->status[0] = (object)[];
+            $st[$key]->status[0]->Sudah = (object)[];
+            $st[$key]->status[0]->Belum = (object)[];
+            $st[$key]->status[0]->Sudah = null;
+            $st[$key]->status[0]->Belum = null;
+          }
+        }
+        $st[$key]->id_jp = $dt->id_jp;
+        $st[$key]->nama_laporan = $dt->nama_laporan;
+      }
+      foreach ($jenisLaporan as $key => $dt) {
+        foreach ($detailLaporan as $ki => $dl) {
+          if ($dt->id_jp == $dl->id_jp){
+            if ($dl->status == 2 || $dl->status == 3) {
+              $st[$key]->status[0]->Sudah = 1;
+            }else {
+              $st[$key]->status[0]->Belum = 2;
+            }
+            unset($detailLaporan[$ki]);
+          }
+        }
+        # code...
+      }
       $this->header();
-      $this->load->view('dinkes/monitoring_LB1', $data); 
+      $this->load->view('dinkes/monitoring_LB1', ['data' => $st]); 
+      $this->load->view('footer/d_footer');
+    }
+    public function FilterMonitor()
+    {
+      $bulan = $this->input->post('bulan');
+      $tahun = $this->input->post('tahun');
+      $data = $this->M_Dinkes->FilterMonitoring($bulan, $tahun);
+      $jenisLaporan = $data['jenisLaporan'];
+      $detailLaporan = $data['detailLaporan'];
+      $st = [];
+      foreach ($jenisLaporan as $key => $dt) {
+        $st[$key] = (object)[];
+        $st[$key]->status = [];
+        foreach ($detailLaporan as $ki => $dl) {
+          if ($dt->id_jp == $dl->id_jp) {
+            $st[$key]->status[0] = (object)[];
+            $st[$key]->status[0]->Sudah = (object)[];
+            $st[$key]->status[0]->Belum = (object)[];
+            $st[$key]->status[0]->Sudah = null;
+            $st[$key]->status[0]->Belum = null;
+          }
+        }
+        $st[$key]->id_jp = $dt->id_jp;
+        $st[$key]->nama_laporan = $dt->nama_laporan;
+      }
+      foreach ($jenisLaporan as $key => $dt) {
+        foreach ($detailLaporan as $ki => $dl) {
+          if ($dt->id_jp == $dl->id_jp){
+            if ($dl->status == 2 || $dl->status == 3) {
+              $st[$key]->status[0]->Sudah = 1;
+            }else {
+              $st[$key]->status[0]->Belum = 2;
+            }
+            unset($detailLaporan[$ki]);
+          }
+        }
+        # code...
+      }
+      $this->header();
+      $this->load->view('dinkes/monitoring_LB1', ['data' => $st]); 
       $this->load->view('footer/d_footer');
     }
     public function laporanDinkes()
@@ -211,10 +279,12 @@ class Dinkes extends CI_Controller{
     {
       if (isset($_POST['acc'])) {
         $data = array('pesan' => 5);
+        $data['id_jp'] = $this->input->post('id_jp');
+        $data['nama_laporan'] = $this->input->post('nama_laporan');
         $data['tanggal'] = $this->input->post('tanggal');
         $data['waktu'] = $this->input->post('waktu');
-        $where = array('id_laporan' => $id);
-        $this->M_Dinkes->sendMonitor($data, $where);
+        // $where = array('id_laporan' => $id);
+        $this->M_Dinkes->sendMonitor($data, 'monitoring');
       }
       redirect('dinkes/monitoringLB1');
     }

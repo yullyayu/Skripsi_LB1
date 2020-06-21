@@ -33,8 +33,7 @@ class DataLB1_model extends CI_Model{
   public function pesan()
   {
     $this->db->where('pesan', 5);
-    // $this->db->where('pesan', 11);
-    $result = $this->db->get('detail_laporan')->result_array();
+    $result = $this->db->get('monitoring')->result_array();
     return $result;
   }
   function getJumlahLB(){

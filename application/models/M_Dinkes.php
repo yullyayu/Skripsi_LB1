@@ -70,31 +70,71 @@ class M_Dinkes extends CI_Model{
     }
     public function monitoringLB()
     {
-        // $bulan = getdate();
+        $bulan = getdate();
+        $jenisLaporan = $this->db->get('jenis_laporan');
+        $detailLaporan = $this->db->select('dl.id_jp, dl.status')
+        ->from('detail_laporan as dl')
+        ->join('jenis_laporan as jl', 'jl.id_jp = dl.id_jp', 'left')
+        ->where('month(dl.tanggal)', $bulan['mon'])
+        ->where('year(dl.tanggal)', $bulan['year'])
+        ->get();
+        return[
+            'jenisLaporan' => $jenisLaporan->result(),
+            'detailLaporan' => $detailLaporan->result(),
+        ];
+    }
+    public function FilterMonitoring($bulan, $tahun)
+    {
+        if ($bulan == 'Januari') {
+            $bulan = 1;
+        }elseif ($bulan == 'Februari') {
+            $bulan = 2;
+        }elseif ($bulan == 'Maret') {
+            $bulan = 3;
+        }elseif ($bulan == 'April') {
+            $bulan = 4;
+        }elseif ($bulan == 'Mei') {
+            $bulan = 5;
+        }elseif ($bulan == 'Juni') {
+            $bulan = 6;
+        }elseif ($bulan == 'Juli') {
+            $bulan = 7;
+        }elseif ($bulan == 'Agustus') {
+            $bulan = 8;
+        }elseif ($bulan == 'September') {
+            $bulan = 9;
+        }elseif ($bulan == 'Oktober') {
+            $bulan = 10;
+        }elseif ($bulan == 'November') {
+            $bulan = 11;
+        }elseif ($bulan == 'Desember') {
+            $bulan = 12;
+        }
+        $jenisLaporan = $this->db->get('jenis_laporan');
+        $detailLaporan = $this->db->select('dl.id_jp, dl.status')
+        ->from('detail_laporan as dl')
+        ->join('jenis_laporan as jl', 'jl.id_jp = dl.id_jp', 'left')
+        ->where('month(dl.tanggal)', $bulan)
+        ->where('year(dl.tanggal)', $tahun)
+        ->get();
+        return[
+            'jenisLaporan' => $jenisLaporan->result(),
+            'detailLaporan' => $detailLaporan->result(),
+        ];
+    }
+    public function getStatus()
+    {
+        $bulan = getdate();
         $this->db->select('*');
-        $this->db->from('jenis_laporan as jl');
-        $this->db->join('detail_laporan as dl', 'dl.id_jp = jl.id_jp', 'left');
-        // $this->db->where('month(dl.tanggal)', $bulan['mon']);  
-        $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = dl.kd_puskesmas', 'left');
+        $this->db->from('detail_laporan');
+        // $this->db->where("(status=2 OR status=3)", NULL, FALSE);
+        $this->db->where('month(tanggal)', $bulan['mon']);
         $query = $this->db->get();
         return $query->result();
-        // $bulan = getdate();
-        // $this->db->select('*');
-        // $this->db->from('detail_laporan as dl');
-        // $this->db->join('jenis_laporan as jl', 'dl.id_jp = jl.id_jp', 'left');
-        // $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = dl.kd_puskesmas', 'left');
-        // // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
-        // $query = $this->db->get();
-        // return $query->result();
     }
-    // public function get()
-    // {
-    //     return $this->db->get('jenis_laporan');
-    // }
-    public function sendMonitor($data, $where)
+    public function sendMonitor($data, $table)
     {
-        $this->db->where($where);
-        $this->db->update('detail_laporan', $data);
+        $this->db->insert($table, $data);
     }
     public function CetakBulan($bulan, $tahun)
     {
