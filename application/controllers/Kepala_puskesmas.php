@@ -6,10 +6,12 @@ class Kepala_puskesmas extends CI_Controller{
       $this->load->helper('url');
       $this->load->model('DataLB1_model');
       $this->load->model('M_Kepala_puskesmas');
+      $this->load->model('Login_model');
       $this->load->helper(array('form', 'url'));
     }
     public function header()
     {
+      $data['user'] = $this->Login_model->get()->result();
       $result = $this->M_Kepala_puskesmas->notif();
       $data['notif'] = count($result);
       $data['data_notif'] = $result;
@@ -30,14 +32,14 @@ class Kepala_puskesmas extends CI_Controller{
     }
     public function persetujuanLB($id)
     {
-      $data['status'] = $this->DataLB1_model->getDataLB1($id);
+      $data['status'] = $this->DataLB1_model->getData($id);
       $this->header();
       $this->load->view('kepala_puskesmas/detail_laporanKP', $data);
       $this->load->view('footer/kp_footer');
     }
     public function detailPenyBln($id)
     {
-      $data['status'] = $this->DataLB1_model->getDataLB1($id);
+      $data['status'] = $this->DataLB1_model->getData($id);
       $this->header();
       $this->load->view('kepala_puskesmas/detail_penyakitBln', $data);
       // $this->load->view('footer/kp_footer');

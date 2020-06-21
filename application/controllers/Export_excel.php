@@ -16,10 +16,12 @@ class Export_excel extends CI_Controller{
       $this->load->model('M_Kepala_puskesmas');
       $this->load->model('M_Dinkes');
       $this->load->model('M_Penyakit_banyak');
+      $this->load->model('Login_model');
       $this->load->helper(array('form', 'url'));
     }
     public function header() {
         if ($this->session->userdata('level') == '2') {
+            $data['user'] = $this->Login_model->get()->result();
           $pesan = $this->DataLB1_model->pesan();
           $data['pesan'] = count($pesan);
           $data['data_pesan'] = $pesan;
@@ -28,11 +30,13 @@ class Export_excel extends CI_Controller{
           $data['data_notif'] = $result;
           $this->load->view('header/lb_header', $data);
         } elseif ($this->session->userdata('level') == '3') {
+            $data['user'] = $this->Login_model->get()->result();
           $result = $this->M_Kepala_puskesmas->notif();
           $data['notif'] = count($result);
           $data['data_notif'] = $result;
           $this->load->view('header/kp_header', $data);
         } elseif ($this->session->userdata('level') == '4') {
+            $data['user'] = $this->Login_model->get()->result();
           $result = $this->M_Dinkes->notif();
           $data['notif'] = count($result);
           $data['data_notif'] = $result;
@@ -423,12 +427,11 @@ class Export_excel extends CI_Controller{
             $data = $this->DataLB1_model->getCetakLB1($bulan, $tahun);
             $datalaporan = json_decode($data[0]->datalb1);
             // var_dump($datalaporan);
-            $i = 11;
-            $b = 10;
-            $c = 16;
+            $i = 10;
+            // $b = 10;
             $arrData = array();
             foreach ($dtKP as $dk) {
-                $activeSheet->setCellValue('A'.$b, $dk->kategori_penyakit);
+                // $activeSheet->setCellValue('A'.$b, $dk->kategori_penyakit);
                 // $activeSheet->setCellValue('A'.$c, $dk->kategori_penyakit);
                 // var_dump($dk->kode_dx); 
                 // var_dump($dk->kategori_penyakit); 
@@ -507,16 +510,14 @@ class Export_excel extends CI_Controller{
                 }
             }
             $maxRow = $activeSheet->getHighestRow();
-            $maxLoop = $maxRow - 11;
+            $maxLoop = $maxRow - 10;
                 for($x=0;$x<104;$x++){
                 $count = 0;
-                    for($i=11;$i<=$maxLoop;$i++){
+                    for($i=10;$i<=$maxLoop;$i++){
                         $count += $arrData[$i][$x];
                     }
                     $activeSheet->setCellValueByColumnAndRow($x+4, $maxRow, $count); 
-                }
-            
-            
+                }  
             $activeSheet->setTitle('Bulan '.date('d-m-Y H'));
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="Laporan Bulanan.xlsx"');
@@ -538,79 +539,84 @@ class Export_excel extends CI_Controller{
             $this->load->view('kepala_puskesmas/view_cetakBulanLB');
             $this->load->view('footer/kp_footer');
         }else {
+            $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
             $data = $this->M_Kepala_puskesmas->getCetakBulan($bulan, $tahun);
             $datalaporan = json_decode($data[0]->datalb1);
             $i = 10;
             $arrData = array();
-            foreach($datalaporan as $d){
-            $totBaruP = 0;
-            $totBaruL = 0;
-            $totLamaP = 0;
-            $totLamaL = 0;
-            $totKKLP = 0;
-            $totKKLL = 0;
-            $totJKKP = 0;
-            $totJKKL = 0; 
-            $arrData[$i] = [];
-            $activeSheet
-            ->setCellValue('A'.$i, $d->kode_dx)
-            ->setCellValue('B'.$i, $d->kode_icdx)
-            ->setCellValue('C'.$i, $d->nama_penyakit);
-            if (count($d->pasien) == 0) {
-                $k = 4;
-                for ($x=0;$x<12;$x++) { 
-                $dt =0;
+            foreach ($dtKP as $dk) {
+                foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
+                $totBaruP = 0;
+                $totBaruL = 0;
+                $totLamaP = 0;
+                $totLamaL = 0;
+                $totKKLP = 0;
+                $totKKLL = 0;
+                $totJKKP = 0;
+                $totJKKL = 0; 
+                $arrData[$i] = [];
                 $activeSheet
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt);
-                $tempArr=[$dt,$dt,$dt,$dt,$dt,$dt,$dt,$dt];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                ->setCellValue('A'.$i, $d->kode_dx)
+                ->setCellValue('B'.$i, $d->kode_icdx)
+                ->setCellValue('C'.$i, $d->nama_penyakit);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    for ($x=0;$x<12;$x++) { 
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt);
+                    $tempArr=[$dt,$dt,$dt,$dt,$dt,$dt,$dt,$dt];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                    }
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $jumJKKP = $pas->Baru->Perempuan + $pas->Lama->Perempuan + $pas->KKL->Perempuan;
+                    $jumJKKL = $pas->Baru->Laki + $pas->Lama->Laki + $pas->KKL->Laki; 
+                    $totBaruP += $pas->Baru->Perempuan;
+                    $totBaruL += $pas->Baru->Laki;
+                    $totLamaP += $pas->Lama->Perempuan;
+                    $totLamaL += $pas->Lama->Laki;
+                    $totKKLP += $pas->KKL->Perempuan;
+                    $totKKLL += $pas->KKL->Laki;
+                    $totJKKP = $totBaruP + $totLamaP + $totKKLP;
+                    $totJKKL = $totBaruL + $totLamaL + $totKKLL; 
+                    $br_lk = $pas->Baru->Laki;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $jumJKKL)
+                    ->setCellValueByColumnAndRow($k++, $i, $jumJKKP); 
+                    $tempArr = [$pas->Baru->Laki,$pas->Baru->Perempuan,$pas->Lama->Laki,$pas->Lama->Perempuan,$pas->KKL->Laki,$pas->KKL->Perempuan,$jumJKKL,$jumJKKP];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                    }
                 }
-            }else {
-                $k = 4;
-                foreach ($d->pasien as $pas) {
-                $jumJKKP = $pas->Baru->Perempuan + $pas->Lama->Perempuan + $pas->KKL->Perempuan;
-                $jumJKKL = $pas->Baru->Laki + $pas->Lama->Laki + $pas->KKL->Laki; 
-                $totBaruP += $pas->Baru->Perempuan;
-                $totBaruL += $pas->Baru->Laki;
-                $totLamaP += $pas->Lama->Perempuan;
-                $totLamaL += $pas->Lama->Laki;
-                $totKKLP += $pas->KKL->Perempuan;
-                $totKKLL += $pas->KKL->Laki;
-                $totJKKP = $totBaruP + $totLamaP + $totKKLP;
-                $totJKKL = $totBaruL + $totLamaL + $totKKLL; 
-                $br_lk = $pas->Baru->Laki;
                 $activeSheet
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $jumJKKL)
-                ->setCellValueByColumnAndRow($k++, $i, $jumJKKP); 
-                $tempArr = [$pas->Baru->Laki,$pas->Baru->Perempuan,$pas->Lama->Laki,$pas->Lama->Perempuan,$pas->KKL->Laki,$pas->KKL->Perempuan,$jumJKKL,$jumJKKP];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                ->setCellValue('CV'.$i, $totBaruL)
+                ->setCellValue('CW'.$i, $totBaruP)
+                ->setCellValue('CX'.$i, $totLamaL)
+                ->setCellValue('CY'.$i, $totLamaP)
+                ->setCellValue('CZ'.$i, $totKKLL)
+                ->setCellValue('DA'.$i, $totKKLP)
+                ->setCellValue('DB'.$i, $totJKKL)
+                ->setCellValue('DC'.$i, $totJKKP);
+                    $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                $i++; 
                 }
-            }
-            $activeSheet
-            ->setCellValue('CV'.$i, $totBaruL)
-            ->setCellValue('CW'.$i, $totBaruP)
-            ->setCellValue('CX'.$i, $totLamaL)
-            ->setCellValue('CY'.$i, $totLamaP)
-            ->setCellValue('CZ'.$i, $totKKLL)
-            ->setCellValue('DA'.$i, $totKKLP)
-            ->setCellValue('DB'.$i, $totJKKL)
-            ->setCellValue('DC'.$i, $totJKKP);
-                $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
-            $i++; 
+                }
             }
             $maxRow = $activeSheet->getHighestRow();
             $maxLoop = $maxRow - 10;
@@ -642,79 +648,84 @@ class Export_excel extends CI_Controller{
             $this->load->view('dinkes/view_cetakBulan');
             $this->load->view('footer/d_footer');
         }else {
+            $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
             $data = $this->M_Dinkes->CetakBulan($bulan, $tahun);
             $datalaporan = json_decode($data[0]->datalb1);
             $i = 10;
             $arrData = array();
-            foreach($datalaporan as $d){
-            $totBaruP = 0;
-            $totBaruL = 0;
-            $totLamaP = 0;
-            $totLamaL = 0;
-            $totKKLP = 0;
-            $totKKLL = 0;
-            $totJKKP = 0;
-            $totJKKL = 0; 
-            $arrData[$i] = [];
-            $activeSheet
-            ->setCellValue('A'.$i, $d->kode_dx)
-            ->setCellValue('B'.$i, $d->kode_icdx)
-            ->setCellValue('C'.$i, $d->nama_penyakit);
-            if (count($d->pasien) == 0) {
-                $k = 4;
-                for ($x=0;$x<12;$x++) { 
-                $dt =0;
+            foreach ($dtKP as $dk) {
+                foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
+                $totBaruP = 0;
+                $totBaruL = 0;
+                $totLamaP = 0;
+                $totLamaL = 0;
+                $totKKLP = 0;
+                $totKKLL = 0;
+                $totJKKP = 0;
+                $totJKKL = 0; 
+                $arrData[$i] = [];
                 $activeSheet
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt)
-                ->setCellValueByColumnAndRow($k++, $i, $dt);
-                $tempArr=[$dt,$dt,$dt,$dt,$dt,$dt,$dt,$dt];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                ->setCellValue('A'.$i, $d->kode_dx)
+                ->setCellValue('B'.$i, $d->kode_icdx)
+                ->setCellValue('C'.$i, $d->nama_penyakit);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    for ($x=0;$x<12;$x++) { 
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt);
+                    $tempArr=[$dt,$dt,$dt,$dt,$dt,$dt,$dt,$dt];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                    }
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $jumJKKP = $pas->Baru->Perempuan + $pas->Lama->Perempuan + $pas->KKL->Perempuan;
+                    $jumJKKL = $pas->Baru->Laki + $pas->Lama->Laki + $pas->KKL->Laki; 
+                    $totBaruP += $pas->Baru->Perempuan;
+                    $totBaruL += $pas->Baru->Laki;
+                    $totLamaP += $pas->Lama->Perempuan;
+                    $totLamaL += $pas->Lama->Laki;
+                    $totKKLP += $pas->KKL->Perempuan;
+                    $totKKLL += $pas->KKL->Laki;
+                    $totJKKP = $totBaruP + $totLamaP + $totKKLP;
+                    $totJKKL = $totBaruL + $totLamaL + $totKKLL; 
+                    $br_lk = $pas->Baru->Laki;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $jumJKKL)
+                    ->setCellValueByColumnAndRow($k++, $i, $jumJKKP); 
+                    $tempArr = [$pas->Baru->Laki,$pas->Baru->Perempuan,$pas->Lama->Laki,$pas->Lama->Perempuan,$pas->KKL->Laki,$pas->KKL->Perempuan,$jumJKKL,$jumJKKP];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                    }
                 }
-            }else {
-                $k = 4;
-                foreach ($d->pasien as $pas) {
-                $jumJKKP = $pas->Baru->Perempuan + $pas->Lama->Perempuan + $pas->KKL->Perempuan;
-                $jumJKKL = $pas->Baru->Laki + $pas->Lama->Laki + $pas->KKL->Laki; 
-                $totBaruP += $pas->Baru->Perempuan;
-                $totBaruL += $pas->Baru->Laki;
-                $totLamaP += $pas->Lama->Perempuan;
-                $totLamaL += $pas->Lama->Laki;
-                $totKKLP += $pas->KKL->Perempuan;
-                $totKKLL += $pas->KKL->Laki;
-                $totJKKP = $totBaruP + $totLamaP + $totKKLP;
-                $totJKKL = $totBaruL + $totLamaL + $totKKLL; 
-                $br_lk = $pas->Baru->Laki;
                 $activeSheet
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Baru->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->Lama->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Laki)
-                ->setCellValueByColumnAndRow($k++, $i, $pas->KKL->Perempuan)
-                ->setCellValueByColumnAndRow($k++, $i, $jumJKKL)
-                ->setCellValueByColumnAndRow($k++, $i, $jumJKKP); 
-                $tempArr = [$pas->Baru->Laki,$pas->Baru->Perempuan,$pas->Lama->Laki,$pas->Lama->Perempuan,$pas->KKL->Laki,$pas->KKL->Perempuan,$jumJKKL,$jumJKKP];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                ->setCellValue('CV'.$i, $totBaruL)
+                ->setCellValue('CW'.$i, $totBaruP)
+                ->setCellValue('CX'.$i, $totLamaL)
+                ->setCellValue('CY'.$i, $totLamaP)
+                ->setCellValue('CZ'.$i, $totKKLL)
+                ->setCellValue('DA'.$i, $totKKLP)
+                ->setCellValue('DB'.$i, $totJKKL)
+                ->setCellValue('DC'.$i, $totJKKP);
+                    $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
+                    $arrData[$i] = array_merge($arrData[$i],$tempArr);
+                $i++; 
                 }
-            }
-            $activeSheet
-            ->setCellValue('CV'.$i, $totBaruL)
-            ->setCellValue('CW'.$i, $totBaruP)
-            ->setCellValue('CX'.$i, $totLamaL)
-            ->setCellValue('CY'.$i, $totLamaP)
-            ->setCellValue('CZ'.$i, $totKKLL)
-            ->setCellValue('DA'.$i, $totKKLP)
-            ->setCellValue('DB'.$i, $totJKKL)
-            ->setCellValue('DC'.$i, $totJKKP);
-                $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
-                $arrData[$i] = array_merge($arrData[$i],$tempArr);
-            $i++; 
+                }
             }
             $maxRow = $activeSheet->getHighestRow();
             $maxLoop = $maxRow - 10;
@@ -1119,11 +1130,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('laporan_bulanan/cetak_LB1tribulan');
                 $this->load->view('footer/lb_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->DataLB1_model->getCetakTribln($tribulan, $tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -1192,6 +1206,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -1224,11 +1240,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('kepala_puskesmas/view_cetakTriblnLB');
                 $this->load->view('footer/kp_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->M_Kepala_puskesmas->getCetakTribulan($tribulan, $tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -1297,6 +1316,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -1329,11 +1350,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('dinkes/view_cetakTribulan');
                 $this->load->view('footer/kp_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->M_Dinkes->CetakTribulan($tribulan, $tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -1402,6 +1426,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -1805,11 +1831,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('laporan_bulanan/cetak_LB1tahun');
                 $this->load->view('footer/lb_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->DataLB1_model->getCetakTahun($tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -1878,6 +1907,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -1910,11 +1941,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('kepala_puskesmas/view_cetakTahunLB');
                 $this->load->view('footer/kp_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->M_Kepala_puskesmas->getCetakTahun($tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -1983,6 +2017,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -2015,11 +2051,14 @@ class Export_excel extends CI_Controller{
                 $this->load->view('dinkes/view_cetakTahun');
                 $this->load->view('footer/d_footer');
             }else {
+                $dtKP = $this->DataLB1_model->getKategoriPeny()->result();
                 $data = $this->M_Dinkes->CetakTahun($tahun);
                 $datalaporan = json_decode($data[0]->datalb1);
                 $i = 10;
                 $arrData = array();
+                foreach ($dtKP as $dk) {
                 foreach($datalaporan as $d){
+                if ($d->kode_dx == $dk->kode_dx) {
                 $totBaruP = 0;
                 $totBaruL = 0;
                 $totLamaP = 0;
@@ -2088,6 +2127,8 @@ class Export_excel extends CI_Controller{
                     $tempArr = [$totBaruL,$totBaruP,$totLamaL,$totLamaP,$totKKLL,$totKKLP,$totJKKL,$totJKKP];
                     $arrData[$i] = array_merge($arrData[$i],$tempArr);
                 $i++; 
+                }
+                }
                 }
                 $maxRow = $activeSheet->getHighestRow();
                 $maxLoop = $maxRow - 10;
@@ -2323,13 +2364,6 @@ class Export_excel extends CI_Controller{
     public function cetakPenyThn()
     {
         $tahun = $this->input->post('tahun');
-        if ($this->session->userdata('level') == '2') {
-            $data = $this->M_Penyakit_banyak->CetakPenyTahun($tahun);
-        } elseif ($this->session->userdata('level') == '3'){
-            $data = $this->M_Penyakit_banyak->CetakPenyTahunKP($tahun);
-        }elseif ($this->session->userdata('level') == '4') {
-            $data = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
-        }
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreator('Export - Excel')
         ->setLastModifiedBy('Export - Excel')
@@ -2338,8 +2372,10 @@ class Export_excel extends CI_Controller{
         ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
         ->setKeywords('office 2007 openxml php')
         ->setCategory('Test result file');
+        $spreadsheet->setActiveSheetIndex(0);
+        $activeSheet = $spreadsheet->getActiveSheet();
 
-        $spreadsheet->setActiveSheetIndex(0)
+        $activeSheet
         ->setCellValue('A1', '15 BESAR PENYAKIT')
         ->mergeCells('A1:AN1')
         ->setCellValue('A2', 'PUSKESMAS DINOYO')
@@ -2379,7 +2415,6 @@ class Export_excel extends CI_Controller{
         ->mergeCells('AK6:AM6')
         ->setCellValue('AN6', 'JUMLAH')
         ->mergeCells('AN6:AN7')
-        
         ->setCellValue('D7', 'L')
         ->setCellValue('E7', 'P')
         ->setCellValue('F7', 'TOTAL')
@@ -2449,52 +2484,175 @@ class Export_excel extends CI_Controller{
             ],
         ];
         $activeSheet->getStyle('A1:F7')->applyFromArray($styleAlg);
+        if ($this->session->userdata('level') == '2') {
+            $dt = $this->M_Penyakit_banyak->CetakPenyTahun($tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tahun belum tersedia');
+                $this->header();
+                $this->load->view('laporan_bulanan/cetak_penyakitThn');
+                $this->load->view('footer/lb_footer');
+            }else {
+                $data = $this->M_Penyakit_banyak->CetakPenyTahun($tahun);
+                $datalaporan = json_decode($data[0]->datalb1);
+                $i = 8;
+                foreach($datalaporan as $d){
+                $total = 0;
+                $jumlah = 0; 
+                $activeSheet
+                ->setCellValue('A'.$i, '1')
+                ->setCellValue('B'.$i, $d->nama_penyakit)
+                ->setCellValue('C'.$i, $d->kode_icdx);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    for ($x=0;$x<12;$x++) { 
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt);
+                    }
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $total = $pas->Laki + $pas->Perempuan;
+                    $jumlah += $total;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $total);
+                    }
+                }
+                $activeSheet
+                ->setCellValue('AN'.$i, $jumlah);
+                $i++; 
+                }
+                $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
+                $activeSheet;
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
+                header('Cache-Control: max-age=0');
+                header('Cache-Control: max-age=1');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
+                $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer->save('php://output');
+                exit;
+            }
+        } elseif ($this->session->userdata('level') == '3'){
+            $dt = $this->M_Penyakit_banyak->CetakPenyTahunKP($tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tahun belum tersedia');
+                $this->header();
+                $this->load->view('laporan_bulanan/cetak_penyakitThn');
+                $this->load->view('footer/lb_footer');
+            }else {
+                $data = $this->M_Penyakit_banyak->CetakPenyTahunKP($tahun);
+                $datalaporan = json_decode($data[0]->datalb1);
+                $i = 8;
+                foreach($datalaporan as $d){
+                $total = 0;
+                $jumlah = 0; 
+                $activeSheet
+                ->setCellValue('A'.$i, '1')
+                ->setCellValue('B'.$i, $d->nama_penyakit)
+                ->setCellValue('C'.$i, $d->kode_icdx);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    for ($x=0;$x<12;$x++) { 
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt);
+                    }
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $total = $pas->Laki + $pas->Perempuan;
+                    $jumlah += $total;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $total);
+                    }
+                }
+                $activeSheet
+                ->setCellValue('AN'.$i, $jumlah);
+                $i++; 
+                }
+                $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
+                $activeSheet;
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
+                header('Cache-Control: max-age=0');
+                header('Cache-Control: max-age=1');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
+                $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer->save('php://output');
+                exit;
+            }
+        }elseif ($this->session->userdata('level') == '4') {
+            $dt = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+            if ($dt == null) {
+                $this->session->set_flashdata('flash', 'Data 15 Besar Penyakit Tahun belum tersedia');
+                $this->header();
+                $this->load->view('laporan_bulanan/cetak_penyakitThn');
+                $this->load->view('footer/lb_footer');
+            }else {
+                $data = $this->M_Penyakit_banyak->CetakPenyTahunDin($tahun);
+                $datalaporan = json_decode($data[0]->datalb1);
+                $i = 8;
+                foreach($datalaporan as $d){
+                $total = 0;
+                $jumlah = 0; 
+                $activeSheet
+                ->setCellValue('A'.$i, '1')
+                ->setCellValue('B'.$i, $d->nama_penyakit)
+                ->setCellValue('C'.$i, $d->kode_icdx);
+                if (count($d->pasien) == 0) {
+                    $k = 4;
+                    for ($x=0;$x<12;$x++) { 
+                    $dt =0;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt)
+                    ->setCellValueByColumnAndRow($k++, $i, $dt);
+                    }
+                }else {
+                    $k = 4;
+                    foreach ($d->pasien as $pas) {
+                    $total = $pas->Laki + $pas->Perempuan;
+                    $jumlah += $total;
+                    $activeSheet
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Laki)
+                    ->setCellValueByColumnAndRow($k++, $i, $pas->Perempuan)
+                    ->setCellValueByColumnAndRow($k++, $i, $total);
+                    }
+                }
+                $activeSheet
+                ->setCellValue('AN'.$i, $jumlah);
+                $i++; 
+                }
+                $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
+                $activeSheet;
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
+                header('Cache-Control: max-age=0');
+                header('Cache-Control: max-age=1');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
+                $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer->save('php://output');
+                exit;
+            }
+        }       
         
-        $datalaporan = json_decode($data[0]->datalb1);
-        $i = 8;
-        foreach($datalaporan as $d){
-        $total = 0;
-        $jumlah = 0; 
-        $spreadsheet->setActiveSheetIndex(0)
-        ->setCellValue('A'.$i, '1')
-        ->setCellValue('B'.$i, $d->nama_penyakit)
-        ->setCellValue('C'.$i, $d->kode_icdx);
-        if (count($d->pasien) == 0) {
-            $k = 4;
-            for ($x=0;$x<12;$x++) { 
-            $dt =0;
-            $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValueByColumnAndRow($k++, $i, $dt)
-            ->setCellValueByColumnAndRow($k++, $i, $dt)
-            ->setCellValueByColumnAndRow($k++, $i, $dt);
-            }
-        }else {
-            $k = 4;
-            foreach ($d->pasien as $pas) {
-            $total = $pas->Laki + $pas->Perempuan;
-            $jumlah += $total;
-            $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValueByColumnAndRow($k++, $i, $pas->Laki)
-            ->setCellValueByColumnAndRow($k++, $i, $pas->Perempuan)
-            ->setCellValueByColumnAndRow($k++, $i, $total);
-            }
-        }
-        $spreadsheet->setActiveSheetIndex(0)
-        ->setCellValue('AN'.$i, $jumlah);
-        $i++; 
-        }
-        $activeSheet->setTitle('15 Besar Penyakit '.date('d-m-Y H'));
-        $spreadsheet->setActiveSheetIndex(0);
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Laporan Tahunan.xlsx"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        exit;
     }
 }

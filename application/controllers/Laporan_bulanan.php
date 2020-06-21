@@ -7,10 +7,12 @@ class Laporan_bulanan extends CI_Controller{
       $this->load->helper('url');
       $this->load->model('RekamMedis_model');
       $this->load->model('DataLB1_model');
+      $this->load->model('Login_model');
       $this->load->helper(array('form', 'url'));
     }
     public function header()
     {
+      $data['user'] = $this->Login_model->get()->result();
       $data['kp'] = $this->DataLB1_model->getKategoriPeny()->result();
       $pesan = $this->DataLB1_model->pesan();
       $data['pesan'] = count($pesan);
@@ -28,12 +30,39 @@ class Laporan_bulanan extends CI_Controller{
     }  
     public function dataRegisterLB()
     {
-        $data['rekam_medis'] = $this->RekamMedis_model->tampil_data()->result();
-        $this->header();
-        $this->load->view('laporan_bulanan/data_registerlb', $data); 
-        $this->load->view('footer/lb_footer');
+      $data['rekam_medis'] = $this->RekamMedis_model->tampil_data()->result();
+      $this->header();
+      $this->load->view('laporan_bulanan/data_registerlb', $data); 
+      $this->load->view('footer/lb_footer');
     }
-    
+    public function data_penyakit()
+    {
+      $data['penyakit'] = $this->DataLB1_model->get()->result();
+      $this->header();
+      $this->load->view('laporan_bulanan/data_penyakit', $data); 
+      $this->load->view('footer/lb_footer');
+    }
+    public function tambahPenyakit()
+    {
+      $kode_icdx = $this->input->post('kode_icdx');
+      $data = $this->DataLB1_model->getPeny($kode_icdx);
+      if ($data->num_rows() > 0) {
+        $this->session->set_flashdata('flash', 'Data tersedia pada database');
+        redirect('laporan_bulanan/data_penyakit');
+      }else{
+        $kode_dx = $this->input->post('kode_dx');
+        $kode_icdx = $this->input->post('kode_icdx');
+        $nama_penyakit = $this->input->post('nama_penyakit');
+        $data = array(
+          'kode_dx' => $kode_dx,
+          'kode_icdx' => $kode_icdx,
+          'nama_penyakit' => $nama_penyakit,
+        );
+        $this->DataLB1_model->addPenyakit($data, 'data_penyakit');
+        $this->session->set_flashdata('success', 'Data berhasil ditambahkan');
+        redirect('laporan_bulanan/data_penyakit');
+      }
+    }
     public function dataLB1()
     {
         $data = $this->DataLB1_model->getJumlahLB();
@@ -697,6 +726,7 @@ class Laporan_bulanan extends CI_Controller{
         $id_jp = 3;
       }
       $nama_puskesmas = $this->input->post('nama_puskesmas');
+      $kd_puskesmas = $this->input->post('kd_puskesmas');
       $datalb1 = $this->input->post('datalb1');
       $status = 0;
 
@@ -704,6 +734,7 @@ class Laporan_bulanan extends CI_Controller{
         'tanggal' => $tanggal,
         'jenis_laporan' => $jenis_laporan,
         'nama_puskesmas' => $nama_puskesmas,
+        'kd_puskesmas' => $kd_puskesmas,
         'status' => $status,
         'id_jp' => $id_jp,
         'datalb1' => $datalb1,
@@ -720,28 +751,46 @@ class Laporan_bulanan extends CI_Controller{
     }
     public function detailLB($id)
     {
-      $data['detail'] = $this->DataLB1_model->getDataLB1($id);
+      $data['detail'] = $this->DataLB1_model->getData($id);
       $this->header();
       $this->load->view('laporan_bulanan/detail_laporanLB1', $data);
       $this->load->view('footer/lb_footer');
     }
     public function detailPBln($id)
     {
-      $data['peny_bln'] = $this->DataLB1_model->getDataLB1($id);
+      $data['peny_bln'] = $this->DataLB1_model->getData($id);
       $this->header();
       $this->load->view('laporan_bulanan/detail_Penybulan', $data);
       // $this->load->view('footer/lb_footer');
     }
     public function detailPTri($id)
     {
-      $data['peny_tri'] = $this->DataLB1_model->getDataLB1($id);
+      $tgl = $this->input->post('tanggal');
+      $bln = date('m', strtotime($tgl));
+      $year = date('Y', strtotime($tgl));
+      if ($bln == 1 || $bln == 2 || $bln == 3) {
+        $month = [1,2,3];
+        $bulan = ['Januri','Februari','Maret'];
+      }elseif ($bln == 4 || $bln == 5 || $bln == 6) {
+        $month = [4,5,6];
+        $bulan = ['April','Mei','Juni'];
+      }elseif ($bln == 7 || $bln == 8 || $bln == 9) {
+        $month = [7,8,9];
+        $bulan = ['Juli','Agustus','September'];
+      }elseif ($bln == 10 || $bln == 11 || $bln == 12) {
+        $month = [10,11,12];
+        $bulan = ['Oktober','November','Desember'];
+      }
+      $data['peny_tri'] = $this->DataLB1_model->getDataLB1($id, $month, $year);
+      $data['nama_bulan'] = $bulan;
+      $data['nama_tahun'] = $year;
       $this->header();
       $this->load->view('laporan_bulanan/detail_Penytri', $data);
       $this->load->view('footer/lb_footer');
     }
     public function detailPThn($id)
     {
-      $data['peny_thn'] = $this->DataLB1_model->getDataLB1($id);
+      $data['peny_thn'] = $this->DataLB1_model->getData($id);
       $this->header();
       $this->load->view('laporan_bulanan/detail_Penythn', $data);
       $this->load->view('footer/lb_footer');

@@ -99,15 +99,18 @@
                 <h3 class="timeline-header"><a href="#">Dinas Kesehatan</a> sent you an email</h3>
                 <div class="timeline-body">
                   <?php if ($dp['id_jp'] == 1) { ?>
-                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                    Laporan Bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
                   <?php }elseif ($dp['id_jp'] == 2) { ?>
-                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                    Laporan Tribulan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
                   <?php }elseif ($dp['id_jp'] == 3) { ?>
-                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
+                    Laporan Tahunan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
                   <?php }elseif ($dp['id_jp'] == 4) { ?>
-                    Laporan bulanan(LB1) belum dikirim! Batas pengiriman laporan tanggal 10.
-                  <?php } ?>
-                  
+                    Laporan 15 Besar Penyakit Bulanan! belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }elseif ($dp['id_jp'] == 5) { ?>
+                    Laporan 15 Besar Penyakit Tribulan! belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }elseif ($dp['id_jp'] == 6){?>
+                    Laporan 15 Besar Penyakit tahunan! belum dikirim! Batas pengiriman laporan tanggal 10.
+                  <?php }?>
                 </div>
               </div>
             </li>

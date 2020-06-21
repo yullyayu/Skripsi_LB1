@@ -17,13 +17,17 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <?php  foreach ($data as $dp ){
+              <?php  $tahun = '' ;
+                    foreach ($data as $dp ){
                   foreach ($dp->pasien as $pas) {
                     $bln = $pas->bulan = $pas->bulan1;
                     $tahun = date('Y', strtotime($bln));
                   }
-              } ?>
-              <h3 class="box-title" >Laporan Data Kesakitan Tahun <?php echo $tahun ?></h3>
+              } if ($tahun == null) { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan Tahun </h3>
+              <?php }else { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan Tahun <?php echo $tahun ?></h3>
+              <?php } ?>
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterTahun'); ?>" method="post">
             <div class="box-body">
@@ -216,6 +220,12 @@
                         <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="kd_puskesmas" class="col-sm-2 control-label">Kode</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="kd_puskesmas" id="kd_puskesmas" placeholder="Kode Puskesmas" required>
                         </div>
                     </div>
                     <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>

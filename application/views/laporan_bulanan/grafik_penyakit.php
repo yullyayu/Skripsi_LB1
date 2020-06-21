@@ -100,7 +100,13 @@
                     <div class="form-group">
                         <label for="nama_puskesmas" class="col-sm-2 control-label">Puskesmas</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" value="Dinoyo">
+                        <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="kd_puskesmas" class="col-sm-2 control-label">Kode</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="kd_puskesmas" id="kd_puskesmas" placeholder="Puskesmas" >
                         </div>
                     </div>
                     <textarea name="datalb1" style="display:none"><?php echo json_encode($data_peny)?></textarea>

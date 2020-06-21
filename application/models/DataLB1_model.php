@@ -4,14 +4,29 @@ class DataLB1_model extends CI_Model{
   function tambahLB1($data, $table){
     $this->db->insert($table, $data);  
   }
+  public function addPenyakit($data, $table)
+  {
+    $this->db->insert($table, $data);
+  }
   public function getKategoriPeny()
   {
     return $this->db->get('kategori_penyakit');
   }
+  public function get()
+  {
+    return $this->db->get('data_penyakit');
+  }
+  public function getPeny($kode_icdx)
+  {
+    return $this->db->get_where('data_penyakit', ['kode_icdx' => $kode_icdx]);
+  }
+  public function getKP($kode_dx)
+  {
+    return $this->db->get_where('kategori_penyakit', ['kode_dx' => $kode_dx]);
+  }
   public function notif()
   {
     $this->db->where("(status=1 OR status=11 OR status=3 OR status=4)", NULL, FALSE);
-    // $this->db->where('pesan', 5);
     $result = $this->db->get('detail_laporan')->result_array();
     return $result;
   }
@@ -99,7 +114,17 @@ class DataLB1_model extends CI_Model{
   {
     return $this->db->get('detail_laporan');
   }
-  public function getDataLB1($id)
+  public function getDataLB1($id, $month, $year)
+  {
+    $this->db->select('*');
+    $this->db->from('detail_laporan');
+    $this->db->where('id_laporan', $id);
+    $this->db->where("(month(tanggal)= $month[0] OR month(tanggal)= $month[1] OR month(tanggal)= $month[2])", NULL, FALSE);
+    $this->db->where('year(tanggal)', $year);
+    $query = $this->db->get();
+    return $query->result();
+  }
+  public function getData($id)
   {
     $this->db->select('*');
     $this->db->from('detail_laporan');

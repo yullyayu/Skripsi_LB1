@@ -97,7 +97,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <i class="fa fa-table"></i>
             <span>Data Register</span>
             <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
             </span>
           </a>
         </li>

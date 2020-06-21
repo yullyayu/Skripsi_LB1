@@ -35,8 +35,8 @@
         }
         public function hapus_register($where, $table)
         {
-            $this->db->where($where);
-            $this->db->delete($table);
+        $this->db->where($where);
+        $this->db->delete($table);
         }
     }
 ?>

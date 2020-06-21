@@ -43,17 +43,17 @@
                   <td><?php echo $st->jenis_laporan?> 
                   <?php if ($st->status == 4) { ?>
                     <td style="text-align: center;"><span class="fa fa-fw fa-times"></span></td>
+                  <?php }elseif ($st->status == 3 ) { ?>
+                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
                   <?php }elseif ($st->status == 2 && $st->id_jp == 1 || $st->id_jp == 2 || $st->id_jp == 3 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailLBdinkes/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 2 && $st->id_jp == 4 ) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyBulan/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 2 && $st->id_jp == 5) { ?>
-                    <td ><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                    <td ><form action="<?php echo site_url('dinkes/detailPenyTri/'. $st->id_laporan);?>" method="post"><textarea name="tanggal" style="display:none"><?php echo $st->tanggal?></textarea><button type="submit" class='fa fa-fw fa-edit'><span class="menu-icon icon-edit"></span></button></form></td>
                   <?php }elseif ($st->status == 2 && $st->id_jp == 6) { ?>
                   <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('dinkes/detailPenyThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
-                  <?php }elseif ($st->status == 3 ) { ?>
-                    <td style="text-align: center;"><span class="fa fa-fw fa-check"></span></td>
-                  <?php } ?>
+                  <?php }?>
                   <td>
                     <?php if ($st->status == 2) {
                             echo "Perlu persetujuan dinkes";

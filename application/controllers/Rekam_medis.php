@@ -5,15 +5,21 @@ class Rekam_medis extends CI_Controller{
       parent::__construct();
       $this->load->helper('url');
       $this->load->model('RekamMedis_model');
+      $this->load->model('Login_model');
+    }
+    function header()
+    {
+      $data['user'] = $this->Login_model->get()->result();
+      $this->load->view('header/rm_header', $data);
     }
     function index(){
-        $this->load->view('header/rm_header');
+        $this->header();
         $this->load->view('rekam_medis/form_register');
         $this->load->view('footer/rm_footer');
     }
     public function dashboard()
     {
-      $this->load->view('header/rm_header');
+      $this->header();
       $this->load->view('rekam_medis/dashboard_rm');
       $this->load->view('footer/rm_footer');
     }
@@ -110,7 +116,7 @@ class Rekam_medis extends CI_Controller{
     public function dataRegister()
     {
       $data['rekam_medis'] = $this->RekamMedis_model->tampil_data()->result();
-      $this->load->view('header/rm_header');
+      $this->header();
       $this->load->view('rekam_medis/data_register', $data); 
       $this->load->view('footer/rm_footer');
     }
@@ -119,7 +125,7 @@ class Rekam_medis extends CI_Controller{
     {
       $where = array('no_register' => $no);
       $data['rekam_medis'] = $this->RekamMedis_model->getRegister($where, 'rekam_medis')->result();
-      $this->load->view('header/rm_header');
+      $this->header();
       $this->load->view('rekam_medis/edit_register', $data); 
       $this->load->view('footer/rm_footer');
     }

@@ -18,22 +18,31 @@
             <div class="box-header">
             </div>
             <div id="container"></div>
-            <?php $total = []; ?>
+            <?php $total = [];
+                  $total2 = [];
+                  $total3 = [];
+                ?>
             <?php
             $datalaporan = json_decode($peny_tri[0]->datalb1); 
-                foreach ($datalaporan as $dp ){
-                $tot = 0;
-                $peny[] = $dp->nama_penyakit;
-                foreach ($dp->pasien as $pas) {
-                  $bln = $pas->bulan = $pas->bulan1;
-                  $bulan = date('M', strtotime($bln));
-                  $tahun = date('Y', strtotime($bln));
-                  $tot = $pas->Laki + $pas->Perempuan;
-                }
-                array_push($total, $tot);
-            } 
-            $tahun = date('Y', strtotime($bln)) ;
-            $judul = 'GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN '.$tahun ;
+            // var_dump($datalaporan);
+            foreach ($datalaporan as $dp) {         
+              $array = 0;   
+              $array2 = 0;    
+              $array3 = 0;  
+              $peny[] = $dp->nama_penyakit;
+              $tot = $dp->total;
+              $tot2 = $dp->total2;
+              $tot3 = $dp->total3;
+              $array = json_decode($tot, true);
+              $array2 = json_decode($tot2, true);
+              $array3 = json_decode($tot3, true);
+              // var_dump($array2);
+              array_push($total, $array);
+              array_push($total2, $array2);
+              array_push($total3, $array3);
+              // var_dump($tot2);
+              // var_dump($tot3);
+            }
             ?>
             <div class="form-group"><br>
               <div class="col-sm-12" align="right">
@@ -138,7 +147,7 @@
   Highcharts.chart('container', {
 
   title: {
-      text: <?php echo json_encode($judul)?>
+    text: "GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN " + <?php echo json_encode($nama_tahun)?>
   },
 
   subtitle: {
@@ -147,41 +156,72 @@
 
   yAxis: {
       title: {
-          text: 'Number of Employees'
+          text: ''
       }
   },
 
   xAxis: {
       categories: <?php echo json_encode($peny) ?>
-      // accessibility: {
-      //     rangeDescription: 'Range: 2011 to 2020'
-      // }
   },
 
-  // legend: {
-  //     layout: 'vertical',
-  //     align: 'right',
-  //     verticalAlign: 'middle'
-  // },
-
-  // plotOptions: {
-  //     series: {
-  //         label: {
-  //             connectorAllowed: false
-  //         },
-  //         pointStart: 2011
-  //     }
-  // },
-
   series: [{
-      name: <?php echo json_encode($bulan)?>,
-      data: <?php echo json_encode($total) ?>
-  // }, {
-  //     name: 'Februari',
-  //     data: [null, null, 1, 0, 0, 0, 1, 1, 2, 0, 1, 0, 4, 2, 3]
-  // }, {
-  //     name: 'Maret',
-  //     data: [1, 2, 0, 1, 0, 2, 1, 2, 4, 1, 2, 1, 1, 0, 5]
+      name: <?php echo json_encode($nama_bulan[0]) ?>,
+      data: <?php echo json_encode($total) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[1]) ?>,
+      data: <?php echo json_encode($total2) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[2]) ?>,
+      data: <?php echo json_encode($total3) ?>
+  }],
+
+  responsive: {
+      rules: [{
+          condition: {
+              maxWidth: 500
+          },
+          chartOptions: {
+              legend: {
+                  layout: 'horizontal',
+                  align: 'center',
+                  verticalAlign: 'bottom'
+              }
+          }
+      }]
+  }
+
+  });
+  </script>
+  
+  <script type="text/javascript">
+  Highcharts.chart('container', {
+
+  title: {
+      text: "GRAFIK 15 BESAR PENYAKIT TERBANYAK TRIWULAN TAHUN " + <?php echo json_encode($nama_tahun)?>
+  },
+
+  subtitle: {
+      text: 'Puskesmas Dinoyo Malang'
+  },
+
+  yAxis: {
+      title: {
+          text: ''
+      }
+  },
+
+  xAxis: {
+      categories: <?php echo json_encode($peny) ?>
+  },
+  series: [{
+      name: <?php echo json_encode($nama_bulan[0]) ?>,
+      data: <?php echo json_encode($total) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[1]) ?>,
+      data: <?php echo json_encode($total2) ?> 
+  }, {
+      name: <?php echo json_encode($nama_bulan[2]) ?>,
+      data: <?php echo json_encode($total3) ?>
   }],
 
   responsive: {

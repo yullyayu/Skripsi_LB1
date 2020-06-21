@@ -7,11 +7,13 @@ class Data_penyakit extends CI_Controller{
       $this->load->model('M_Penyakit_banyak');
       $this->load->model('M_Kepala_puskesmas');
       $this->load->model('DataLB1_model');
+      $this->load->model('Login_model');
       $this->load->model('M_Dinkes');
       $this->load->helper(array('form', 'url'));
     }
     public function header() {
         if ($this->session->userdata('level') == '2') {
+            $data['user'] = $this->Login_model->get()->result();
             $pesan = $this->DataLB1_model->pesan();
             $data['pesan'] = count($pesan);
             $data['data_pesan'] = $pesan;
@@ -20,11 +22,13 @@ class Data_penyakit extends CI_Controller{
             $data['data_notif'] = $result;
             $this->load->view('header/lb_header', $data);
         } elseif ($this->session->userdata('level') == '3') {
+            $data['user'] = $this->Login_model->get()->result();
             $result = $this->M_Kepala_puskesmas->notif();
             $data['notif'] = count($result);
             $data['data_notif'] = $result;
             $this->load->view('header/kp_header', $data);
         } elseif ($this->session->userdata('level') == '4') {
+            $data['user'] = $this->Login_model->get()->result();
             $result = $this->M_Dinkes->notif();
             $data['notif'] = count($result);
             $data['data_notif'] = $result;
@@ -122,28 +126,32 @@ class Data_penyakit extends CI_Controller{
         }
         foreach ($penyakit as $key => $peny) {
             foreach ($rekamMedis as $ki => $rm) {
-                if ($peny->kode_icdx == $rm->kode_penyakit) {
-                    if ($rm->jenis_kelamin == 'Laki-laki') {
-                        $pen[$key]->pasien[$rm->bulan - 1]->Laki += 1;
-                    }else {
-                        $pen[$key]->pasien[$rm->bulan - 1]->Perempuan += 1;
+                if($peny->kode_icdx == $lb->kode_icdx){
+                    if ($peny->kode_icdx == $rm->kode_penyakit) {
+                        if ($rm->jenis_kelamin == 'Laki-laki') {
+                            $pen[$key]->pasien[$rm->bulan - 1]->Laki += 1;
+                        }else {
+                            $pen[$key]->pasien[$rm->bulan - 1]->Perempuan += 1;
+                        }
+                        $pen[$key]->pasien[$rm->bulan - 1]->total = $pen[$key]->pasien[$rm->bulan - 1]->Perempuan + $pen[$key]->pasien[$rm->bulan - 1]->Laki; // TAMBAH DISINI
+                        $pen[$key]->jumlah += $pen[$key]->pasien[$rm->bulan - 1]->total;
+                        unset($rekamMedis[$ki]);
                     }
-                    $pen[$key]->pasien[$rm->bulan - 1]->total = $pen[$key]->pasien[$rm->bulan - 1]->Perempuan + $pen[$key]->pasien[$rm->bulan - 1]->Laki; // TAMBAH DISINI
-                    $pen[$key]->jumlah += $pen[$key]->pasien[$rm->bulan - 1]->total;
-                    unset($rekamMedis[$ki]);
                 }
             }
             foreach ($laporanlb1 as $lab => $lb) {
                 if($peny->kode_icdx == $lb->kode_icdx){
-                    if ($lb->jenis_kelamin == 'Laki-laki') {
-                        $pen[$key]->pasien[$lb->bulan - 1]->Laki += 1;
-                    }else {
-                        $pen[$key]->pasien[$lb->bulan - 1]->Perempuan +=1;
+                    if($peny->kode_icdx == $lb->kode_icdx){
+                        if ($lb->jenis_kelamin == 'Laki-laki') {
+                            $pen[$key]->pasien[$lb->bulan - 1]->Laki += 1;
+                        }else {
+                            $pen[$key]->pasien[$lb->bulan - 1]->Perempuan +=1;
+                        }
+                        $pen[$key]->pasien[$rm->bulan - 1]->total = $pen[$key]->pasien[$lb->bulan - 1]->Perempuan + $pen[$key]->pasien[$lb->bulan - 1]->Laki; // TAMBAH DISINI
+                        $pen[$key]->jumlah += $pen[$key]->pasien[$rm->bulan - 1]->total;
+                        unset($laporanlb1[$lab]); 
                     }
-                    $pen[$key]->pasien[$rm->bulan - 1]->total = $pen[$key]->pasien[$lb->bulan - 1]->Perempuan + $pen[$key]->pasien[$lb->bulan - 1]->Laki; // TAMBAH DISINI
-                    $pen[$key]->jumlah += $pen[$key]->pasien[$rm->bulan - 1]->total;
-                    unset($laporanlb1[$lab]); 
-                    }
+                }
             }
         }
         usort($pen, function($a, $b) {return $a->jumlah < $b->jumlah;});
@@ -181,6 +189,7 @@ class Data_penyakit extends CI_Controller{
         }
         foreach ($penyakit as $key => $peny) {
             foreach ($rekamMedis as $ki => $rm) {
+                if (sizeof($pen[$key]->pasien) != 0) {
                     if ($peny->kode_icdx == $rm->kode_penyakit) {
                         if ($rm->jenis_kelamin == 'Laki-laki') {
                             $pen[$key]->pasien[0]->Laki += 1;
@@ -190,16 +199,19 @@ class Data_penyakit extends CI_Controller{
                         $pen[$key]->total = $pen[$key]->pasien[0]->Perempuan + $pen[$key]->pasien[0]->Laki; // TAMBAH DISINI
                         unset($rekamMedis[$ki]);
                     }
+                }
             }
             foreach ($laporanlb1 as $lab => $lb) {
-                if($peny->kode_icdx == $lb->kode_icdx){
-                    if ($lb->jenis_kelamin == 'Laki-laki') {
-                        $pen[$key]->pasien[0]->Laki += 1;
-                    }else {
-                        $pen[$key]->pasien[0]->Perempuan +=1;
+                if (sizeof($pen[$key]->pasien) != 0) {
+                    if($peny->kode_icdx == $lb->kode_icdx){
+                        if ($lb->jenis_kelamin == 'Laki-laki') {
+                            $pen[$key]->pasien[0]->Laki += 1;
+                        }else {
+                            $pen[$key]->pasien[0]->Perempuan +=1;
+                        }
+                        $pen[$key]->total = $pen[$key]->pasien[0]->Perempuan + $pen[$key]->pasien[0]->Laki; // TAMBAH DISINI
+                        unset($laporanlb1[$lab]);   
                     }
-                    $pen[$key]->total = $pen[$key]->pasien[0]->Perempuan + $pen[$key]->pasien[0]->Laki; // TAMBAH DISINI
-                    unset($laporanlb1[$lab]);   
                 }
             }
         }
@@ -464,6 +476,7 @@ class Data_penyakit extends CI_Controller{
         $id_jp = 6;
       }
       $nama_puskesmas = $this->input->post('nama_puskesmas');
+      $kd_puskesmas = $this->input->post('kd_puskesmas');
       $datalb1 = $this->input->post('datalb1');
       $status = 0;
 
@@ -471,6 +484,7 @@ class Data_penyakit extends CI_Controller{
         'tanggal' => $tanggal,
         'jenis_laporan' => $jenis_laporan,
         'nama_puskesmas' => $nama_puskesmas,
+        'kd_puskesmas' => $kd_puskesmas,
         'status' => $status,
         'id_jp' => $id_jp,
         'datalb1' => $datalb1,

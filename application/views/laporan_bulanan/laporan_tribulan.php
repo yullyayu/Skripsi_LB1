@@ -17,7 +17,10 @@
         <div class="col-xs-12">            
           <div class="box">
             <div class="box-header">
-              <?php  foreach ($data as $dp ){
+              <?php  
+              $tri = '';
+              $tahun = '';
+              foreach ($data as $dp ){
                   foreach ($dp->pasien as $pas) {
                     $bln = $pas->bulan = $pas->bulan1;
                     $bulan = date('m', strtotime($bln));
@@ -32,8 +35,11 @@
                       $tri = 'Tribulan 4';
                     }
                   }
-              } ?>
-              <h3 class="box-title" >Laporan Data Kesakitan <?php echo $tri ?> Tahun <?php echo $tahun ?></h3>
+              } if ($tri == null || $tahun == null) { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan </h3>
+              <?php }else { ?>
+                <h3 class="box-title" >Laporan Data Kesakitan <?php echo $tri ?> Tahun <?php echo $tahun ?></h3>
+              <?php } ?> 
             </div>
             <form class="form-horizontal" action="<?php echo site_url('laporan_bulanan/filterTribln'); ?>" method="post">
             <div class="box-body">
@@ -241,6 +247,12 @@
                         <label for="je" class="col-sm-2 control-label">Puskesmas</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="kd_puskesmas" class="col-sm-2 control-label">Kode</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" name="kd_puskesmas" id="kd_puskesmas" placeholder="Kode Puskesmas" required>
                         </div>
                     </div>
                     <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>

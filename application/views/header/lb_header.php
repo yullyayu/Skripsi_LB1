@@ -104,11 +104,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <?php } elseif ($dp['id_jp'] == 3) { ?>
                           Laporan tahunan(LB1) belum dikirim
                         <?php } elseif ($dp['id_jp'] == 4) { ?>
-                          Laporan 15 Besar Penyakit Bulanan belum dikirim
+                          15 Besar Penyakit Bulanan belum dikirim
                         <?php } elseif ($dp['id_jp'] == 5) { ?>
-                          Laporan 15 Besar Penyakit Tribulan belum dikirim
+                          15 Besar Penyakit Tribulan belum dikirim
                         <?php } elseif ($dp['id_jp'] == 6) { ?>
-                          Laporan 15 Besar Penyakit Tahunan belum dikirim
+                          15 Besar Penyakit Tahunan belum dikirim
                         <?php } 
                       } ?>
                       </p>
@@ -134,7 +134,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
-                    <h5 style="margin-left: 10px;margin-right: 10px">
+                    <h5 style="margin-left: 15px;margin-right: 15px">
                       <?php if ($dn['status'] == 1) {
                         if ($dn['id_jp'] == 1) {?>
                           Laporan bulanan(LB1) telah disetujui Kepala Puskesmas
@@ -340,24 +340,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </span>
           </a>
         </li>
+        <li>
+          <a href="<?=site_url('laporan_bulanan/statusLB')?>">
+            <i class="fa fa-table"></i>
+            <span>Laporan Masuk</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-table"></i>
-            <span>Laporan Bulanan</span>
+            <i class="fa fa-table"></i> <span>Laporan Bulanan</span>
             <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="<?=site_url('laporan_bulanan/statusLB')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Masuk</a></li>
-            <li><a href="<?=site_url('laporan_bulanan/dataLB1')?>"><i class="fa fa-fw fa-file-excel-o"></i> Laporan Bulanan(LB1)</a></li>
+            <li><a href="<?=site_url('laporan_bulanan/dataLB1')?>"><i class="fa fa-table"></i> Laporan Bulanan(LB1)</a></li>
+            <li><a href="<?=site_url('laporan_bulanan/data_penyakit')?>"><i class="fa fa-fw fa-print"></i> Data Penyakit</a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i> <span>Penyakit Terbanyak</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">

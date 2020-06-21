@@ -48,7 +48,7 @@
                   <?php }elseif ($st->status == 1 && $st->id_jp == 4) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPBln/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 1 && $st->id_jp == 5) { ?>
-                    <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPTri/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
+                    <td ><form action="<?php echo site_url('laporan_bulanan/detailPTri/' . $st->id_laporan);?>" method="post"><textarea name="tanggal" style="display:none"><?php echo $st->tanggal?></textarea><button type="submit" class='fa fa-fw fa-edit'><span class="menu-icon icon-edit"></span></button></form></td>
                   <?php }elseif ($st->status == 1 && $st->id_jp == 6) { ?>
                     <td><a class='fa fa-fw fa-edit' href="<?php echo site_url('laporan_bulanan/detailPThn/' . $st->id_laporan);?>"><span class="menu-icon icon-edit"></span></a></td>
                   <?php }elseif ($st->status == 2 || $st->status == 3) { ?>

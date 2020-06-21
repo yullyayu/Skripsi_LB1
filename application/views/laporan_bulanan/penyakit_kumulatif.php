@@ -143,6 +143,12 @@
                             <input type="text" class="form-control" name="nama_puskesmas" id="nama_puskesmas" placeholder="Puskesmas" value="Dinoyo">
                             </div>
                         </div>
+                        <div class="form-group">
+                          <label for="kd_puskesmas" class="col-sm-2 control-label">Kode</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_puskesmas" id="kd_puskesmas" placeholder="Kode Puskesmas" required>
+                          </div>
+                        </div>
                         <textarea name="datalb1" style="display:none"><?php echo json_encode($data)?></textarea>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

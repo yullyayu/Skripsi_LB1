@@ -34,6 +34,18 @@ class M_Dinkes extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+    public function getLB1()
+    {
+        $bulan = getdate();
+        $this->db->select('*');
+        $this->db->from('detail_laporan');
+        $this->db->where('kd_puskesmas');
+        $this->db->where('month(tanggal)', $bulan['mon']);
+        $this->db->where('id_jp', 1);
+        $this->db->where('status', 3);
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function getLBtribulan()
     {
         $tribulan = getdate();
@@ -58,21 +70,27 @@ class M_Dinkes extends CI_Model{
     }
     public function monitoringLB()
     {
-        $bulan = getdate();
+        // $bulan = getdate();
         $this->db->select('*');
         $this->db->from('jenis_laporan as jl');
         $this->db->join('detail_laporan as dl', 'dl.id_jp = jl.id_jp', 'left');
+        // $this->db->where('month(dl.tanggal)', $bulan['mon']);  
         $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = dl.kd_puskesmas', 'left');
-        // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
         $query = $this->db->get();
         return $query->result();
+        // $bulan = getdate();
         // $this->db->select('*');
-        // $this->db->from('jenis_laporan as jp');
-        // $this->db->join('detail_laporan as lb', 'lb.id_jp = jp.id_jp', 'left');
-        // $this->db->join('data_puskesmas as dp', 'dp.nama_puskesmas = lb.nama_puskesmas', 'left');
+        // $this->db->from('detail_laporan as dl');
+        // $this->db->join('jenis_laporan as jl', 'dl.id_jp = jl.id_jp', 'left');
+        // $this->db->join('data_puskesmas as dp', 'dp.kd_puskesmas = dl.kd_puskesmas', 'left');
+        // // $this->db->where('month(lb.tanggal)', $bulan['mon']);  
         // $query = $this->db->get();
         // return $query->result();
     }
+    // public function get()
+    // {
+    //     return $this->db->get('jenis_laporan');
+    // }
     public function sendMonitor($data, $where)
     {
         $this->db->where($where);

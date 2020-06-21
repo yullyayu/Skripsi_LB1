@@ -65,7 +65,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php $no =0; foreach ($rekam_medis as $key ): $no++;?> 
+                <?php $no =0; foreach ($rekam_medis as $key ){ $no++?> 
                   <tr class="odd gradeX">
                     <th scope="row"><?php echo $no?></th>
                     <th scope="row"><?php echo $key->no_register?></th>
@@ -109,14 +109,11 @@
                       <td><?php echo $key->luar_wilayah?></td>
                     <?php }  ?>
                     <td><a class='btn btn-info btn-xs' href="<?php echo site_url('rekam_medis/editRM/'. $key->no_register);?>"><span class="fa fa-pencil" ></span></a></td>
-                    <td><a class='btn btn-danger btn-xs' href="" data-toggle="modal" data-target="#hapus"><span class="fa fa-trash-o"></span></a></td> 
+                    <td><a class='btn btn-danger btn-xs' href="" data-toggle="modal" data-target="#hapus<?= $key->no_register ?>"><span class="fa fa-trash-o"></span></a></td> 
                   </tr>
-                    <?php endforeach;?>
-                </tbody>
-              </table>
 
-              <!-- MODAL KIRIM LAPORAN -->
-              <div class="modal fade" id="hapus">
+              <!-- MODAL Hapus LAPORAN -->
+              <div class="modal fade" id="hapus<?= $key->no_register ?>">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -124,7 +121,7 @@
                         <span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title">Hapus Data Register</h4>
                     </div>
-                    <form class="form-horizontal" action="<?php echo site_url('rekam_medis/hapusRegister/'. $key->no_register) ?>" method="post">
+                    <form class="form-horizontal" action="<?php echo site_url('rekam_medis/hapusRegister/'. $key->no_register);?>" method="post">
                     <div class="modal-body">
                       <p>Anda Yakin Hapus?</p>
                     </div>
@@ -137,7 +134,9 @@
                 </div>
               </div>
               <!-- end modal -->
-
+                  <?php }?>
+                </tbody>
+              </table>
             </div>
             <!-- /.box-body -->
           </div>
